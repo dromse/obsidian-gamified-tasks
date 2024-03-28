@@ -1,5 +1,5 @@
-import { StatusFilterOption } from "../TaskList";
-import { Statuses } from "../../../hooks/useTasks/middleware/status";
+import { StatusKeys } from "@hooks/useTasks/consts";
+import { StatusFilterOption } from "@hooks/useTasks/types";
 
 type Props = {
 	currentStatusFilter: StatusFilterOption;
@@ -23,7 +23,7 @@ export default function StatusFilter({
 			>
 				<option value="all">all</option>
 
-				{Statuses.map((status) => (
+				{StatusKeys.map((status) => (
 					<option value={status}>{status}</option>
 				))}
 			</select>
