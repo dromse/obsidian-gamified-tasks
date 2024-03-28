@@ -16,6 +16,7 @@ export default function useRewards() {
 
 	const app = useApp();
 	const settings = useSettings();
+	const [trigger, setTrigger] = useState(false);
 
 	const [rewards, setRewards] = useState<Reward[]>([]);
 
@@ -27,34 +28,28 @@ export default function useRewards() {
 
 	const { vault } = app;
 
-	async function fetchData() {
-		if (settings) {
-			const tFile = vault.getFileByPath(settings.pathToRewards);
-
-			if (tFile) {
-				const content = await vault.cachedRead(tFile);
-				const rewards = parseRewards(content);
-
-				setRewards(rewards);
-
-				setIsRewardsParsed("parsed");
-			}
+	async function fetchRewards() {
+		if (!settings) {
+			return;
 		}
+
+		const tFile = vault.getFileByPath(settings.pathToRewards);
+
+		if (!tFile) {
+			return;
+		}
+
+		const content = await vault.cachedRead(tFile);
+		const rewards = parseRewards(content);
+
+		setRewards(rewards);
+
+		setIsRewardsParsed("parsed");
 	}
 
 	useEffect(() => {
-		fetchData();
-
-		// sync data with changes in vault
-		if (vault) {
-			// @ts-ignore
-			vault.on("modify", fetchData);
-
-			return () => {
-				vault.off("modify", fetchData);
-			};
-		}
-	}, []);
+		fetchRewards();
+	}, [trigger]);
 
 	return { rewards, isRewardsParsed };
 }
