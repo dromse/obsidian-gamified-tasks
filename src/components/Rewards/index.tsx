@@ -1,5 +1,5 @@
 import { Notice } from "obsidian";
-import { useHistory, useRewards } from "../../hooks";
+import { useHistory, useRewards } from "@hooks";
 import styles from "./styles.module.css";
 
 export default function Rewards() {
@@ -17,20 +17,19 @@ export default function Rewards() {
 
 				<h3>Balance: {balance} coins</h3>
 
-				<ul className={styles.list}>
+				<ul className={`list ${styles.list}`}>
 					{rewards.map((reward) => (
-						<li className={styles.reward}>
+						<li className={`${styles.reward} border`}>
 							<div>
 								<h3>{reward.title}</h3>
 								<p>{reward.desc}</p>
 							</div>
+
 							<button
 								onClick={() => {
-									console.log("clicked");
 									addHistoryRow({
 										title: reward.title,
 										change: -reward.price,
-										date: new Date(),
 									});
 									new Notice(
 										`You purchase '${reward.title}': -${reward.price} ${reward.price > 1 ? "coins" : "coin"}`,
