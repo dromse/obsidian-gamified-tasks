@@ -1,4 +1,4 @@
-import { TFile } from "obsidian";
+import { moment, TFile } from "obsidian";
 import { useEffect, useState } from "react";
 import { useApp, useSettings } from "..";
 import { ParseState } from "../types";
@@ -7,7 +7,7 @@ import { getLines } from "../utils";
 type HistoryRow = {
 	title: string;
 	change: number;
-	date: Date;
+	date: string;
 };
 
 /** Hook for interacting with rewards list */
@@ -27,13 +27,11 @@ export default function useHistory() {
 	async function addHistoryRow({
 		change,
 		title,
-		date = new Date(),
 	}: {
 		change: number;
 		title: string;
-		date?: Date;
 	}) {
-		const rowStr = `${change} | ${title} | ${stringifyDate(date)}\n`;
+		const rowStr = `${change} | ${title} | ${currentDate()}\n`;
 
 		if (historyFile) {
 			await vault.process(historyFile, (data) => rowStr + data);
@@ -49,7 +47,7 @@ export default function useHistory() {
 
 	const { vault } = app;
 
-	async function fetchData() {
+	async function fetchHistory() {
 		if (settings) {
 			const tFile = vault.getFileByPath(settings.pathToHistory);
 
@@ -69,17 +67,7 @@ export default function useHistory() {
 	}
 
 	useEffect(() => {
-		fetchData();
-
-		// sync data with changes in vault
-		if (vault) {
-			// @ts-ignore
-			vault.on("modify", fetchData);
-
-			return () => {
-				vault.off("modify", fetchData);
-			};
-		}
+		fetchHistory();
 	}, [trigger]);
 
 	return { history, balance, isHistoryParsed, addHistoryRow };
@@ -93,15 +81,10 @@ function calcBalance(history: HistoryRow[]): number {
 }
 
 /** Stringigy date for locale time */
-function stringifyDate(date: Date): string {
-	return date.toLocaleTimeString([], {
-		month: "numeric",
-		day: "numeric",
-		year: "numeric",
-		hour: "2-digit",
-		minute: "2-digit",
-		hour12: false,
-	});
+function currentDate(): string {
+	const dateStr = moment().format("YYYY-MM-DD HH:mm");
+
+	return dateStr;
 }
 
 /**
@@ -139,7 +122,7 @@ function parseHistory(content: string): HistoryRow[] {
 			acc.push({
 				change: Number(line[0]),
 				title: line[1],
-				date: new Date(line[2]),
+				date: line[2],
 			});
 		}
 
