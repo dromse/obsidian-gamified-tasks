@@ -1,90 +1,144 @@
-import { TFile } from "obsidian";
-import { useApp, useHistory } from "../../hooks";
-import { DifficultyPrices } from "../../hooks/useTasks/middleware/difficulty";
-import { Status, Statuses } from "../../hooks/useTasks/middleware/status";
-import { Task } from "../../hooks/useTasks/types";
+import { useApp, useHistory } from "@hooks";
+import { DifficultyPrice, StatusKeys } from "@hooks/useTasks/consts";
+import { Status, Task } from "@hooks/useTasks/types";
+import { Notice } from "obsidian";
+import { useEffect, useState } from "react";
+
 import styles from "./styles.module.css";
 
 type Props = {
 	task: Task;
-	updateTask: (task: Task, newTask: Task) => void;
+	updateTask: (task: Task, newTask: Task) => any;
 };
 
 export default function TaskItem({ task, updateTask }: Props) {
+	const [isCounterLoading, setIsCounterLoading] = useState(false);
 	const workspace = useApp()?.workspace;
+	const vault = useApp()?.vault;
+	const [trigger, setTrigger] = useState(false);
 
-	const { addHistoryRow } = useHistory();
+	const { addHistoryRow, } = useHistory();
 
 	if (!workspace) {
-		return <div>Workspace not exists...</div>;
+		return <div>Workspace is not exists...</div>;
 	}
 
-	const openFile = (tFile: TFile) => workspace.getLeaf("tab").openFile(tFile);
+	if (!vault) {
+		return <div>Vault is not exists...</div>;
+	}
 
-	const updateCompleted = () => {
-		const newTask = {
-			...task,
-			completed: !task.completed,
-			status: !task.completed ? "done" : "todo",
-		};
+	async function updateStatus(status: Status) {
+		await updateTask(task, { ...task, status });
 
-		updateTask(task, newTask as Task);
-	};
-
-	const updateCounter = (value: number) => {
 		if (task.counter) {
-			const newCurrent = task.counter.current + value;
-
-			if (newCurrent >= 0) {
-				task.counter.current = newCurrent;
-
-				if (task.difficulty) {
-					addHistoryRow({
-						title: task.body,
-						change: DifficultyPrices[task.difficulty] * value,
-					});
-				}
-			} else {
-				task.counter.current = 0;
-			}
+			return;
 		}
 
-		updateTask(task, task);
-	};
+		if (!task.difficulty) {
+			return;
+		}
 
-	function updateStatus(status: Status) {
-		updateTask(task, { ...task, status });
+		if (status === "done") {
+			addHistoryRow({
+				title: task.body,
+				change: DifficultyPrice[task.difficulty],
+			});
+
+			new Notice(`You completed task: '${task.body}'`);
+		}
+
+		if (task.status === "done" && status !== "done") {
+			addHistoryRow({
+				title: task.body,
+				change: -DifficultyPrice[task.difficulty],
+			});
+		}
 	}
 
+	const updateCounter = async (value: number) => {
+		setIsCounterLoading(true);
+
+		const current = Number(task.counter?.current);
+		const goal = Number(task.counter?.goal);
+
+		if (!current && !goal) {
+			return;
+		}
+
+		const newCurrent = current + value;
+		const isOutOfScope = (value: number) => value < 0 || value > goal;
+
+		if (isOutOfScope(newCurrent)) {
+			setTrigger((prev) => !prev);
+			return;
+		}
+
+		const result = await updateTask(task, {
+			...task,
+			status: newCurrent === goal ? "done" : "doing",
+			counter: { current: newCurrent, goal },
+		});
+
+		if (newCurrent === goal) {
+			new Notice(`You completed task: '${task.body}'`);
+		}
+
+		if (result === "error") {
+			console.error("Msg: error during counter update.");
+		}
+
+		if (task.difficulty) {
+			addHistoryRow({
+				title: task.body,
+				change: DifficultyPrice[task.difficulty] * value,
+			});
+		}
+
+		setTrigger((prev) => !prev);
+	};
+
+	const openFile = (path: string) => {
+		const tFile = vault.getFileByPath(path);
+
+		if (tFile) {
+			workspace.getLeaf("tab").openFile(tFile);
+		}
+	};
+
+	useEffect(() => {
+		setIsCounterLoading(false);
+	}, [trigger]);
+
 	return (
-		<li className={styles.task}>
-			<input
-				type="checkbox"
-				checked={task.completed}
-				onChange={updateCompleted}
-			/>
+		<li className={`${styles.task} border`}>
+			<select
+				onChange={(e) => updateStatus(e.currentTarget.value as Status)}
+				value={task.status}
+			>
+				{StatusKeys.map((status) => (
+					<option>{status}</option>
+				))}
+			</select>
 
-			<a onClick={() => openFile(task.tFile)}>{task.body}</a>
-
-			{task.status && (
-				<select
-					className={styles.select}
-					onChange={(e) => updateStatus(e.currentTarget.value as Status)}
-					value={task.status}
-				>
-					{Statuses.map((status) => (
-						<option>{status}</option>
-					))}
-				</select>
-			)}
+			<a onClick={() => openFile(task.path)}>{task.body}</a>
 
 			{task.counter && (
 				<div className={styles.counter}>
 					<p>
 						{task.counter.current} / {task.counter.goal}
 					</p>
-					<button onClick={() => updateCounter(1)}>+</button>
-					<button onClick={() => updateCounter(-1)}>-</button>
+					<button
+						disabled={isCounterLoading}
+						onClick={() => updateCounter(1)}
+					>
+						+
+					</button>
+					<button
+						disabled={isCounterLoading}
+						onClick={() => updateCounter(-1)}
+					>
+						-
+					</button>
 				</div>
 			)}
 		</li>
