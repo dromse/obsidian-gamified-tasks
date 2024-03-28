@@ -1,83 +1,156 @@
-import { moment, Vault } from "obsidian";
 import { useEffect, useState } from "react";
-import { useApp, useSettings } from "..";
-import { ParseState, RawFile } from "../types";
-import { getLines } from "../utils";
+import { useApp, useHistory, useSettings } from "..";
+import { ParseState } from "../types";
+import { middlewares } from "./consts";
+import { StatusFilterOption, Task, TaskFilters } from "./types";
 import {
-	bind,
-	body,
-	completed,
-	completedAt,
-	counter,
-	difficulty,
-	every,
-	indention,
-	status,
-	timer
-} from "./middleware";
-import { Middleware, Task } from "./types";
+	generatePastDaysArray,
+	getAmountOfPastDays,
+	getRawFiles,
+	parseMiddlewares,
+	parseTasks,
+	stringifyMiddlewares,
+} from "./utils";
 
-type UseTasksHookResult = {
+type UseTasksResult = {
 	tasks: Task[];
 	isTasksParsed: ParseState;
 	updateTask: (task: Task, newTask: Task) => void;
+	filters: TaskFilters;
 };
 
 /**
  * Hook for interaction with tasks in current vault
  */
-export default function useTasks(): UseTasksHookResult {
+export default function useTasks(): UseTasksResult {
 	const [tasks, setTasks] = useState<Task[]>([]);
 	const [isTasksParsed, setIsTasksParsed] = useState<ParseState>("parsing");
 	const [trigger, setTrigger] = useState(false);
+	const [triggerUI, setTriggerUI] = useState<boolean>(false);
+	const [limit, setLimit] = useState<number>(0);
+	const [statusFilter, setStatusFilter] = useState<StatusFilterOption>("all");
+	const [isRecur, setIsRecur] = useState<boolean>(false);
+	const [searchFilter, setSearchFilter] = useState<string>("");
+
+	const filters = {
+		limit,
+		setLimit,
+		searchFilter,
+		setSearchFilter,
+		statusFilter,
+		setStatusFilter,
+		isRecur,
+		setIsRecur,
+	};
 
 	const app = useApp();
+	const { history } = useHistory();
 
 	if (!app) {
 		setIsTasksParsed("error");
 
-		return { tasks, isTasksParsed, updateTask };
+		return { tasks, isTasksParsed, updateTask, filters };
 	}
 
 	const { vault } = app;
 
-	const settings = useSettings();
-
-	/**
-	 * Middlewares used for parsing tasks metadata and stringifying back to markdown line.
-	 * I don't need `body` to be in middlewares for parsing but for correct stringifying I added it.
-	 */
-	const middlewares = [
-		indention,
-		completed,
-		body,
-		counter,
-		timer,
-		bind,
-		difficulty,
-		status,
-		every,
-		completedAt,
-	];
-
 	/** Update task props and save to vault */
-	async function updateTask(task: Task, newTask: Task) {
-		// If task has `bind` property -> update YAML property in today daily note.
-		if (newTask.bind) {
-			if (settings?.pathToDaily) {
-				updateDailyNote(newTask, settings.pathToDaily, vault);
-			}
+	async function updateTask(
+		task: Task,
+		newTask: Task,
+	): Promise<"updated" | "error"> {
+		const newStr = stringifyMiddlewares(newTask, middlewares);
+
+		const tFile = vault.getFileByPath(task.path);
+
+		if (!tFile) {
+			return "error";
 		}
 
-		const newStr = stringifyMiddlewares(newTask, middlewares);
-		await vault.process(task.tFile, (data) =>
+		const result = await vault.process(tFile, (data) =>
 			data.replace(task.lineContent, newStr),
 		);
 
-		setTrigger((prev) => !prev);
+		if (result) {
+			setTrigger((prev) => !prev);
+
+			return "updated";
+		}
+
+		return "error";
 	}
 
-	async function fetchData() {
+	const filterBySearch = (task: Task): boolean =>
+		task.body ? task.body.toLowerCase().includes(searchFilter) : true;
+
+	const filterByStatus = (task: Task): boolean => {
+		if (statusFilter === "all") {
+			return true;
+		}
+
+		if (!task.status) {
+			return false;
+		}
+
+		if (statusFilter === task.status) {
+			return true;
+		}
+
+		return false;
+	};
+
+	const filterByRecurrance = (task: Task): boolean => {
+		if (!isRecur) {
+			return true;
+		}
+
+		if (!task.every) {
+			return false;
+		}
+
+		let amountOfDaysToShowAgain = getAmountOfPastDays(task.every);
+		let isTaskNotAppearInPastDays = false;
+
+		if (!amountOfDaysToShowAgain) {
+			return false;
+		}
+
+		const pastDays = generatePastDaysArray(amountOfDaysToShowAgain);
+
+		const historyRows = history
+			.filter((row) => pastDays.includes(row.date.split(" ")[0]))
+			.map((row) => row.title);
+
+		isTaskNotAppearInPastDays = !historyRows.includes(task.body);
+
+		if (isTaskNotAppearInPastDays) {
+			if (task.status === "done") {
+				updateTask(task, { ...task, status: "todo" });
+			}
+
+			if (!task.counter) {
+				return true;
+			}
+
+			if (task.counter.current === task.counter.goal) {
+				const { goal } = task.counter;
+
+				updateTask(task, {
+					...task,
+					status: "todo",
+					counter: { current: 0, goal },
+				});
+			}
+		}
+
+		if (!task.counter || task.counter.current !== task.counter.goal) {
+			return true;
+		}
+
+		return isTaskNotAppearInPastDays;
+	};
+
+	async function fetchTasks() {
 		try {
 			const files = await getRawFiles(vault);
 
@@ -87,124 +160,68 @@ export default function useTasks(): UseTasksHookResult {
 				middlewares,
 			);
 
-			setTasks(parsedTaskswithMiddlewares);
+			sessionStorage.setItem(
+				"tasks",
+				JSON.stringify(parsedTaskswithMiddlewares),
+			);
+
 			setIsTasksParsed("parsed");
+			setTriggerUI((prev) => !prev);
 		} catch (err) {
-			console.error("Error fetching data:", err);
 			setIsTasksParsed("error");
 		}
 	}
 
+	const settings = useSettings();
+
+	/**
+	 * Apply default settings on mount.
+	 */
 	useEffect(() => {
-		fetchData();
-
-		// sync data with changes in vault
-		if (vault) {
-			// @ts-ignore
-			vault.on("modify", fetchData);
-
-			return () => {
-				vault.off("modify", fetchData);
-			};
+		if (!settings) {
+			return;
 		}
+
+		const { limit, statusFilter, isRecurTasks } = settings;
+
+		if (limit) {
+			setLimit(limit);
+		}
+
+		if (statusFilter) {
+			setStatusFilter(statusFilter);
+		}
+
+		if (isRecurTasks) {
+			setIsRecur(isRecurTasks);
+		}
+	}, []);
+
+	/**
+	 * Load tasks from sessionStorage and apply filters.
+	 */
+	useEffect(() => {
+		const tasksJSON = sessionStorage.getItem("tasks");
+
+		if (tasksJSON) {
+			const tasks = JSON.parse(tasksJSON);
+
+			setTasks(
+				tasks
+					.filter(filterByRecurrance)
+					.filter(filterByStatus)
+					.filter(filterBySearch)
+					.slice(0, limit),
+			);
+		}
+	}, [limit, searchFilter, isRecur, statusFilter, triggerUI]);
+
+	/**
+	 * Fetch tasks from vault on trigger call.
+	 */
+	useEffect(() => {
+		fetchTasks();
 	}, [trigger]);
 
-	return { tasks, isTasksParsed, updateTask };
-}
-
-/** Update property in today daily note */
-async function updateDailyNote(task: Task, pathToDaily: string, vault: Vault) {
-	const dailyNotePath = moment().format(`[${pathToDaily}/]YYYY-MM-DD[.md]`);
-	const todayTFile = vault.getFileByPath(dailyNotePath);
-	let newLine = `${task.bind}: `;
-
-	// if we have counter -> save counter value
-	if (task.counter) {
-		const { current, unit } = task.counter;
-
-		if (current !== undefined) {
-			newLine += `${current}${unit ? (current === 1 || current === 0 ? ` ${unit}` : ` ${unit}s`) : ""}`;
-		}
-	} else {
-		newLine = newLine + Number(task.completed);
-	}
-
-	if (todayTFile) {
-		await vault.process(todayTFile, (data) => {
-			const oldLine = new RegExp(`${task.bind}:.*`);
-			return data.replace(oldLine, newLine);
-		});
-	}
-}
-
-/** Get all markdown files in vault with their content */
-async function getRawFiles(vault: Vault): Promise<RawFile[]> {
-	const files = Promise.all(
-		vault.getMarkdownFiles().map(async (file) => ({
-			tFile: file,
-			// cachedRead really increased speed of parsing
-			content: getLines(await vault.cachedRead(file)),
-		})),
-	);
-
-	return files;
-}
-
-/** Parse all occurance of task line in `file` content and then returns task list */
-function parseTasksFromFile(file: RawFile): Task[] {
-	const tasks = file.content.reduce((acc, lineContent, index) => {
-		const regex = /- \[.\]/;
-
-		if (lineContent.match(regex)) {
-			acc.push({
-				tFile: file.tFile,
-				lineContent,
-				lineNumber: index,
-				body: lineContent,
-			});
-		}
-
-		return acc;
-	}, [] as Task[]);
-
-	return tasks;
-}
-
-/** Iterates through all files, parse tasks from files and return all found tasks in `files`
- * @param {RawFile[]} files - list of RawFile[]
- *
- * @returns {Task[]} all tasks in files
- *
- * @example
- * const files = [{ tFile: {...}: TFile, content: ['- [ ] one simple task'] }]
- *
- * const tasks = parseTasks(files)
- * -> [{ tFile: {...}, completed: false, lineNumber: 0, lineContent: '- [ ] one simple task', body: '- [ ] one simple task' }]
- */
-function parseTasks(files: RawFile[]): Task[] {
-	const tasks = files.reduce(
-		(acc, file) => [...acc, ...parseTasksFromFile(file)],
-		[],
-	);
-
-	return tasks;
-}
-
-/** Stringify task obj by middlewares */
-function stringifyMiddlewares(task: Task, middlewares: Middleware[]): string {
-	const taskString = middlewares.reduce(
-		(str, middleware) => (str += middleware.stringify(task)),
-		"",
-	);
-
-	return taskString;
-}
-
-/** Iterate through all tasks and parse their middlewares and return new task list  */
-function parseMiddlewares(tasks: Task[], middlewares: Middleware[]): Task[] {
-	middlewares.forEach(
-		(middleware) => (tasks = tasks.map((task) => middleware.parse(task))),
-	);
-
-	return tasks;
+	return { tasks, isTasksParsed, updateTask, filters };
 }
