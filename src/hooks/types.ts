@@ -1,8 +1,6 @@
-import { TFile } from "obsidian";
-
 export type ParseState = "parsing" | "parsed" | "error";
 
 export type RawFile = {
-	tFile: TFile;
+	path: string;
 	content: string[];
 };
