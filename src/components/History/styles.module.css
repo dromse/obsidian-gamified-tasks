@@ -3,6 +3,10 @@
 	border-collapse: collapse;
 }
 
+.active-page {
+	color: var(--color-accent);	
+}
+
 .table th,
 .table td {
 	border: 1px solid var(--text-normal);
