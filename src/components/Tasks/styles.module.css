@@ -1,7 +1,7 @@
 .task {
 	display: flex;
-	gap: 10px;
 	align-items: center;
+	gap: 10px;
 }
 
 .list {
@@ -16,11 +16,6 @@
 	row-gap: 10px;
 }
 
-.border {
-	border: 1px solid var(--text-normal);
-	border-radius: 10px;
-	padding: 10px;
-}
 
 .filter {
 	display: flex;
@@ -32,12 +27,10 @@
 	margin-left: auto;
 	display: flex;
 	gap: 10px;
+	align-items: center;
+	white-space: nowrap;
 
 	& button {
 		width: 50px;
 	}
-}
-
-.select {
-	margin-left: auto;
 }
