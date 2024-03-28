@@ -1,21 +1,9 @@
-import { Middleware, Task } from "../types";
+import { DifficultyKeys } from "../consts";
+import { Difficulty, Middleware, Task } from "../types";
 import { cleanBody, findByRegex } from "../utils";
 
-export type Difficulty = "trivial" | "easy" | "medium" | "hard";
-
-export const DifficultyPrices = {
-	trivial: 0.1,
-	easy: 1,
-	medium: 2.5,
-	hard: 5,
-};
-
-export const Difficulties: Difficulty[] = Object.keys(
-	DifficultyPrices,
-) as Difficulty[];
-
 const parse = (task: Task): Task => {
-	const regex = new RegExp(`#diff/(${Difficulties.join("|")})`);
+	const regex = new RegExp(`#diff/(${DifficultyKeys.join("|")})`);
 
 	const match = findByRegex(regex, task);
 

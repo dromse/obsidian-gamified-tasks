@@ -26,7 +26,7 @@ const stringify = (task: Task): string => {
 
 	const completedAt = ` ✅ [[${year}-${month}-${day}|${year}-${month}-${day} | ${hours}:${minutes}]]`;
 
-	return task.completed ? completedAt : "";
+	return task.status === "done" ? completedAt : "";
 };
 
 export default { parse, stringify } as Middleware;
