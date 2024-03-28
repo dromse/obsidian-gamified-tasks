@@ -13,7 +13,18 @@
 		"strictNullChecks": true,
 		"allowSyntheticDefaultImports": true,
 		"lib": ["DOM", "ES5", "ES6", "ES7"],
-		"plugins": [{ "name": "typescript-plugin-css-modules" }]
+		"plugins": [
+			{
+				"name": "typescript-plugin-css-modules",
+				"options": {
+					"classnameTransform": "camelCaseOnly"
+				}
+			}
+		],
+		"baseUrl": ".",
+		"paths": {
+			"@*": ["src/*"]
+		}
 	},
 	"include": ["**/*.ts", "**/*.tsx"]
 }
