@@ -2,7 +2,7 @@ import { useTasks } from "../../hooks";
 import TaskList from "./TaskList";
 
 export default function Tasks() {
-	const { tasks, isTasksParsed, updateTask } = useTasks();
+	const { tasks, isTasksParsed, updateTask, filters } = useTasks();
 
 	if (isTasksParsed === "parsing") {
 		return <div>Parsing...</div>;
@@ -16,6 +16,7 @@ export default function Tasks() {
 				<TaskList
 					tasks={tasks}
 					updateTask={updateTask}
+					filters={filters}
 				/>
 			</div>
 		);
