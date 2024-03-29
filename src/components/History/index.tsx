@@ -15,6 +15,10 @@ export default function History() {
 	}, [isHistoryParsed]);
 
 	useEffect(() => {
+		setPageInput(String(page + 1));
+	}, [page]);
+
+	useEffect(() => {
 		Number(pageInput) > 0 &&
 			(Number(pageInput) <= totalPages ? setPage(Number(pageInput) - 1) : "");
 	}, [pageInput]);
@@ -31,28 +35,30 @@ export default function History() {
 				<h2>History</h2>
 				<h3>Balance: {balance} coins</h3>
 
-				{historyPages
-					.slice(page === 0 ? page : page - 1, page + 3)
-					.map((i) => (
-						<button
-							onClick={() => setPage(i)}
-							className={i === page ? styles.activePage : ""}
-						>
-							{i + 1}
-						</button>
-					))}
+				<div className={styles.pageList}>
+					{historyPages
+						.slice(page === 0 ? page : page - 1, page + 3)
+						.map((i) => (
+							<button
+								onClick={() => setPage(i)}
+								className={i === page ? styles.activePage : ""}
+							>
+								{i + 1}
+							</button>
+						))}
 
-				{page !== totalPages - 1 && (
-					<>
-						<span>...</span>
-						<button
-							onClick={() => setPage(totalPages - 1)}
-							className={totalPages - 1 === page ? styles.activePage : ""}
-						>
-							{totalPages}
-						</button>
-					</>
-				)}
+					{page !== totalPages - 1 && (
+						<>
+							<button disabled={true}> ... </button>
+							<button
+								onClick={() => setPage(totalPages - 1)}
+								className={totalPages - 1 === page ? styles.activePage : ""}
+							>
+								{totalPages}
+							</button>
+						</>
+					)}
+				</div>
 
 				<div>
 					<label htmlFor="page-input">Page:</label>
