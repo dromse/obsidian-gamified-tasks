@@ -4,9 +4,9 @@ Planned release: 01-04-2024
 
 # Grind Manager
 
-Unleash the magic of Grind Manager, merging task management with rewards system to your Obsidian workspace!  
-Earn coins by completing tasks and acquire epic rewards!  
-It's your ticket to excitement and adventure in your digital domain!
+- Unleash the magic of Grind Manager, merging task management with rewards system to your Obsidian workspace!  
+- Earn coins by completing tasks and acquire epic rewards!  
+- It's your ticket to excitement and adventure in your digital domain!
 
 <img  src="https://github.com/dromse/obsidian-grind-manager/assets/57846319/1c19ad65-356c-463b-8d9d-761161ebe6d8" width="400">
 <img  src="https://github.com/dromse/obsidian-grind-manager/assets/57846319/11039bad-4e80-429e-95c1-464f095ff446" width="400">
@@ -25,11 +25,11 @@ It's your ticket to excitement and adventure in your digital domain!
 
 ### Available Tags
 
-In Grind Manager #tags is used for metadata. Currently list of tags in using:
+In Grind Manager `#tags` is used for metadata. Currently list of tags in using:
 
-- counter: #count/current/goal (e.g. #count/1/4)
-- recurrence: #every/recurrence/time (e.g. #every/day | #every/week)
-- difficulty: #diff/difficulty (e.g. #diff/trivial | #diff/easy | #diff/medium | #diff/hard)
+- counter: `#count/current/goal` (e.g. `#count/1/4`)
+- recurrence: `#every/recurrence/time` (e.g. `#every/day` | `#every/week`)
+- difficulty: `#diff/difficulty` (e.g. `#diff/trivial` | `#diff/easy` | `#diff/medium` | `#diff/hard`)
 
 ### CompletedAt
 
