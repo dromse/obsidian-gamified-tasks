@@ -14,29 +14,6 @@ export type TaskFilters = {
 	setIsRecur: Function;
 };
 
-/** Represets day time */
-export type Time = {
-	/**
-	 * The hour of the day (0-23).
-	 */
-	hour: number;
-
-	/**
-	 * The minute of the hour (0-59).
-	 */
-	minute: number;
-};
-
-/**
- * Represents duration
- */
-export interface Duration extends Time {
-	/**
-	 * The second of the minute (0-59).
-	 */
-	second: number;
-}
-
 /**
  * Represents the possible difficulty levels of a task.
  */
