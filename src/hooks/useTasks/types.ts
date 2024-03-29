@@ -1,16 +1,46 @@
+/**
+ * Represents the status options for filtering tasks.
+ */
 export type StatusFilterOption = "all" | Status;
 
+/**
+ * Represents the filters for tasks.
+ */
 export type TaskFilters = {
+	/**
+	 * The limit of tasks to display.
+	 */
 	limit: number;
+	/**
+	 * A function to set the limit of tasks to display.
+	 */
 	setLimit: Function;
 
+	/**
+	 * The search filter for tasks.
+	 */
 	searchFilter: string;
+	/**
+	 * A function to set the search filter for tasks.
+	 */
 	setSearchFilter: Function;
 
+	/**
+	 * The status filter option for tasks.
+	 */
 	statusFilter: StatusFilterOption;
+	/**
+	 * A function to set the status filter option for tasks.
+	 */
 	setStatusFilter: Function;
 
+	/**
+	 * Indicates whether tasks are recurring.
+	 */
 	isRecur: boolean;
+	/**
+	 * A function to set whether tasks are recurring.
+	 */
 	setIsRecur: Function;
 };
 
