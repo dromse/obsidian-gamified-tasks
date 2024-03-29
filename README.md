@@ -24,7 +24,7 @@
 In Grind Manager `#tags` is used for metadata. Currently list of tags in using:
 
 - counter: `#count/current/goal` (e.g. `#count/1/4`)
-- recurrence: `#every/recurrence/time` (e.g. `#every/day` | `#every/week`)
+- recurrence: `#every/recurrence` (e.g. `#every/day` | `#every/week`)
 - difficulty: `#diff/difficulty` (e.g. `#diff/trivial` | `#diff/easy` | `#diff/medium` | `#diff/hard`)
 
 ### CompletedAt
