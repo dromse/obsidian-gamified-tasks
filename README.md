@@ -1,7 +1,3 @@
-**🚧 In nescent state of development! Things change fast...❗️**
-
-Planned release: 01-04-2024
-
 # Grind Manager
 
 - Unleash the magic of Grind Manager, merging task management with rewards system to your Obsidian workspace!  
