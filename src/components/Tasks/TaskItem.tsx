@@ -17,7 +17,7 @@ export default function TaskItem({ task, updateTask }: Props) {
 	const vault = useApp()?.vault;
 	const [trigger, setTrigger] = useState(false);
 
-	const { addHistoryRow, } = useHistory();
+	const { addHistoryRow } = useHistory();
 
 	if (!workspace) {
 		return <div>Workspace is not exists...</div>;
@@ -97,11 +97,32 @@ export default function TaskItem({ task, updateTask }: Props) {
 		setTrigger((prev) => !prev);
 	};
 
-	const openFile = (path: string) => {
-		const tFile = vault.getFileByPath(path);
+	const revealTask = (task: Task) => {
+		const tFile = vault.getFileByPath(task.path);
 
-		if (tFile) {
-			workspace.getLeaf("tab").openFile(tFile);
+		if (!tFile) {
+			console.error("Error: file associated with task is not found.");
+			return;
+		}
+
+		const leaves = workspace.getLeavesOfType("markdown");
+
+		const fileIsAlreadyOpen = leaves.some(
+			// @ts-ignore
+			(leaf) => leaf.view.file.path === task.path,
+		);
+
+		if (fileIsAlreadyOpen) {
+			const leaf = leaves.find(
+				// @ts-ignore
+				(leaf) => leaf.view.file.path === task.path,
+			);
+
+			leaf?.openFile(tFile, { eState: { line: task.lineNumber } });
+		} else {
+			workspace.getLeaf("tab").openFile(tFile, {
+				eState: { line: task.lineNumber },
+			});
 		}
 	};
 
@@ -120,7 +141,7 @@ export default function TaskItem({ task, updateTask }: Props) {
 				))}
 			</select>
 
-			<a onClick={() => openFile(task.path)}>{task.body}</a>
+			<a onClick={() => revealTask(task)}>{task.body}</a>
 
 			{task.counter && (
 				<div className={styles.counter}>
