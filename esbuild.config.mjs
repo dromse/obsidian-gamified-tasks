@@ -38,6 +38,7 @@ const context = await esbuild.context({
 	logLevel: "info",
 	sourcemap: prod ? false : "inline",
 	treeShaking: true,
+	minify: prod ? true : false,
 	outfile: "build/main.js",
 	plugins: [
 		CssModulesPlugin({
@@ -55,5 +56,6 @@ if (prod) {
 	await context.rebuild();
 	process.exit(0);
 } else {
-	await context.watch();
+	await context.rebuild();
+	process.exit(0);
 }
