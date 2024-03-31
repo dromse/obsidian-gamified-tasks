@@ -84,7 +84,7 @@ export default function TaskItem({ task, updateTask }: Props) {
 		}
 
 		if (result === "error") {
-			console.error("Msg: error during counter update.");
+			new Notice("Error during counter update.");
 		}
 
 		if (task.difficulty) {
@@ -101,7 +101,7 @@ export default function TaskItem({ task, updateTask }: Props) {
 		const tFile = vault.getFileByPath(task.path);
 
 		if (!tFile) {
-			console.error("Error: file associated with task is not found.");
+			new Notice("Error: file associated with task is not found.");
 			return;
 		}
 
