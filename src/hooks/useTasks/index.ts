@@ -9,7 +9,7 @@ import {
 	getRawFiles,
 	parseMiddlewares,
 	parseTasks,
-	stringifyMiddlewares,
+	stringifyMiddlewares
 } from "./utils";
 
 type UseTasksResult = {
@@ -59,7 +59,7 @@ export default function useTasks(): UseTasksResult {
 		task: Task,
 		newTask: Task,
 	): Promise<"updated" | "error"> {
-		const newStr = stringifyMiddlewares(newTask, middlewares);
+		const newStr = stringifyMiddlewares(newTask, middlewares, settings);
 
 		const tFile = vault.getFileByPath(task.path);
 
@@ -158,6 +158,7 @@ export default function useTasks(): UseTasksResult {
 			const parsedTaskswithMiddlewares = parseMiddlewares(
 				parsedTasks,
 				middlewares,
+				settings,
 			);
 
 			sessionStorage.setItem(

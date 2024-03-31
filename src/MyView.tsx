@@ -1,8 +1,8 @@
+import { GrindPluginSettings } from "@types";
 import { ItemView, WorkspaceLeaf } from "obsidian";
 import { createRoot, Root } from "react-dom/client";
 import { GrindApp } from "./components/GrindApp";
 import { AppContext, SettingsContext } from "./context";
-import { GrindPluginSettings } from "./main";
 
 export const MY_VIEW_TYPE = "grind-manager-view";
 

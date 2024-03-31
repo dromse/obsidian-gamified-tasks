@@ -1,3 +1,5 @@
+import { GrindPluginSettings } from "@types";
+
 /**
  * Represents the status options for filtering tasks.
  */
@@ -134,9 +136,10 @@ export type Middleware = {
 	 * If metadata is found, metadata is cleared from the `body`.
 	 *
 	 * @param task The task object with field `body` representing the markdown line to parse.
+	 * @param settings The plugin settings object (optional)
 	 * @returns The task object with metadata cleared from the body, if found or the same task object.
 	 */
-	parse: (task: Task) => Task;
+	parse: (task: Task, settings?: GrindPluginSettings) => Task;
 
 	/**
 	 * Function for stringifying a task object to a markdown line.
@@ -145,7 +148,8 @@ export type Middleware = {
 	 * If metadata wasn't found in the task object, it returns an empty string.
 	 *
 	 * @param task The task object to stringify.
+	 * @param settings The plugin settings object (optional)
 	 * @returns The markdown representation of the task, or an empty string if metadata wasn't found.
 	 */
-	stringify: (task: Task) => string;
+	stringify: (task: Task, settings?: GrindPluginSettings) => string;
 };

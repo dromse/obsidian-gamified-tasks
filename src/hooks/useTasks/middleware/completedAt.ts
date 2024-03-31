@@ -1,9 +1,18 @@
+import { GrindPluginSettings } from "@types";
+import { moment } from "obsidian";
 import { Middleware, Task } from "../types";
 import { cleanBody, findByRegex } from "../utils";
 
-const parse = (task: Task): Task => {
-	const regex =
+const parse = (task: Task, settings: GrindPluginSettings): Task => {
+	// By default parse WikiLink
+	let regex =
 		/✅ \[\[(\d{4}-\d{2}-\d{2})\|(\d{4}-\d{2}-\d{2} \| \d{2}:\d{2})\]\]/;
+
+	if (settings && settings.useMarkdownLinks) {
+		regex = RegExp(
+			`✅ \\[\\d{4}-\\d{2}-\\d{2} \\| \\d{2}:\\d{2}\\]\\(${settings.pathToDaily}\\/\\d{4}-\\d{2}-\\d{2}\\.md\\)`,
+		);
+	}
 
 	const match = findByRegex(regex, task);
 
@@ -16,15 +25,16 @@ const parse = (task: Task): Task => {
 	return { ...task, completedAt: match[0], body: newBody };
 };
 
-const stringify = (task: Task): string => {
-	const date = new Date();
-	const year = date.getFullYear();
-	const month = String(date.getMonth() + 1).padStart(2, "0"); // Adding 1 to month because it's zero-based
-	const day = String(date.getDate()).padStart(2, "0");
-	const hours = String(date.getHours()).padStart(2, "0");
-	const minutes = String(date.getMinutes()).padStart(2, "0");
+const stringify = (task: Task, settings: GrindPluginSettings): string => {
+	let completedAtDate = moment().format(settings.dailyFormat);
+	let completedAtTime = moment().format(`${settings.dailyFormat} | HH:mm`);
+	let completedAt;
 
-	const completedAt = ` ✅ [[${year}-${month}-${day}|${year}-${month}-${day} | ${hours}:${minutes}]]`;
+	if (settings && settings.useMarkdownLinks) {
+		completedAt = ` ✅ [${completedAtDate} | ${completedAtTime}](${settings.pathToDaily}/${completedAtDate}.md)`;
+	} else {
+		completedAt = ` ✅ [[${completedAtDate}|${completedAtDate} | ${completedAtTime}]]`;
+	}
 
 	return task.status === "done" ? completedAt : "";
 };

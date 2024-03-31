@@ -1,16 +1,7 @@
-import { StatusFilterOption } from "@hooks/useTasks/types";
+import { GrindPluginSettings } from "@types";
 import { Plugin, WorkspaceLeaf } from "obsidian";
 import { MyView, MY_VIEW_TYPE } from "./MyView";
 import GrindSettingTab from "./SettingTab";
-
-export type GrindPluginSettings = {
-	limit: number | undefined;
-	statusFilter: StatusFilterOption;
-	isRecurTasks: boolean;
-	pathToRewards: string;
-	pathToHistory: string;
-	pathToDaily: string;
-};
 
 export const DEFAULT_SETTINGS: GrindPluginSettings = {
 	limit: 10,
@@ -18,7 +9,9 @@ export const DEFAULT_SETTINGS: GrindPluginSettings = {
 	isRecurTasks: false,
 	pathToRewards: "rewards.md",
 	pathToHistory: "history.md",
-	pathToDaily: "Everyday",
+	pathToDaily: "",
+	dailyFormat: "YYYY-MM-DD",
+	useMarkdownLinks: true,
 };
 
 export default class GrindPlugin extends Plugin {
@@ -27,9 +20,28 @@ export default class GrindPlugin extends Plugin {
 	async onload() {
 		await this.loadSettings();
 
-		this.registerView(MY_VIEW_TYPE, (leaf) => new MyView(leaf, this.settings));
+		this.app.workspace.onLayoutReady(() => {
+			// @ts-ignore
+			this.settings.useMarkdownLinks = this.app.vault.config.useMarkdownLinks;
+
+			const dailyPlugin =
+				// @ts-ignore
+				this.app.internalPlugins.getEnabledPluginById("daily-notes");
+
+			const folder = dailyPlugin.options.folder;
+			if (folder) {
+				this.settings.pathToDaily = folder;
+			}
+
+			const format = dailyPlugin.options.format;
+			if (format) {
+				this.settings.dailyFormat = format;
+			}
+		});
 
 		this.addSettingTab(new GrindSettingTab(this.app, this));
+
+		this.registerView(MY_VIEW_TYPE, (leaf) => new MyView(leaf, this.settings));
 
 		this.addRibbonIcon("list-todo", "Show Grind View", () => {
 			this.activateView();

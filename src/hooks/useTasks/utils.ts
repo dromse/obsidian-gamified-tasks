@@ -1,5 +1,6 @@
 import { RawFile } from "@hooks/types";
 import { getLines } from "@hooks/utils";
+import { GrindPluginSettings } from "@types";
 import { Vault } from "obsidian";
 import { Middleware, Task } from "./types";
 
@@ -111,9 +112,10 @@ export function parseTasks(files: RawFile[]): Task[] {
 export function stringifyMiddlewares(
 	task: Task,
 	middlewares: Middleware[],
+	settings: GrindPluginSettings | undefined
 ): string {
 	const taskString = middlewares.reduce(
-		(str, middleware) => (str += middleware.stringify(task)),
+		(str, middleware) => (str += middleware.stringify(task, settings)),
 		"",
 	);
 
@@ -124,9 +126,10 @@ export function stringifyMiddlewares(
 export function parseMiddlewares(
 	tasks: Task[],
 	middlewares: Middleware[],
+	settings: GrindPluginSettings | undefined
 ): Task[] {
 	middlewares.forEach(
-		(middleware) => (tasks = tasks.map((task) => middleware.parse(task))),
+		(middleware) => (tasks = tasks.map((task) => middleware.parse(task, settings))),
 	);
 
 	return tasks;

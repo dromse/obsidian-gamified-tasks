@@ -31,8 +31,8 @@ In Grind Manager `#tags` is used for metadata. Currently list of tags in using:
 
 Also for completed date is used link on daily note
 
-- WikiLink `✅ [[2024-03-13|2024-03-13 | 21:46]]` (currently support)
-- Markdown Link `✅ [2024-03-13 | 21:46](Everyday/2024-03-13.md)` (in future releases)
+- WikiLink `✅ [[2024-03-13|2024-03-13 | 21:46]]`
+- Markdown Link `✅ [2024-03-13 | 21:46](Everyday/2024-03-13.md)`
 
 ### Statuses
 
