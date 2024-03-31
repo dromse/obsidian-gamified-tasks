@@ -134,14 +134,3 @@ export function parseMiddlewares(
 
 	return tasks;
 }
-
-/** Call callback when vault is modified and return callback to disable event */
-export function onModify(vault: Vault, callback: (file: any) => any) {
-	console.log("register");
-	vault.on("modify", callback);
-
-	return () => {
-		console.log("unregister");
-		vault.off("modify", callback);
-	};
-}
