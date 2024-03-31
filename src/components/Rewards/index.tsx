@@ -21,8 +21,8 @@ export default function Rewards() {
 					{rewards.map((reward) => (
 						<li className={`${styles.reward} border`}>
 							<div>
-								<h3>{reward.title}</h3>
-								<p>{reward.desc}</p>
+								<h3 className={styles.title}>{reward.title}</h3>
+								<p className={styles.desc}>{reward.desc}</p>
 							</div>
 
 							<button

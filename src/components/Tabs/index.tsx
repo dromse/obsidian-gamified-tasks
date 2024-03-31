@@ -1,5 +1,5 @@
 import { useState } from "react";
-import styles from './styles.module.css'
+import styles from "./styles.module.css";
 
 type Tab = {
 	title: string;
@@ -17,7 +17,7 @@ export default function Tabs({ tabs }: Props) {
 		<div>
 			<ul className={styles.tabs}>
 				{tabs.map((tab) => (
-					<li>
+					<li className="list-item">
 						<button
 							className={`${tab.title === activeTab.title ? styles.active : ""}`}
 							onClick={() => setActiveTab(tab)}

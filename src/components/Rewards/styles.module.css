@@ -4,14 +4,10 @@
 	align-items: center;
 }
 
-p,
-h3 {
+.title,
+.desc {
 	padding: 0;
 	margin: 0;
-}
-
-button {
-	/* min-width: 30%; */
 }
 
 .list {
