@@ -213,18 +213,3 @@ It saves to history only if:
 ## Can I contribute?
 
 Yes, of course!
-
-## Can I sponsor you?
-
-Yes, almost... Currently I'm living in Ukraine and I cannot recive money through:
-
-- Buy Me A Coffee
-- Ko-Fi
-- GitHub sponsor
-
-But I have crypto wallets:
-
-
-
-
-
