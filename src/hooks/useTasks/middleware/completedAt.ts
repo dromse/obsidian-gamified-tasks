@@ -27,7 +27,7 @@ const parse = (task: Task, settings: GrindPluginSettings): Task => {
 
 const stringify = (task: Task, settings: GrindPluginSettings): string => {
 	let completedAtDate = moment().format(settings.dailyFormat);
-	let completedAtTime = moment().format(`${settings.dailyFormat} | HH:mm`);
+	let completedAtTime = moment().format("HH:mm");
 	let completedAt;
 
 	if (settings && settings.useMarkdownLinks) {
