@@ -10,7 +10,7 @@ type HistoryRow = {
 	date: string;
 };
 
-/** Hook for interacting with rewards list */
+/** Hook for interacting with history list */
 export default function useHistory() {
 	const [isHistoryParsed, setIsHistoryParsed] =
 		useState<ParseState>("parsing");
@@ -88,12 +88,12 @@ function currentDate(): string {
 }
 
 /**
- * Parse rewards from string which represents full file content
+ * Parse history from string which represents full file content
  * @param {string} content - full content with `'\n'` delimeters.
  *
  * @example
  * Parse
- * - Line in file: +1 | do a push up | 2024-01-01 12:00 -> { title: 'do a push up', change: 1, date: {Date} }
+ * - Line in file: +1 | do a push up | 2024-01-01 12:00 -> { title: 'do a push up', change: 1, date: "2024-01-01 12:00" }
  */
 function parseHistory(content: string): HistoryRow[] {
 	const lines = getLines(content);
