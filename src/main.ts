@@ -28,14 +28,16 @@ export default class GrindPlugin extends Plugin {
 				// @ts-ignore
 				this.app.internalPlugins.getEnabledPluginById("daily-notes");
 
-			const folder = dailyPlugin.options.folder;
-			if (folder) {
-				this.settings.pathToDaily = folder;
-			}
+			if (dailyPlugin) {
+				const folder = dailyPlugin.options.folder;
+				if (folder) {
+					this.settings.pathToDaily = folder;
+				}
 
-			const format = dailyPlugin.options.format;
-			if (format) {
-				this.settings.dailyFormat = format;
+				const format = dailyPlugin.options.format;
+				if (format) {
+					this.settings.dailyFormat = format;
+				}
 			}
 		});
 
@@ -43,7 +45,7 @@ export default class GrindPlugin extends Plugin {
 
 		this.registerView(MY_VIEW_TYPE, (leaf) => new MyView(leaf, this.settings));
 
-		this.addRibbonIcon("list-todo", "Show Grind View", () => {
+		this.addRibbonIcon("list-todo", "Show grind manager", () => {
 			this.activateView();
 		});
 	}
@@ -66,7 +68,7 @@ export default class GrindPlugin extends Plugin {
 		}
 	}
 
-	onunload() {}
+	onunload() { }
 
 	async loadSettings() {
 		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
