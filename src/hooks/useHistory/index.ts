@@ -4,7 +4,7 @@ import { useApp, useSettings } from "..";
 import { ParseState } from "../types";
 import { getLines } from "../utils";
 
-type HistoryRow = {
+export type HistoryRow = {
 	title: string;
 	change: number;
 	date: string;
@@ -23,6 +23,10 @@ export default function useHistory() {
 	const [historyFile, setHistoryFile] = useState<TFile>();
 	const [trigger, setTrigger] = useState<boolean>(false);
 
+	const syncHistory = () => {
+		setTrigger((prev) => !prev);
+	};
+
 	/** Add history row on top of file */
 	async function addHistoryRow({
 		change,
@@ -35,6 +39,7 @@ export default function useHistory() {
 
 		if (historyFile) {
 			await vault.process(historyFile, (data) => rowStr + data);
+			setIsHistoryParsed("parsing");
 			setTrigger((prev) => !prev);
 		}
 	}
@@ -42,7 +47,7 @@ export default function useHistory() {
 	if (!app) {
 		setIsHistoryParsed("error");
 
-		return { history, balance, isHistoryParsed, addHistoryRow };
+		return { history, balance, isHistoryParsed, addHistoryRow, syncHistory };
 	}
 
 	const { vault } = app;
@@ -70,7 +75,7 @@ export default function useHistory() {
 		fetchHistory();
 	}, [trigger]);
 
-	return { history, balance, isHistoryParsed, addHistoryRow };
+	return { history, balance, isHistoryParsed, addHistoryRow, syncHistory };
 }
 
 /** Calculate balance based on history rows and fixed number to 0.00 */

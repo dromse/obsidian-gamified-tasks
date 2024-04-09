@@ -44,7 +44,7 @@ export default function useTasks(): UseTasksResult {
 	};
 
 	const app = useApp();
-	const { history } = useHistory();
+	const { history, syncHistory } = useHistory();
 
 	if (!app) {
 		setIsTasksParsed("error");
@@ -117,6 +117,8 @@ export default function useTasks(): UseTasksResult {
 
 		const pastDays = generatePastDaysArray(amountOfDaysToShowAgain);
 
+		syncHistory();
+
 		const historyRows = history
 			.filter((row) => pastDays.includes(row.date.split(" ")[0]))
 			.map((row) => row.title);
@@ -141,6 +143,10 @@ export default function useTasks(): UseTasksResult {
 					counter: { current: 0, goal },
 				});
 			}
+		}
+
+		if (task.status === "done") {
+			return false;
 		}
 
 		if (!task.counter || task.counter.current !== task.counter.goal) {
