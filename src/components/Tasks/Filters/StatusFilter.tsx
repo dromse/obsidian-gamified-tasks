@@ -1,3 +1,5 @@
+import React from "react";
+
 import { StatusKeys } from "@hooks/useTasks/consts";
 import { StatusFilterOption } from "@hooks/useTasks/types";
 
@@ -24,7 +26,7 @@ export default function StatusFilter({
 				<option value="all">all</option>
 
 				{StatusKeys.map((status) => (
-					<option value={status}>{status}</option>
+					<option value={status} key={status}>{status}</option>
 				))}
 			</select>
 		</div>

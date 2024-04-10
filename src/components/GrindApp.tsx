@@ -1,3 +1,4 @@
+import React from "react";
 import History from "./History";
 import Rewards from "./Rewards";
 import Tabs from "./Tabs";

@@ -1,10 +1,9 @@
+import React from 'react'
 import { GrindPluginSettings } from "@types";
 import { ItemView, WorkspaceLeaf } from "obsidian";
-import * as React from "react";
 import { createRoot, Root } from "react-dom/client";
 import { GrindApp } from "./components/GrindApp";
 import { AppContext, SettingsContext } from "./context";
-global.React = React;
 
 export const MY_VIEW_TYPE = "grind-manager-view";
 

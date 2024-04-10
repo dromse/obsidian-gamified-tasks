@@ -1,3 +1,4 @@
+import React from 'react'
 import { useHistory, useRewards } from "@hooks";
 import { Notice } from "obsidian";
 import styles from "./styles.module.css";

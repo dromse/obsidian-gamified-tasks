@@ -1,6 +1,8 @@
+import React from "react";
+
 type Props = {
-	limit: number | undefined
-	setLimit: Function
+	limit: number | undefined;
+	setLimit: Function;
 };
 
 export default function LimitFilter({ limit, setLimit }: Props) {
@@ -21,4 +23,4 @@ export default function LimitFilter({ limit, setLimit }: Props) {
 			/>
 		</div>
 	);
-};
+}

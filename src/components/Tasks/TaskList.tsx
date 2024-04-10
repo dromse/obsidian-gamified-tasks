@@ -1,3 +1,4 @@
+import React from 'react'
 import { Task, TaskFilters } from "@hooks/useTasks/types";
 import { LimitFilter, SearchFilter, StatusFilter } from "./Filters";
 import RecurFilter from "./Filters/RecurFilter";

@@ -1,3 +1,4 @@
+import React from "react";
 import { useApp, useHistory } from "@hooks";
 import { DifficultyPrice, StatusKeys } from "@hooks/useTasks/consts";
 import { Status, Task } from "@hooks/useTasks/types";
@@ -137,7 +138,7 @@ export default function TaskItem({ task, updateTask }: Props) {
 				value={task.status}
 			>
 				{StatusKeys.map((status) => (
-					<option>{status}</option>
+					<option key={status}>{status}</option>
 				))}
 			</select>
 

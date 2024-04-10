@@ -9,7 +9,7 @@
 		"moduleResolution": "node",
 		"importHelpers": true,
 		"isolatedModules": true,
-		"jsx": "preserve",
+		"jsx": "react",
 		"strictNullChecks": true,
 		"allowSyntheticDefaultImports": true,
 		"lib": ["DOM", "ES5", "ES6", "ES7"],
