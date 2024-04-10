@@ -27,7 +27,7 @@ body:
     validations:
       required: true
   - type: input
-    id: version
+    id: plugin-version
     attributes:
       label: Version
       description: What version of Grind Manager are you running?
@@ -35,7 +35,7 @@ body:
     validations:
       required: true
   - type: input
-    id: version
+    id: obsidian-version
     attributes:
       label: Obsidian Version
       description: What version of Obsidian are you running?
