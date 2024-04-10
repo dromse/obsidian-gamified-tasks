@@ -1,0 +1,25 @@
+name: Feature Request
+description: Template for a feature request.
+title: "[Feature]: "
+labels: ["Feature"]
+projects: ["dromse/2"]
+assignees:
+  - dromse
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this feature request!
+  - type: textarea
+    id: what-feature
+    attributes:
+      label: What kind of feature do you want?
+      placeholder: Tell about your feature request
+    validations:
+      required: true
+  - type: checkboxes
+    id: additional
+    attributes:
+      label: Additional questions
+      options:
+        - label: I want to work on this feature request

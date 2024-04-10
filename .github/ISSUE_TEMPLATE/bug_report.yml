@@ -1,7 +1,7 @@
 name: Bug Report
 description: Template for a bug report.
 title: "[Bug]: "
-labels: ["bug"]
+labels: ["Bug"]
 projects: ["dromse/2"]
 assignees:
   - dromse
