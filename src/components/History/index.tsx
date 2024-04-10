@@ -40,6 +40,7 @@ export default function History() {
 						.slice(page === 0 ? page : page - 1, page + 3)
 						.map((i) => (
 							<button
+								key={i}
 								onClick={() => setPage(i)}
 								className={i === page ? styles.activePage : ""}
 							>

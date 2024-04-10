@@ -1,4 +1,5 @@
 import { GrindConsts } from "@consts";
+import { parseHistory } from "@hooks/useHistory";
 import { useEffect, useState } from "react";
 import { useApp, useHistory, useSettings } from "..";
 import { ParseState } from "../types";
@@ -10,7 +11,7 @@ import {
 	getRawFiles,
 	parseMiddlewares,
 	parseTasks,
-	stringifyMiddlewares
+	stringifyMiddlewares,
 } from "./utils";
 
 type UseTasksResult = {
@@ -26,7 +27,6 @@ type UseTasksResult = {
 export default function useTasks(): UseTasksResult {
 	const [tasks, setTasks] = useState<Task[]>([]);
 	const [isTasksParsed, setIsTasksParsed] = useState<ParseState>("parsing");
-	const [trigger, setTrigger] = useState(false);
 	const [triggerUI, setTriggerUI] = useState<boolean>(false);
 	const [limit, setLimit] = useState<number>(0);
 	const [statusFilter, setStatusFilter] = useState<StatusFilterOption>("all");
@@ -45,7 +45,7 @@ export default function useTasks(): UseTasksResult {
 	};
 
 	const app = useApp();
-	const { history, syncHistory } = useHistory();
+	const { history } = useHistory();
 
 	if (!app) {
 		setIsTasksParsed("error");
@@ -73,8 +73,6 @@ export default function useTasks(): UseTasksResult {
 		);
 
 		if (result) {
-			setTrigger((prev) => !prev);
-
 			return "updated";
 		}
 
@@ -102,62 +100,58 @@ export default function useTasks(): UseTasksResult {
 		return false;
 	};
 
-	const filterByRecurrance = (task: Task): boolean => {
-		if (!isRecur) {
-			return true;
+	const filterByRecurrance = (task: Task): boolean =>
+		task.every ? true : false;
+
+	function resetReccuringTask(task: Task) {
+		const newTask = { ...task };
+		if (task.status === "done") {
+			newTask.status = "todo";
 		}
 
+		if (task.counter) {
+			if (task.counter.current === task.counter.goal) {
+				const { goal } = task.counter;
+
+				newTask.counter = { current: 0, goal };
+			}
+		}
+
+		updateTask(task, newTask);
+	}
+
+	function toShowTodayFilter(task: Task): boolean {
 		if (!task.every) {
 			return false;
 		}
 
 		let amountOfDaysToShowAgain = getAmountOfPastDays(task.every);
-		let isTaskNotAppearInPastDays = false;
 
 		if (!amountOfDaysToShowAgain) {
 			return false;
 		}
 
-		const pastDays = generatePastDaysArray(amountOfDaysToShowAgain);
-
-		syncHistory();
+		const pastDaysList = generatePastDaysArray(amountOfDaysToShowAgain);
 
 		const historyRows = history
-			.filter((row) => pastDays.includes(row.date.split(" ")[0]))
+			.filter((row) => pastDaysList.includes(row.date.split(" ")[0]))
 			.map((row) => row.title);
 
-		isTaskNotAppearInPastDays = !historyRows.includes(task.body);
+		const isTaskNotAppearInPastDays = !historyRows.includes(task.body);
 
-		if (isTaskNotAppearInPastDays) {
-			if (task.status === "done") {
-				updateTask(task, { ...task, status: "todo" });
-			}
-
-			if (!task.counter) {
-				return true;
-			}
-
-			if (task.counter.current === task.counter.goal) {
-				const { goal } = task.counter;
-
-				updateTask(task, {
-					...task,
-					status: "todo",
-					counter: { current: 0, goal },
-				});
-			}
-		}
-
-		if (task.status === "done") {
-			return false;
-		}
-
-		if (!task.counter || task.counter.current !== task.counter.goal) {
+		if (task.counter && task.counter.current !== task.counter.goal) {
 			return true;
 		}
 
 		return isTaskNotAppearInPastDays;
-	};
+	}
+
+	function getTodayTasks(tasks: Task[]): Task[] {
+		const toShowTodayTasks = tasks.filter(toShowTodayFilter);
+		toShowTodayTasks.map((task) => resetReccuringTask(task));
+
+		return toShowTodayTasks;
+	}
 
 	async function fetchTasks() {
 		try {
@@ -214,15 +208,24 @@ export default function useTasks(): UseTasksResult {
 		const tasksJSON = sessionStorage.getItem(GrindConsts.sessionTasks);
 
 		if (tasksJSON) {
-			const tasks = JSON.parse(tasksJSON);
+			const tasks: Task[] = JSON.parse(tasksJSON);
 
-			setTasks(
-				tasks
-					.filter(filterByRecurrance)
-					.filter(filterByStatus)
-					.filter(filterBySearch)
-					.slice(0, limit),
-			);
+			if (isRecur) {
+				const allRecurringTasks = tasks.filter(filterByRecurrance);
+
+				const todayTasks = getTodayTasks(allRecurringTasks);
+
+				setTasks(
+					todayTasks
+						.filter(filterByStatus)
+						.filter(filterBySearch)
+						.slice(0, limit),
+				);
+			} else {
+				setTasks(
+					tasks.filter(filterByStatus).filter(filterBySearch).slice(0, limit),
+				);
+			}
 		}
 	}, [limit, searchFilter, isRecur, statusFilter, triggerUI]);
 
@@ -231,7 +234,10 @@ export default function useTasks(): UseTasksResult {
 	 */
 	useEffect(() => {
 		fetchTasks();
-	}, [trigger]);
+
+		vault.on("modify", fetchTasks);
+		return () => vault.off("modify", fetchTasks);
+	}, []);
 
 	return { tasks, isTasksParsed, updateTask, filters };
 }

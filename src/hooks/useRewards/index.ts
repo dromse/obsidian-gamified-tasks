@@ -16,7 +16,6 @@ export default function useRewards() {
 
 	const app = useApp();
 	const settings = useSettings();
-	const [trigger, setTrigger] = useState(false);
 
 	const [rewards, setRewards] = useState<Reward[]>([]);
 
@@ -49,7 +48,10 @@ export default function useRewards() {
 
 	useEffect(() => {
 		fetchRewards();
-	}, [trigger]);
+
+		vault.on("modify", fetchRewards);
+		return () => vault.off("modify", fetchRewards);
+	}, []);
 
 	return { rewards, isRewardsParsed };
 }

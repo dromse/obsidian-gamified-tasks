@@ -27,5 +27,5 @@ export default function Tasks() {
 		return <div>Error: cannot parsed</div>;
 	}
 
-	return <div>Something went wrong...</div>;
+	return <div></div>;
 }

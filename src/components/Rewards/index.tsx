@@ -11,12 +11,12 @@ export default function Rewards() {
 		return <div>Parsing...</div>;
 	}
 
-	if (isRewardsParsed === "parsed" && isHistoryParsed === "parsed") {
+	if (isRewardsParsed === "parsed") {
 		return (
 			<div>
 				<h2>Rewards</h2>
 
-				<h3>Balance: {balance} coins</h3>
+				<h3>Balance: {isHistoryParsed === "parsed" ? balance : 0} coins</h3>
 
 				<ul className={`list ${styles.list}`}>
 					{rewards.map((reward) => (
@@ -54,5 +54,5 @@ export default function Rewards() {
 		return <div>Error: cannot parsed</div>;
 	}
 
-	return <div>Something went wrong...</div>;
+	return <div></div>;
 }

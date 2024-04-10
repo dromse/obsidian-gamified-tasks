@@ -21,11 +21,6 @@ export default function useHistory() {
 	const [history, setHistory] = useState<HistoryRow[]>([]);
 	const [balance, setBalance] = useState<number>(0);
 	const [historyFile, setHistoryFile] = useState<TFile>();
-	const [trigger, setTrigger] = useState<boolean>(false);
-
-	const syncHistory = () => {
-		setTrigger((prev) => !prev);
-	};
 
 	/** Add history row on top of file */
 	async function addHistoryRow({
@@ -40,14 +35,13 @@ export default function useHistory() {
 		if (historyFile) {
 			await vault.process(historyFile, (data) => rowStr + data);
 			setIsHistoryParsed("parsing");
-			setTrigger((prev) => !prev);
 		}
 	}
 
 	if (!app) {
 		setIsHistoryParsed("error");
 
-		return { history, balance, isHistoryParsed, addHistoryRow, syncHistory };
+		return { history, balance, isHistoryParsed, addHistoryRow };
 	}
 
 	const { vault } = app;
@@ -73,9 +67,12 @@ export default function useHistory() {
 
 	useEffect(() => {
 		fetchHistory();
-	}, [trigger]);
 
-	return { history, balance, isHistoryParsed, addHistoryRow, syncHistory };
+		vault.on("modify", fetchHistory);
+		return () => vault.off("modify", fetchHistory);
+	}, []);
+
+	return { history, balance, isHistoryParsed, addHistoryRow };
 }
 
 /** Calculate balance based on history rows and fixed number to 0.00 */
@@ -100,7 +97,7 @@ function currentDate(): string {
  * Parse
  * - Line in file: +1 | do a push up | 2024-01-01 12:00 -> { title: 'do a push up', change: 1, date: "2024-01-01 12:00" }
  */
-function parseHistory(content: string): HistoryRow[] {
+export function parseHistory(content: string): HistoryRow[] {
 	const lines = getLines(content);
 
 	const splitedLines = lines.reduce((acc, line) => {
