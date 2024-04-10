@@ -82,7 +82,9 @@ export default function useTasks(): UseTasksResult {
 	}
 
 	const filterBySearch = (task: Task): boolean =>
-		task.body ? task.body.toLowerCase().includes(searchFilter) : true;
+		task.body
+			? task.body.toLowerCase().includes(searchFilter.toLowerCase())
+			: true;
 
 	const filterByStatus = (task: Task): boolean => {
 		if (statusFilter === "all") {
