@@ -29,7 +29,7 @@ body:
   - type: input
     id: plugin-version
     attributes:
-      label: Version
+      label: Plugin Version
       description: What version of Grind Manager are you running?
       placeholder: 1.0.0
     validations:
