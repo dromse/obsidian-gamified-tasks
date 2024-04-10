@@ -1,3 +1,4 @@
+import { GrindConsts } from "@consts";
 import { GrindPluginSettings } from "@types";
 import { Plugin, WorkspaceLeaf } from "obsidian";
 import { MyView, MY_VIEW_TYPE } from "./MyView";
@@ -68,7 +69,9 @@ export default class GrindPlugin extends Plugin {
 		}
 	}
 
-	onunload() { }
+	onunload() { 
+		sessionStorage.removeItem(GrindConsts.sessionTasks)
+	}
 
 	async loadSettings() {
 		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());

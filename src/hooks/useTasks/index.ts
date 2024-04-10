@@ -1,3 +1,4 @@
+import { GrindConsts } from "@consts";
 import { useEffect, useState } from "react";
 import { useApp, useHistory, useSettings } from "..";
 import { ParseState } from "../types";
@@ -168,7 +169,7 @@ export default function useTasks(): UseTasksResult {
 			);
 
 			sessionStorage.setItem(
-				"tasks",
+				GrindConsts.sessionTasks,
 				JSON.stringify(parsedTaskswithMiddlewares),
 			);
 
@@ -208,7 +209,7 @@ export default function useTasks(): UseTasksResult {
 	 * Load tasks from sessionStorage and apply filters.
 	 */
 	useEffect(() => {
-		const tasksJSON = sessionStorage.getItem("tasks");
+		const tasksJSON = sessionStorage.getItem(GrindConsts.sessionTasks);
 
 		if (tasksJSON) {
 			const tasks = JSON.parse(tasksJSON);
