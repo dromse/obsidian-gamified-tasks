@@ -17,7 +17,7 @@ export default function Tabs({ tabs }: Props) {
 		<div>
 			<ul className={styles.tabs}>
 				{tabs.map((tab) => (
-					<li className="list-item">
+					<li className="list-item" key={tab.title}>
 						<button
 							className={`${tab.title === activeTab.title ? styles.active : ""}`}
 							onClick={() => setActiveTab(tab)}

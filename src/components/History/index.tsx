@@ -90,8 +90,8 @@ export default function History() {
 					</thead>
 
 					<tbody>
-						{history.slice(page * 10, (page + 1) * 10).map((row) => (
-							<tr>
+						{history.slice(page * 10, (page + 1) * 10).map((row, index) => (
+							<tr key={index}>
 								<th scope="row">
 									{row.change > 0 ? "+" + row.change : row.change}
 								</th>

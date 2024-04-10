@@ -1,5 +1,5 @@
-import { Notice } from "obsidian";
 import { useHistory, useRewards } from "@hooks";
+import { Notice } from "obsidian";
 import styles from "./styles.module.css";
 
 export default function Rewards() {
@@ -19,7 +19,10 @@ export default function Rewards() {
 
 				<ul className={`list ${styles.list}`}>
 					{rewards.map((reward) => (
-						<li className={`${styles.reward} border`}>
+						<li
+							className={`${styles.reward} border`}
+							key={reward.title}
+						>
 							<div>
 								<h3 className={styles.title}>{reward.title}</h3>
 								<p className={styles.desc}>{reward.desc}</p>

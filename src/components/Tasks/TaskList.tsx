@@ -47,6 +47,7 @@ export default function TaskList({ tasks, updateTask, filters }: Props) {
 				{tasks.length > 0 ? (
 					tasks.map((task) => (
 						<TaskItem
+							key={task.body}
 							task={task}
 							updateTask={updateTask}
 						/>
