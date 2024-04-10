@@ -24,7 +24,7 @@ body:
     attributes:
       label: Version
       description: What version of our software are you running?
-      default: 0
+      placeholder: 1.0.0
     validations:
       required: true
   - type: dropdown
