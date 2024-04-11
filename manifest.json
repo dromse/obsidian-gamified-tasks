@@ -1,7 +1,7 @@
 {
 	"id": "grind-manager",
 	"name": "Grind Manager",
-	"version": "1.0.5",
+	"version": "1.0.6",
 	"minAppVersion": "1.5.12",
 	"description": "Task management with rewards system.",
 	"author": "dromse",
