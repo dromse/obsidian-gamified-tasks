@@ -1,5 +1,7 @@
 # Grind Manager
 
+[![](https://dcbadge.vercel.app/api/server/JrdNMhQG)](https://discord.gg/JrdNMhQG)
+
 - Unleash the magic of Grind Manager, merging task management with rewards system to your Obsidian workspace!  
 - Earn coins by completing tasks and acquire epic rewards!  
 - It's your ticket to excitement and adventure in your digital domain!
