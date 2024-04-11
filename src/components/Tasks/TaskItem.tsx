@@ -2,7 +2,7 @@ import React from "react";
 import { useApp, useHistory } from "@hooks";
 import { DifficultyPrice, StatusKeys } from "@hooks/useTasks/consts";
 import { Status, Task } from "@hooks/useTasks/types";
-import { Notice } from "obsidian";
+import { MarkdownView, Notice, WorkspaceLeaf } from "obsidian";
 import { useEffect, useState } from "react";
 
 import styles from "./styles.module.css";
@@ -106,20 +106,33 @@ export default function TaskItem({ task, updateTask }: Props) {
 			return;
 		}
 
-		const leaves = workspace.getLeavesOfType("markdown");
+		const leaves = workspace.getLeavesOfType("markdown") as WorkspaceLeaf[];
 
-		const fileIsAlreadyOpen = leaves.some(
-			// @ts-ignore
-			(leaf) => leaf.view.file.path === task.path,
+		/**
+		 * Determines if a MarkdownView instance corresponds to an already opened file by explicitly setting `MarkdownView` for `leaf.view`.
+		 * This is necessary because the `getLeavesOfType` method returns instances of type `View`, lacking the `file` field.
+		 */
+		const isFileOpened = (view: MarkdownView) =>
+			view.file && view.file.path === task.path;
+
+		/**
+		 * Checks if the file is already open among the given leaves.
+		 */
+		const fileIsAlreadyOpen = leaves.some((leaf) =>
+			isFileOpened(leaf.view as MarkdownView),
 		);
 
 		if (fileIsAlreadyOpen) {
-			const leaf = leaves.find(
-				// @ts-ignore
-				(leaf) => leaf.view.file.path === task.path,
+			const leaf = leaves.find((leaf) =>
+				isFileOpened(leaf.view as MarkdownView),
 			);
 
-			leaf?.openFile(tFile, { eState: { line: task.lineNumber } });
+			/*
+			 * Displays the already opened file and highlights the line containing the task.
+			 */
+			if (leaf) {
+				leaf.openFile(tFile, { eState: { line: task.lineNumber } });
+			}
 		} else {
 			workspace.getLeaf("tab").openFile(tFile, {
 				eState: { line: task.lineNumber },
