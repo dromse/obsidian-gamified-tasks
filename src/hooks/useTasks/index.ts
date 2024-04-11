@@ -1,5 +1,4 @@
 import { GrindConsts } from "@consts";
-import { parseHistory } from "@hooks/useHistory";
 import { useEffect, useState } from "react";
 import { useApp, useHistory, useSettings } from "..";
 import { ParseState } from "../types";

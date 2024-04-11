@@ -1,7 +1,7 @@
 import { RawFile } from "@hooks/types";
 import { getLines } from "@hooks/utils";
 import { GrindPluginSettings } from "@types";
-import { Vault } from "obsidian";
+import { moment, Vault } from "obsidian";
 import { Middleware, Task } from "./types";
 
 /** Cleans task body from founded metadata */
@@ -15,16 +15,20 @@ export const cleanBody = (regex: RegExp, task: Task) => {
 
 /** Generate an array of past dates starting from the current date. */
 export function generatePastDaysArray(numDays: number) {
-	const currentDate = new Date();
-	const datesArray = [];
+	// Get current date
+	const currentDate = moment();
 
+	// Initialize an empty array to store the dates
+	const datesList = [];
+
+	// Loop through each day from numDays ago to today
 	for (let i = 0; i < numDays; i++) {
-		const date = new Date(currentDate.getTime() - i * 24 * 60 * 60 * 1000);
-		const formattedDate = date.toISOString().split("T")[0];
-		datesArray.push(formattedDate);
+		const date = currentDate.clone().subtract(i, "days");
+		datesList.push(date.format("YYYY-MM-DD"));
 	}
 
-	return datesArray;
+	// Reverse the array to get dates in chronological order
+	return datesList.reverse();
 }
 
 /**
@@ -112,7 +116,7 @@ export function parseTasks(files: RawFile[]): Task[] {
 export function stringifyMiddlewares(
 	task: Task,
 	middlewares: Middleware[],
-	settings: GrindPluginSettings | undefined
+	settings: GrindPluginSettings | undefined,
 ): string {
 	const taskString = middlewares.reduce(
 		(str, middleware) => (str += middleware.stringify(task, settings)),
@@ -126,10 +130,11 @@ export function stringifyMiddlewares(
 export function parseMiddlewares(
 	tasks: Task[],
 	middlewares: Middleware[],
-	settings: GrindPluginSettings | undefined
+	settings: GrindPluginSettings | undefined,
 ): Task[] {
 	middlewares.forEach(
-		(middleware) => (tasks = tasks.map((task) => middleware.parse(task, settings))),
+		(middleware) =>
+			(tasks = tasks.map((task) => middleware.parse(task, settings))),
 	);
 
 	return tasks;
