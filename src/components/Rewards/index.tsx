@@ -16,7 +16,7 @@ export default function Rewards() {
 			<div>
 				<h2>Rewards</h2>
 
-				<h3>Balance: {isHistoryParsed === "parsed" ? balance : 0} coins</h3>
+				<h3>Balance: {balance} coins</h3>
 
 				<ul className={`list ${styles.list}`}>
 					{rewards.map((reward) => (
