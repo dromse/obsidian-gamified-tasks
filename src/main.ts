@@ -22,10 +22,26 @@ export default class GrindPlugin extends Plugin {
 		await this.loadSettings();
 
 		this.app.workspace.onLayoutReady(() => {
+			/**
+			 * This is Obsidian Private API.
+			 * It isn't available publically.
+			 * TS is warning about `config` does not exist on type `Vault`.
+			 * But within Obsidian works fine.
+			 * Github Issue Answer: https://github.com/obsidianmd/obsidian-api/issues/163#issuecomment-2049488873
+			 */
+
 			// @ts-ignore
 			this.settings.useMarkdownLinks = this.app.vault.config.useMarkdownLinks;
 
 			const dailyPlugin =
+				/**
+				 * This is Obsidian Private API.
+				 * It isn't available publically.
+				 * TS is warning about `internalPlugin` does not exist on type `App`.
+				 * But within Obsidian works fine.
+				 * Github Issue Answer: https://github.com/obsidianmd/obsidian-api/issues/163#issuecomment-2049488873
+				 */
+
 				// @ts-ignore
 				this.app.internalPlugins.getEnabledPluginById("daily-notes");
 
@@ -69,8 +85,8 @@ export default class GrindPlugin extends Plugin {
 		}
 	}
 
-	onunload() { 
-		sessionStorage.removeItem(GrindConsts.sessionTasks)
+	onunload() {
+		sessionStorage.removeItem(GrindConsts.sessionTasks);
 	}
 
 	async loadSettings() {
