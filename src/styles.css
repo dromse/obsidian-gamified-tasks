@@ -26,3 +26,8 @@ If your plugin does not need CSS, delete this file.
 	border-radius: 10px;
 	padding: 10px;
 }
+
+/* Based on right sidebar width grind manager will adjust its layouts */
+.mod-right, .mod-right-split {
+	container-type: size;
+}

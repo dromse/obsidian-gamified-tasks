@@ -67,6 +67,7 @@ export default function History() {
 					<input
 						type="number"
 						name="page-input"
+						style={{width: '100%'}}
 						id=""
 						value={pageInput}
 						onChange={(e) => {

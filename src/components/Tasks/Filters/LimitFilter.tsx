@@ -13,7 +13,8 @@ export default function LimitFilter({ limit, setLimit }: Props) {
 				type="number"
 				name="limit"
 				id="limit"
-				placeholder="Amount of showed tasks"
+				style={{ width: '100%' }}
+				placeholder="Task to show"
 				value={limit ? limit : ""}
 				onChange={(e) =>
 					setLimit(

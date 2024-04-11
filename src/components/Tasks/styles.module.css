@@ -4,6 +4,11 @@
 	gap: 10px;
 }
 
+.task__status {
+	text-align: center;
+	padding: 0;
+}
+
 .list {
 	display: flex;
 	flex-direction: column;
@@ -15,7 +20,6 @@
 	flex-direction: column;
 	row-gap: 10px;
 }
-
 
 .filter {
 	display: flex;
@@ -32,5 +36,21 @@
 
 	& button {
 		width: 50px;
+	}
+}
+
+/* Adjust grid manager `Tasks` layout when the right sidebar width is 500px or less */
+@container (max-width: 400px) {
+	.task {
+		flex-direction: column;
+		gap: 15px;
+	}
+
+	.counter {
+		margin-left: 0;
+	}
+
+	.task__status {
+		order: 3;
 	}
 }

@@ -149,6 +149,7 @@ export default function TaskItem({ task, updateTask }: Props) {
 			<select
 				onChange={(e) => updateStatus(e.currentTarget.value as Status)}
 				value={task.status}
+				className={styles.taskStatus}
 			>
 				{StatusKeys.map((status) => (
 					<option key={status}>{status}</option>

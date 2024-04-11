@@ -1,10 +1,11 @@
 .table {
 	margin-top: 20px;
 	border-collapse: collapse;
+	width: 100%;
 }
 
 .active-page {
-	color: var(--color-accent);	
+	color: var(--color-accent);
 }
 
 .table th,
@@ -19,4 +20,3 @@
 	gap: 10px;
 	padding: 10 0;
 }
-

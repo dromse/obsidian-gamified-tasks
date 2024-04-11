@@ -2,6 +2,7 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	gap: 10px;
 }
 
 .title,
@@ -14,4 +15,11 @@
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
+}
+
+@container (max-width: 400px) {
+	.reward {
+		text-align: center;
+		flex-direction: column;
+	}
 }
