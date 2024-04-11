@@ -14,6 +14,7 @@ export class MyView extends ItemView {
 	constructor(leaf: WorkspaceLeaf, settings: GrindPluginSettings) {
 		super(leaf);
 		this.pluginSettings = settings;
+		this.icon = 'list-todo'
 	}
 
 	getViewType() {
