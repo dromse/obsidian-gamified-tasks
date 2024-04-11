@@ -58,8 +58,8 @@ body:
   - type: textarea
     id: logs
     attributes:
-      label: Relevant log output (`Ctrl + Shift + I` for PC or `chrome://inspect` for mobile)
-      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      label: Relevant log output
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks. To find log use Ctrl + Shift + I for PC or chrome://inspect for mobile.
       render: shell
   - type: checkboxes
     id: additional
