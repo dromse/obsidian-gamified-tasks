@@ -10,7 +10,7 @@ import {
 	getRawFiles,
 	parseMiddlewares,
 	parseTasks,
-	stringifyMiddlewares
+	stringifyMiddlewares,
 } from "./utils";
 
 type UseTasksResult = {
@@ -31,6 +31,8 @@ export default function useTasks(): UseTasksResult {
 	const [statusFilter, setStatusFilter] = useState<StatusFilterOption>("all");
 	const [isRecur, setIsRecur] = useState<boolean>(false);
 	const [searchFilter, setSearchFilter] = useState<string>("");
+	const [tagFilter, setTagFilter] = useState<string>("");
+	const [onlyThisTags, setOnlyThisTags] = useState<boolean>(false);
 
 	const filters = {
 		limit,
@@ -41,6 +43,10 @@ export default function useTasks(): UseTasksResult {
 		setStatusFilter,
 		isRecur,
 		setIsRecur,
+		tagFilter,
+		setTagFilter,
+		onlyThisTags,
+		setOnlyThisTags,
 	};
 
 	const app = useApp();
@@ -152,6 +158,24 @@ export default function useTasks(): UseTasksResult {
 		return toShowTodayTasks;
 	}
 
+	function filterByTag(task: Task): boolean {
+		if (tagFilter.length === 0) {
+			return true;
+		}
+
+		const tags = tagFilter
+			.split(",")
+			.map((tag) => tag.trim())
+			.filter((trimmedTag) => trimmedTag !== "")
+			.map((tag) => "#" + tag);
+
+		if (onlyThisTags) {
+			return tags.every((tag) => task.lineContent.includes(tag));
+		} else {
+			return tags.some((tag) => task.lineContent.includes(tag));
+		}
+	}
+
 	async function fetchTasks() {
 		try {
 			const files = await getRawFiles(vault, settings);
@@ -185,7 +209,8 @@ export default function useTasks(): UseTasksResult {
 			return;
 		}
 
-		const { limit, statusFilter, isRecurTasks } = settings;
+		const { limit, statusFilter, isRecurTasks, tagFilter, onlyThisTags } =
+			settings;
 
 		if (limit) {
 			setLimit(limit);
@@ -197,6 +222,14 @@ export default function useTasks(): UseTasksResult {
 
 		if (isRecurTasks) {
 			setIsRecur(isRecurTasks);
+		}
+
+		if (tagFilter) {
+			setTagFilter(tagFilter);
+		}
+
+		if (onlyThisTags) {
+			setOnlyThisTags(onlyThisTags);
 		}
 	}, []);
 
@@ -217,16 +250,21 @@ export default function useTasks(): UseTasksResult {
 				setTasks(
 					todayTasks
 						.filter(filterByStatus)
+						.filter(filterByTag)
 						.filter(filterBySearch)
 						.slice(0, limit),
 				);
 			} else {
 				setTasks(
-					tasks.filter(filterByStatus).filter(filterBySearch).slice(0, limit),
+					tasks
+						.filter(filterByStatus)
+						.filter(filterByTag)
+						.filter(filterBySearch)
+						.slice(0, limit),
 				);
 			}
 		}
-	}, [limit, searchFilter, isRecur, statusFilter, triggerUI]);
+	}, [limit, searchFilter, isRecur, statusFilter, tagFilter, onlyThisTags, triggerUI]);
 
 	/**
 	 * Fetch tasks from vault on trigger call.

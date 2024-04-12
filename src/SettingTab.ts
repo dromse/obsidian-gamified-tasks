@@ -46,6 +46,28 @@ export default class GrindSettingTab extends PluginSettingTab {
 					}),
 			);
 
+		new Setting(containerEl).setName("Default tag filter").addText((text) =>
+			text
+				.setPlaceholder("Input tags without # (use comma to separate)")
+				.setValue(this.plugin.settings.tagFilter)
+				.onChange(async (value) => {
+					this.plugin.settings.tagFilter = value;
+
+					await this.plugin.saveSettings();
+				}),
+		);
+
+		new Setting(containerEl)
+			.setName("Show only with this tags by default?")
+			.addToggle((toggle) =>
+				toggle
+					.setValue(this.plugin.settings.onlyThisTags)
+					.onChange(async (value) => {
+						this.plugin.settings.onlyThisTags = value;
+						await this.plugin.saveSettings();
+					}),
+			);
+
 		new Setting(containerEl)
 			.setName("Show recurring tasks by default?")
 			.addToggle((toggle) =>
@@ -99,7 +121,9 @@ export default class GrindSettingTab extends PluginSettingTab {
 				text.inputEl.style.height = 25 + text.inputEl.scrollHeight + "px";
 
 				text
-					.setPlaceholder("Input to ignore Folder/, Note.md or Path/to/Note.md")
+					.setPlaceholder(
+						"Input to ignore Folder/, Note.md or Path/to/Note.md",
+					)
 					.setValue(this.plugin.settings.ignoreList.join("\n"))
 					.onChange(async (value) => {
 						const filesToIgnore = getLines(value).map((str) => str.trim());

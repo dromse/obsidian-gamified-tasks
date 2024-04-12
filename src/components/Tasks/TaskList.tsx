@@ -1,6 +1,6 @@
-import React from 'react'
 import { Task, TaskFilters } from "@hooks/useTasks/types";
-import { LimitFilter, SearchFilter, StatusFilter } from "./Filters";
+import React from "react";
+import { LimitFilter, SearchFilter, StatusFilter, TagFilter } from "./Filters";
 import RecurFilter from "./Filters/RecurFilter";
 import styles from "./styles.module.css";
 import TaskItem from "./TaskItem";
@@ -21,6 +21,10 @@ export default function TaskList({ tasks, updateTask, filters }: Props) {
 		setStatusFilter,
 		isRecur,
 		setIsRecur,
+		tagFilter,
+		setTagFilter,
+		onlyThisTags,
+		setOnlyThisTags
 	} = filters;
 
 	return (
@@ -41,6 +45,12 @@ export default function TaskList({ tasks, updateTask, filters }: Props) {
 				<RecurFilter
 					isRecur={isRecur}
 					setIsRecur={setIsRecur}
+				/>
+				<TagFilter
+					tagFilter={tagFilter}
+					setTagFilter={setTagFilter}
+					onlyThisTags={onlyThisTags}
+					setOnlyThisTags={setOnlyThisTags}
 				/>
 			</div>
 

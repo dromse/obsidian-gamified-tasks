@@ -1,8 +1,8 @@
 import { GrindPluginSettings } from "@types";
 
 export const GrindConsts = {
-	sessionTasks: 'grind-manager__tasks'
-}
+	sessionTasks: "grind-manager__tasks",
+};
 
 export const DEFAULT_SETTINGS: GrindPluginSettings = {
 	limit: 10,
@@ -13,5 +13,7 @@ export const DEFAULT_SETTINGS: GrindPluginSettings = {
 	pathToDaily: "",
 	dailyFormat: "YYYY-MM-DD",
 	useMarkdownLinks: true,
-	ignoreList: []
+	ignoreList: [],
+	tagFilter: "",
+	onlyThisTags: false,
 };
