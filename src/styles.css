@@ -28,6 +28,6 @@ If your plugin does not need CSS, delete this file.
 }
 
 /* Based on right sidebar width grind manager will adjust its layouts */
-[data-type="grind-manager-view"] {
+.workspace-leaf > [data-type="grind-manager-view"] {
 	container-type: size;
 }
