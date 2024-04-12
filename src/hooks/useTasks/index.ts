@@ -10,7 +10,7 @@ import {
 	getRawFiles,
 	parseMiddlewares,
 	parseTasks,
-	stringifyMiddlewares,
+	stringifyMiddlewares
 } from "./utils";
 
 type UseTasksResult = {
@@ -154,7 +154,7 @@ export default function useTasks(): UseTasksResult {
 
 	async function fetchTasks() {
 		try {
-			const files = await getRawFiles(vault);
+			const files = await getRawFiles(vault, settings);
 
 			const parsedTasks = parseTasks(files);
 			const parsedTaskswithMiddlewares = parseMiddlewares(

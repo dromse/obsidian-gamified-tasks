@@ -1,19 +1,8 @@
-import { GrindConsts } from "@consts";
+import { DEFAULT_SETTINGS, GrindConsts } from "@consts";
 import { GrindPluginSettings } from "@types";
 import { Plugin, WorkspaceLeaf } from "obsidian";
 import { MyView, MY_VIEW_TYPE } from "./MyView";
 import GrindSettingTab from "./SettingTab";
-
-export const DEFAULT_SETTINGS: GrindPluginSettings = {
-	limit: 10,
-	statusFilter: "all",
-	isRecurTasks: false,
-	pathToRewards: "rewards.md",
-	pathToHistory: "history.md",
-	pathToDaily: "",
-	dailyFormat: "YYYY-MM-DD",
-	useMarkdownLinks: true,
-};
 
 export default class GrindPlugin extends Plugin {
 	settings: GrindPluginSettings;
