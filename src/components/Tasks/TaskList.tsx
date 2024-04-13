@@ -1,6 +1,6 @@
 import { Task, TaskFilters } from "@hooks/useTasks/types";
 import React from "react";
-import { LimitFilter, SearchFilter, StatusFilter, TagFilter } from "./Filters";
+import { LimitFilter, NoteFilter, SearchFilter, StatusFilter, TagFilter } from "./Filters";
 import RecurFilter from "./Filters/RecurFilter";
 import styles from "./styles.module.css";
 import TaskItem from "./TaskItem";
@@ -24,7 +24,11 @@ export default function TaskList({ tasks, updateTask, filters }: Props) {
 		tagFilter,
 		setTagFilter,
 		onlyThisTags,
-		setOnlyThisTags
+		setOnlyThisTags,
+		noteFilter,
+		setNoteFilter,
+		fromCurrentNote,
+		setFromCurrentNote
 	} = filters;
 
 	return (
@@ -51,6 +55,12 @@ export default function TaskList({ tasks, updateTask, filters }: Props) {
 					setTagFilter={setTagFilter}
 					onlyThisTags={onlyThisTags}
 					setOnlyThisTags={setOnlyThisTags}
+				/>
+				<NoteFilter
+					noteFilter={noteFilter}
+					setNoteFilter={setNoteFilter}
+					fromCurrentNote={fromCurrentNote}
+					setFromCurrentNote={setFromCurrentNote}
 				/>
 			</div>
 

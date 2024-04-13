@@ -61,6 +61,11 @@ export type TaskFilters = {
 	 * A function to set whether to only show tags with these tags.
 	 */
 	setOnlyThisTags: Function;
+
+	noteFilter: string;
+	setNoteFilter: Function;
+	fromCurrentNote: boolean;
+	setFromCurrentNote: Function;
 };
 
 /**

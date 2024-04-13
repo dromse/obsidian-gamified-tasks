@@ -68,6 +68,28 @@ export default class GrindSettingTab extends PluginSettingTab {
 					}),
 			);
 
+		new Setting(containerEl).setName("Default note filter (without .md)").addText((text) =>
+			text
+				.setPlaceholder("Input path to note (without '.md')")
+				.setValue(this.plugin.settings.noteFilter)
+				.onChange(async (value) => {
+					this.plugin.settings.noteFilter = value.trim();
+
+					await this.plugin.saveSettings();
+				}),
+		);
+
+		new Setting(containerEl)
+			.setName("Show tasks from current note by default?")
+			.addToggle((toggle) =>
+				toggle
+					.setValue(this.plugin.settings.fromCurrentNote)
+					.onChange(async (value) => {
+						this.plugin.settings.fromCurrentNote = value;
+						await this.plugin.saveSettings();
+					}),
+			);
+
 		new Setting(containerEl)
 			.setName("Show recurring tasks by default?")
 			.addToggle((toggle) =>

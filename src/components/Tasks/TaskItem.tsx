@@ -163,12 +163,14 @@ export default function TaskItem({ task, updateTask }: Props) {
 					<p>
 						{task.counter.current} / {task.counter.goal}
 					</p>
+
 					<button
 						disabled={isCounterLoading}
 						onClick={() => updateCounter(1)}
 					>
 						+
 					</button>
+
 					<button
 						disabled={isCounterLoading}
 						onClick={() => updateCounter(-1)}

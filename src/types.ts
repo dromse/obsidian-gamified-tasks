@@ -12,4 +12,6 @@ export type GrindPluginSettings = {
 	ignoreList: string[];
 	tagFilter: string;
 	onlyThisTags: boolean;
+	noteFilter: string;
+	fromCurrentNote: boolean;
 };
