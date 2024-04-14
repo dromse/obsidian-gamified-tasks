@@ -27,7 +27,7 @@ export default function TagFilter({
 				onChange={(e) => setTagFilter(e.currentTarget.value)}
 			/>
 
-			<div className={styles.filter}>
+			<div className={styles.checkbox}>
 				<input
 					type="checkbox"
 					name="onlyTags"

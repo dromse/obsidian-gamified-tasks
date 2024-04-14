@@ -6,7 +6,7 @@ type Props = { isRecur: boolean; setIsRecur: Function };
 
 export default function RecurFilter({ isRecur, setIsRecur }: Props) {
 	return (
-		<div className={styles.filter}>
+		<div className={styles.checkbox}>
 			<input
 				type="checkbox"
 				name="is-recur"

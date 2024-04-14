@@ -1,6 +1,12 @@
 import { Task, TaskFilters } from "@hooks/useTasks/types";
-import React from "react";
-import { LimitFilter, NoteFilter, SearchFilter, StatusFilter, TagFilter } from "./Filters";
+import React, { useState } from "react";
+import {
+	LimitFilter,
+	NoteFilter,
+	SearchFilter,
+	StatusFilter,
+	TagFilter
+} from "./Filters";
 import RecurFilter from "./Filters/RecurFilter";
 import styles from "./styles.module.css";
 import TaskItem from "./TaskItem";
@@ -28,8 +34,10 @@ export default function TaskList({ tasks, updateTask, filters }: Props) {
 		noteFilter,
 		setNoteFilter,
 		fromCurrentNote,
-		setFromCurrentNote
+		setFromCurrentNote,
 	} = filters;
+
+	const [isAccordionOpen, setIsAccordionOpen] = useState(false);
 
 	return (
 		<div>
@@ -37,10 +45,6 @@ export default function TaskList({ tasks, updateTask, filters }: Props) {
 				<SearchFilter
 					searchFilter={searchFilter}
 					setSearchFilter={setSearchFilter}
-				/>
-				<LimitFilter
-					limit={limit}
-					setLimit={setLimit}
 				/>
 				<StatusFilter
 					currentStatusFilter={statusFilter}
@@ -50,18 +54,47 @@ export default function TaskList({ tasks, updateTask, filters }: Props) {
 					isRecur={isRecur}
 					setIsRecur={setIsRecur}
 				/>
-				<TagFilter
-					tagFilter={tagFilter}
-					setTagFilter={setTagFilter}
-					onlyThisTags={onlyThisTags}
-					setOnlyThisTags={setOnlyThisTags}
-				/>
-				<NoteFilter
-					noteFilter={noteFilter}
-					setNoteFilter={setNoteFilter}
-					fromCurrentNote={fromCurrentNote}
-					setFromCurrentNote={setFromCurrentNote}
-				/>
+
+				<div>
+					<div className={styles.checkbox}>
+						<input
+							id="more-filters"
+							type="checkbox"
+							checked={isAccordionOpen}
+							onChange={() => setIsAccordionOpen((prev) => !prev)}
+						/>
+
+						<label htmlFor="more-filters">Show more filters?</label>
+					</div>
+
+					{isAccordionOpen && (
+						<div
+							style={{
+								display: "flex",
+								flexDirection: "column",
+								gap: "10px",
+								paddingTop: "5px",
+							}}
+						>
+							<LimitFilter
+								limit={limit}
+								setLimit={setLimit}
+							/>
+							<TagFilter
+								tagFilter={tagFilter}
+								setTagFilter={setTagFilter}
+								onlyThisTags={onlyThisTags}
+								setOnlyThisTags={setOnlyThisTags}
+							/>
+							<NoteFilter
+								noteFilter={noteFilter}
+								setNoteFilter={setNoteFilter}
+								fromCurrentNote={fromCurrentNote}
+								setFromCurrentNote={setFromCurrentNote}
+							/>
+						</div>
+					)}
+				</div>
 			</div>
 
 			<ul className={`list ${styles.list}`}>

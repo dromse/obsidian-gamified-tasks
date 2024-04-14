@@ -58,7 +58,7 @@ export default class GrindSettingTab extends PluginSettingTab {
 		);
 
 		new Setting(containerEl)
-			.setName("Show only with this tags by default?")
+			.setName("Show only with these tags by default?")
 			.addToggle((toggle) =>
 				toggle
 					.setValue(this.plugin.settings.onlyThisTags)

@@ -24,7 +24,7 @@ export default function TagFilter({
 		<div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
 			<label htmlFor="noteFilter">Tasks from note:</label>
 
-			<div style={{ display: "flex" }}>
+			<div style={{ display: "flex", gap: "10px" }}>
 				<input
 					type="text"
 					name="noteFilter"
@@ -39,7 +39,7 @@ export default function TagFilter({
 				<button onClick={handleClick}>Apply</button>
 			</div>
 
-			<div className={styles.filter}>
+			<div className={styles.checkbox}>
 				<input
 					type="checkbox"
 					name="currentNote"

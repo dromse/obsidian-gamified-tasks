@@ -1,9 +1,8 @@
-import React from "react";
 import { useApp, useHistory } from "@hooks";
 import { DifficultyPrice, StatusKeys } from "@hooks/useTasks/consts";
 import { Status, Task } from "@hooks/useTasks/types";
 import { MarkdownView, Notice, WorkspaceLeaf } from "obsidian";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import styles from "./styles.module.css";
 
