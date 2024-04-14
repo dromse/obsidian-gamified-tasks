@@ -79,12 +79,16 @@ export default function TaskItem({ task, updateTask }: Props) {
 			counter: { current: newCurrent, goal },
 		});
 
-		if (newCurrent === goal) {
-			new Notice(`You completed task: '${task.body}'`);
-		}
-
 		if (result === "error") {
 			new Notice("Error during counter update.");
+		}
+
+		new Notice(
+			`${task.body} ${value > 0 ? "increased" : "decreased"} by ${Math.abs(value)}`,
+		);
+
+		if (newCurrent === goal) {
+			new Notice(`You completed task: '${task.body}'`);
 		}
 
 		if (task.difficulty) {
