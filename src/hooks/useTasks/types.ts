@@ -44,6 +44,28 @@ export type TaskFilters = {
 	 * A function to set whether tasks are recurring.
 	 */
 	setIsRecur: Function;
+
+	/**
+	 *  List of tags to filter tasks.
+	 */
+	tagFilter: string;
+	/**
+	 * A function to set filtering by specific tag.
+	 */
+	setTagFilter: Function;
+	/**
+	 *  Specify only show tasks with this tags or all tasks with matched tags
+	 */
+	onlyThisTags: boolean;
+	/**
+	 * A function to set whether to only show tags with these tags.
+	 */
+	setOnlyThisTags: Function;
+
+	noteFilter: string;
+	setNoteFilter: Function;
+	fromCurrentNote: boolean;
+	setFromCurrentNote: Function;
 };
 
 /**

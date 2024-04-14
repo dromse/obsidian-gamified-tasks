@@ -1,19 +1,10 @@
-import { GrindConsts } from "@consts";
+import { DEFAULT_SETTINGS, GrindConsts } from "@consts";
 import { GrindPluginSettings } from "@types";
-import { Plugin, WorkspaceLeaf } from "obsidian";
+import { Plugin, WorkspaceLeaf, moment } from "obsidian";
 import { MyView, MY_VIEW_TYPE } from "./MyView";
 import GrindSettingTab from "./SettingTab";
 
-export const DEFAULT_SETTINGS: GrindPluginSettings = {
-	limit: 10,
-	statusFilter: "all",
-	isRecurTasks: false,
-	pathToRewards: "rewards.md",
-	pathToHistory: "history.md",
-	pathToDaily: "",
-	dailyFormat: "YYYY-MM-DD",
-	useMarkdownLinks: true,
-};
+const logger = (msg: string) => console.log(`[grind-manager][${moment().format("YYYY-MM-DD|HH:mm")}]: ${msg}`)
 
 export default class GrindPlugin extends Plugin {
 	settings: GrindPluginSettings;
@@ -65,6 +56,8 @@ export default class GrindPlugin extends Plugin {
 		this.addRibbonIcon("list-todo", "Show grind manager", () => {
 			this.activateView();
 		});
+
+		logger(`v${this.manifest.version} is loaded.`)
 	}
 
 	async activateView() {
@@ -87,6 +80,8 @@ export default class GrindPlugin extends Plugin {
 
 	onunload() {
 		sessionStorage.removeItem(GrindConsts.sessionTasks);
+
+		logger(`v${this.manifest.version} is unloaded.`)
 	}
 
 	async loadSettings() {

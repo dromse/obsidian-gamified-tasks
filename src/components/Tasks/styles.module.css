@@ -21,7 +21,7 @@
 	row-gap: 10px;
 }
 
-.filter {
+.checkbox {
 	display: flex;
 	align-items: center;
 	gap: 10px;

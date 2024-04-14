@@ -1,7 +1,9 @@
+import { DEFAULT_SETTINGS } from "@consts";
 import { StatusKeys } from "@hooks/useTasks/consts";
 import { StatusFilterOption } from "@hooks/useTasks/types";
+import { getLines } from "@hooks/utils";
 import { App, PluginSettingTab, Setting } from "obsidian";
-import GrindPlugin, { DEFAULT_SETTINGS } from "./main";
+import GrindPlugin from "./main";
 
 /** Class for Setting Tab where user can set default filtering settings for `Grind Manager` */
 export default class GrindSettingTab extends PluginSettingTab {
@@ -40,6 +42,50 @@ export default class GrindSettingTab extends PluginSettingTab {
 					.setValue(this.plugin.settings.statusFilter)
 					.onChange(async (value) => {
 						this.plugin.settings.statusFilter = value as StatusFilterOption;
+						await this.plugin.saveSettings();
+					}),
+			);
+
+		new Setting(containerEl).setName("Default tag filter").addText((text) =>
+			text
+				.setPlaceholder("Input tags without # (use comma to separate)")
+				.setValue(this.plugin.settings.tagFilter)
+				.onChange(async (value) => {
+					this.plugin.settings.tagFilter = value;
+
+					await this.plugin.saveSettings();
+				}),
+		);
+
+		new Setting(containerEl)
+			.setName("Show only with these tags by default?")
+			.addToggle((toggle) =>
+				toggle
+					.setValue(this.plugin.settings.onlyThisTags)
+					.onChange(async (value) => {
+						this.plugin.settings.onlyThisTags = value;
+						await this.plugin.saveSettings();
+					}),
+			);
+
+		new Setting(containerEl).setName("Default note filter (without .md)").addText((text) =>
+			text
+				.setPlaceholder("Input path to note (without '.md')")
+				.setValue(this.plugin.settings.noteFilter)
+				.onChange(async (value) => {
+					this.plugin.settings.noteFilter = value.trim();
+
+					await this.plugin.saveSettings();
+				}),
+		);
+
+		new Setting(containerEl)
+			.setName("Show tasks from current note by default?")
+			.addToggle((toggle) =>
+				toggle
+					.setValue(this.plugin.settings.fromCurrentNote)
+					.onChange(async (value) => {
+						this.plugin.settings.fromCurrentNote = value;
 						await this.plugin.saveSettings();
 					}),
 			);
@@ -84,5 +130,30 @@ export default class GrindSettingTab extends PluginSettingTab {
 					await this.plugin.saveSettings();
 				}),
 		);
+
+		new Setting(containerEl)
+			.setName("Ignore")
+			.setDesc("Exclude files or folders from parsing tasks")
+			.addTextArea((text) => {
+				text.inputEl.style.width = "100%";
+				text.inputEl.style.height = "auto";
+				text.inputEl.style.resize = "vertical";
+
+				text.inputEl.style.height = "1px";
+				text.inputEl.style.height = 25 + text.inputEl.scrollHeight + "px";
+
+				text
+					.setPlaceholder(
+						"Input to ignore Folder/, Note.md or Path/to/Note.md",
+					)
+					.setValue(this.plugin.settings.ignoreList.join("\n"))
+					.onChange(async (value) => {
+						const filesToIgnore = getLines(value).map((str) => str.trim());
+						this.plugin.settings.ignoreList =
+							filesToIgnore || DEFAULT_SETTINGS.ignoreList;
+
+						await this.plugin.saveSettings();
+					});
+			});
 	}
 }

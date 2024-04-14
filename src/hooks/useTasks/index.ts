@@ -1,4 +1,5 @@
 import { GrindConsts } from "@consts";
+import { TFile } from "obsidian";
 import { useEffect, useState } from "react";
 import { useApp, useHistory, useSettings } from "..";
 import { ParseState } from "../types";
@@ -31,6 +32,11 @@ export default function useTasks(): UseTasksResult {
 	const [statusFilter, setStatusFilter] = useState<StatusFilterOption>("all");
 	const [isRecur, setIsRecur] = useState<boolean>(false);
 	const [searchFilter, setSearchFilter] = useState<string>("");
+	const [tagFilter, setTagFilter] = useState<string>("");
+	const [onlyThisTags, setOnlyThisTags] = useState<boolean>(false);
+	const [noteFilter, setNoteFilter] = useState("");
+	const [fromCurrentNote, setFromCurrentNote] = useState(false);
+	const [activeFile, setActiveFile] = useState<TFile | null>(null);
 
 	const filters = {
 		limit,
@@ -41,10 +47,19 @@ export default function useTasks(): UseTasksResult {
 		setStatusFilter,
 		isRecur,
 		setIsRecur,
+		tagFilter,
+		setTagFilter,
+		onlyThisTags,
+		setOnlyThisTags,
+		noteFilter,
+		setNoteFilter,
+		fromCurrentNote,
+		setFromCurrentNote,
 	};
 
 	const app = useApp();
 	const { history } = useHistory();
+	const settings = useSettings();
 
 	if (!app) {
 		setIsTasksParsed("error");
@@ -52,7 +67,7 @@ export default function useTasks(): UseTasksResult {
 		return { tasks, isTasksParsed, updateTask, filters };
 	}
 
-	const { vault } = app;
+	const { vault, workspace } = app;
 
 	/** Update task props and save to vault */
 	async function updateTask(
@@ -152,9 +167,45 @@ export default function useTasks(): UseTasksResult {
 		return toShowTodayTasks;
 	}
 
+	function filterByTag(task: Task): boolean {
+		if (tagFilter.length === 0) {
+			return true;
+		}
+
+		const tags = tagFilter
+			.split(",")
+			.map((tag) => tag.trim())
+			.filter((trimmedTag) => trimmedTag !== "")
+			.map((tag) => "#" + tag);
+
+		if (onlyThisTags) {
+			return tags.every((tag) => task.lineContent.includes(tag));
+		} else {
+			return tags.some((tag) => task.lineContent.includes(tag));
+		}
+	}
+
+	const filterByNote = (task: Task): boolean => {
+		if (fromCurrentNote) {
+			const activeNote = workspace.getActiveFile();
+
+			if (activeNote) {
+				return task.path === activeNote.path;
+			}
+
+			return false;
+		}
+
+		if (noteFilter === "") {
+			return true;
+		}
+
+		return task.path === noteFilter + ".md";
+	};
+
 	async function fetchTasks() {
 		try {
-			const files = await getRawFiles(vault);
+			const files = await getRawFiles(vault, settings);
 
 			const parsedTasks = parseTasks(files);
 			const parsedTaskswithMiddlewares = parseMiddlewares(
@@ -175,31 +226,18 @@ export default function useTasks(): UseTasksResult {
 		}
 	}
 
-	const settings = useSettings();
+	const filterTaskList = (taskList: Task[]) =>
+		taskList
+			.filter(filterByNote)
+			.filter(filterByStatus)
+			.filter(filterByTag)
+			.filter(filterBySearch)
+			.slice(0, limit);
 
-	/**
-	 * Apply default settings on mount.
-	 */
-	useEffect(() => {
-		if (!settings) {
-			return;
-		}
-
-		const { limit, statusFilter, isRecurTasks } = settings;
-
-		if (limit) {
-			setLimit(limit);
-		}
-
-		if (statusFilter) {
-			setStatusFilter(statusFilter);
-		}
-
-		if (isRecurTasks) {
-			setIsRecur(isRecurTasks);
-		}
-	}, []);
-
+	const handleActiveFile = () => {
+		const tFile = workspace.getActiveFile();
+		setActiveFile(tFile);
+	};
 	/**
 	 * Load tasks from sessionStorage and apply filters.
 	 */
@@ -214,19 +252,30 @@ export default function useTasks(): UseTasksResult {
 
 				const todayTasks = getTodayTasks(allRecurringTasks);
 
-				setTasks(
-					todayTasks
-						.filter(filterByStatus)
-						.filter(filterBySearch)
-						.slice(0, limit),
-				);
+				const filteredList = filterTaskList(todayTasks);
+
+				setTasks(filteredList);
 			} else {
-				setTasks(
-					tasks.filter(filterByStatus).filter(filterBySearch).slice(0, limit),
-				);
+				const filteredList = filterTaskList(tasks);
+
+				setTasks(filteredList);
 			}
 		}
-	}, [limit, searchFilter, isRecur, statusFilter, triggerUI]);
+
+		workspace.on("active-leaf-change", handleActiveFile);
+		return () => workspace.off("active-leaf-change", handleActiveFile);
+	}, [
+		limit,
+		searchFilter,
+		isRecur,
+		statusFilter,
+		tagFilter,
+		onlyThisTags,
+		noteFilter,
+		fromCurrentNote,
+		activeFile,
+		triggerUI,
+	]);
 
 	/**
 	 * Fetch tasks from vault on trigger call.
@@ -236,6 +285,46 @@ export default function useTasks(): UseTasksResult {
 
 		vault.on("modify", fetchTasks);
 		return () => vault.off("modify", fetchTasks);
+	}, []);
+
+	/**
+	 * Apply default settings on mount.
+	 */
+	useEffect(() => {
+		if (!settings) {
+			return;
+		}
+
+		const { limit, statusFilter, isRecurTasks, tagFilter, onlyThisTags, noteFilter, fromCurrentNote } =
+			settings;
+
+		if (limit) {
+			setLimit(limit);
+		}
+
+		if (statusFilter) {
+			setStatusFilter(statusFilter);
+		}
+
+		if (isRecurTasks) {
+			setIsRecur(isRecurTasks);
+		}
+
+		if (tagFilter) {
+			setTagFilter(tagFilter);
+		}
+
+		if (onlyThisTags) {
+			setOnlyThisTags(onlyThisTags);
+		}
+
+		if (noteFilter) {
+			setNoteFilter(noteFilter);
+		}
+
+		if (fromCurrentNote) {
+			setFromCurrentNote(fromCurrentNote);
+		}
 	}, []);
 
 	return { tasks, isTasksParsed, updateTask, filters };

@@ -1,9 +1,8 @@
-import React from "react";
 import { useApp, useHistory } from "@hooks";
 import { DifficultyPrice, StatusKeys } from "@hooks/useTasks/consts";
 import { Status, Task } from "@hooks/useTasks/types";
 import { MarkdownView, Notice, WorkspaceLeaf } from "obsidian";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import styles from "./styles.module.css";
 
@@ -80,12 +79,16 @@ export default function TaskItem({ task, updateTask }: Props) {
 			counter: { current: newCurrent, goal },
 		});
 
-		if (newCurrent === goal) {
-			new Notice(`You completed task: '${task.body}'`);
-		}
-
 		if (result === "error") {
 			new Notice("Error during counter update.");
+		}
+
+		new Notice(
+			`${task.body} ${value > 0 ? "increased" : "decreased"} by ${Math.abs(value)}`,
+		);
+
+		if (newCurrent === goal) {
+			new Notice(`You completed task: '${task.body}'`);
 		}
 
 		if (task.difficulty) {
@@ -163,12 +166,14 @@ export default function TaskItem({ task, updateTask }: Props) {
 					<p>
 						{task.counter.current} / {task.counter.goal}
 					</p>
+
 					<button
 						disabled={isCounterLoading}
 						onClick={() => updateCounter(1)}
 					>
 						+
 					</button>
+
 					<button
 						disabled={isCounterLoading}
 						onClick={() => updateCounter(-1)}
