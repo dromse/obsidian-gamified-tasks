@@ -19,7 +19,7 @@ export default function useHistory() {
 	const settings = useSettings();
 
 	const [history, setHistory] = useState<HistoryRow[]>([]);
-	const [balance, setBalance] = useState<number>(0);
+	const [balance, setBalance] = useState(0);
 	const [historyFile, setHistoryFile] = useState<TFile>();
 
 	/** Add history row on top of file */
