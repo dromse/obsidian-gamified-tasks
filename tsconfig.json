@@ -26,5 +26,10 @@
 			"@*": ["src/*"]
 		}
 	},
-	"include": ["**/*.ts", "**/*.tsx"]
+	"include": [
+		"**/*.ts",
+		"**/*.tsx",
+		"./eslint.config.js",
+		"./esbuild.config.mjs"
+	]
 }
