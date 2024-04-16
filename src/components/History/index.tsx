@@ -57,8 +57,9 @@ export default function History() {
 						{page !== totalPages - 1 && (
 							<>
 								<button disabled={true}> ... </button>
+
 								<button
-									onClick={() => setPage(totalPages - 1)}
+									onClick={() => handleClickPage(totalPages - 1)}
 									className={totalPages - 1 === page ? styles.activePage : ""}
 								>
 									{totalPages}
