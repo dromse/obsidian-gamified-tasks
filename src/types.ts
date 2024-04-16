@@ -9,7 +9,7 @@ export type GrindPluginSettings = {
 	pathToDaily: string;
 	dailyFormat: string;
 	useMarkdownLinks: boolean;
-	ignoreList: string[];
+	ignoreList: Array<string>;
 	tagFilter: string;
 	onlyThisTags: boolean;
 	noteFilter: string;

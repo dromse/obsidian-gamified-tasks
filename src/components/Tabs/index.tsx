@@ -3,11 +3,11 @@ import styles from "./styles.module.css";
 
 type Tab = {
 	title: string;
-	view: React.ComponentType<any>;
+	view: React.ComponentType<unknown>;
 };
 
 type Props = {
-	tabs: Tab[];
+	tabs: Array<Tab>;
 };
 
 export default function Tabs({ tabs }: Props) {

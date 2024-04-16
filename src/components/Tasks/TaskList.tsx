@@ -12,7 +12,7 @@ import styles from "./styles.module.css";
 import TaskItem from "./TaskItem";
 
 type Props = {
-	tasks: Task[];
+	tasks: Array<Task>;
 	updateTask: (task: Task, newTask: Task) => void;
 	filters: TaskFilters;
 };

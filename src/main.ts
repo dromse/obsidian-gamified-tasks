@@ -1,10 +1,13 @@
 import { DEFAULT_SETTINGS, GrindConsts } from "@consts";
 import { GrindPluginSettings } from "@types";
-import { Plugin, WorkspaceLeaf, moment } from "obsidian";
+import { moment, Plugin, WorkspaceLeaf } from "obsidian";
 import { MyView, MY_VIEW_TYPE } from "./MyView";
 import GrindSettingTab from "./SettingTab";
 
-const logger = (msg: string) => console.log(`[grind-manager][${moment().format("YYYY-MM-DD|HH:mm")}]: ${msg}`)
+const logger = (msg: string) =>
+	console.log(
+		`[grind-manager][${moment().format("YYYY-MM-DD|HH:mm")}]: ${msg}`,
+	);
 
 export default class GrindPlugin extends Plugin {
 	settings: GrindPluginSettings;
@@ -13,27 +16,11 @@ export default class GrindPlugin extends Plugin {
 		await this.loadSettings();
 
 		this.app.workspace.onLayoutReady(() => {
-			/**
-			 * This is Obsidian Private API.
-			 * It isn't available publically.
-			 * TS is warning about `config` does not exist on type `Vault`.
-			 * But within Obsidian works fine.
-			 * Github Issue Answer: https://github.com/obsidianmd/obsidian-api/issues/163#issuecomment-2049488873
-			 */
-
-			// @ts-ignore
+			// @ts-expect-error: Obsidian Private API.
 			this.settings.useMarkdownLinks = this.app.vault.config.useMarkdownLinks;
 
 			const dailyPlugin =
-				/**
-				 * This is Obsidian Private API.
-				 * It isn't available publically.
-				 * TS is warning about `internalPlugin` does not exist on type `App`.
-				 * But within Obsidian works fine.
-				 * Github Issue Answer: https://github.com/obsidianmd/obsidian-api/issues/163#issuecomment-2049488873
-				 */
-
-				// @ts-ignore
+				// @ts-expect-error: Obsidian Private API.
 				this.app.internalPlugins.getEnabledPluginById("daily-notes");
 
 			if (dailyPlugin) {
@@ -57,7 +44,7 @@ export default class GrindPlugin extends Plugin {
 			this.activateView();
 		});
 
-		logger(`v${this.manifest.version} is loaded.`)
+		logger(`v${this.manifest.version} is loaded.`);
 	}
 
 	async activateView() {
@@ -81,7 +68,7 @@ export default class GrindPlugin extends Plugin {
 	onunload() {
 		sessionStorage.removeItem(GrindConsts.sessionTasks);
 
-		logger(`v${this.manifest.version} is unloaded.`)
+		logger(`v${this.manifest.version} is unloaded.`);
 	}
 
 	async loadSettings() {

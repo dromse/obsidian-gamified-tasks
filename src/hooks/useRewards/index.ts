@@ -17,7 +17,7 @@ export default function useRewards() {
 	const app = useApp();
 	const settings = useSettings();
 
-	const [rewards, setRewards] = useState<Reward[]>([]);
+	const [rewards, setRewards] = useState<Array<Reward>>([]);
 
 	if (!app) {
 		setIsRewardsParsed("error");
@@ -76,10 +76,10 @@ export default function useRewards() {
  * Feature:
  * - You can use `|` like in Ignore to comment things
  */
-function parseRewards(content: string): Reward[] {
+function parseRewards(content: string): Array<Reward> {
 	const lines = getLines(content);
 
-	const splitedLines = lines.reduce((acc, line) => {
+	const splitedLines = lines.reduce<Array<Array<string>>>((acc, line) => {
 		const newLine = line
 			.split("|")
 			.map((item) => item.trim())
@@ -90,7 +90,7 @@ function parseRewards(content: string): Reward[] {
 		}
 
 		return acc;
-	}, [] as string[][]);
+	}, []);
 
 	function isDigitString(line: string) {
 		const digitLineRegex = /^\d+$/;
@@ -98,7 +98,7 @@ function parseRewards(content: string): Reward[] {
 		return digitLineRegex.test(line);
 	}
 
-	const rewards = splitedLines.reduce((acc, line) => {
+	const rewards = splitedLines.reduce<Reward[]>((acc, line) => {
 		if (line.length === 1) {
 			acc.push({
 				title: line[0],
@@ -127,8 +127,10 @@ function parseRewards(content: string): Reward[] {
 				desc: line[2],
 			});
 			return acc;
+		} else {
+			return acc;
 		}
-	}, [] as Reward[]);
+	}, []);
 
-	return rewards as Reward[];
+	return rewards;
 }

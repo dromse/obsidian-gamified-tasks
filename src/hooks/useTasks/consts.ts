@@ -3,9 +3,9 @@ import {
 	completedAt,
 	counter,
 	difficulty,
-	indention,
 	every,
-	status,
+	indention,
+	status
 } from "./middleware";
 import { Difficulty, Middleware, Status } from "./types";
 
@@ -38,7 +38,9 @@ export const DifficultyPrice: Record<Difficulty, number> = {
 /**
  * Array of difficulty keys.
  */
-export const DifficultyKeys = Object.keys(DifficultyPrice) as Difficulty[];
+export const DifficultyKeys = Object.keys(
+	DifficultyPrice,
+) as Array<Difficulty>;
 
 /**
  * Statuses for tasks with markdown values
@@ -74,7 +76,7 @@ export const StatusMarkdown: Record<Status, string> = {
 /**
  * Array of status keys.
  */
-export const StatusKeys = Object.keys(StatusMarkdown) as Status[];
+export const StatusKeys = Object.keys(StatusMarkdown) as Array<Status>;
 
 /**
  * Middlewares used for parsing tasks metadata and stringifying back to markdown line.
@@ -86,7 +88,7 @@ export const StatusKeys = Object.keys(StatusMarkdown) as Status[];
  * Note: The `body` middleware is not necessary for parsing but is included for
  * correct stringification.
  */
-export const middlewares: Middleware[] = [
+export const middlewares: Array<Middleware> = [
 	indention, // Middleware for handling indention
 	status, // Middleware for handling task status
 	body, // Middleware for handling task body content

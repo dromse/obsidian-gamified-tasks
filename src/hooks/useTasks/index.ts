@@ -25,7 +25,7 @@ type UseTasksResult = {
  * Hook for interaction with tasks in current vault
  */
 export default function useTasks(): UseTasksResult {
-	const [tasks, setTasks] = useState<Task[]>([]);
+	const [tasks, setTasks] = useState<Array<Task>>([]);
 	const [isTasksParsed, setIsTasksParsed] = useState<ParseState>("parsing");
 	const [triggerUI, setTriggerUI] = useState(false);
 	const [limit, setLimit] = useState(0);
@@ -160,7 +160,7 @@ export default function useTasks(): UseTasksResult {
 		return isTaskNotAppearInPastDays;
 	}
 
-	function getTodayTasks(tasks: Task[]): Task[] {
+	function getTodayTasks(tasks: Array<Task>): Array<Task> {
 		const toShowTodayTasks = tasks.filter(toShowTodayFilter);
 		toShowTodayTasks.map((task) => resetReccuringTask(task));
 
@@ -226,7 +226,7 @@ export default function useTasks(): UseTasksResult {
 		}
 	}
 
-	const filterTaskList = (taskList: Task[]) =>
+	const filterTaskList = (taskList: Array<Task>) =>
 		taskList
 			.filter(filterByNote)
 			.filter(filterByStatus)

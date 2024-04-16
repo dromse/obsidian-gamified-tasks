@@ -18,7 +18,7 @@ export default function useHistory() {
 	const app = useApp();
 	const settings = useSettings();
 
-	const [history, setHistory] = useState<HistoryRow[]>([]);
+	const [history, setHistory] = useState<Array<HistoryRow>>([]);
 	const [balance, setBalance] = useState(0);
 	const [historyFile, setHistoryFile] = useState<TFile>();
 
@@ -76,7 +76,7 @@ export default function useHistory() {
 }
 
 /** Calculate balance based on history rows and fixed number to 0.00 */
-function calcBalance(history: HistoryRow[]): number {
+function calcBalance(history: Array<HistoryRow>): number {
 	return Number(
 		history.reduce((acc, row) => (acc += row.change), 0).toFixed(2),
 	);
@@ -97,10 +97,10 @@ function currentDate(): string {
  * Parse
  * - Line in file: +1 | do a push up | 2024-01-01 12:00 -> { title: 'do a push up', change: 1, date: "2024-01-01 12:00" }
  */
-export function parseHistory(content: string): HistoryRow[] {
+export function parseHistory(content: string): Array<HistoryRow> {
 	const lines = getLines(content);
 
-	const splitedLines = lines.reduce((acc, line) => {
+	const splitedLines = lines.reduce<Array<Array<string>>>((acc, line) => {
 		const newLine = line
 			.split("|")
 			.map((item) => item.trim())
@@ -111,7 +111,7 @@ export function parseHistory(content: string): HistoryRow[] {
 		}
 
 		return acc;
-	}, [] as string[][]);
+	}, []);
 
 	function isDigitString(line: string) {
 		const digitLineRegex = /^[+-]?\d*\.?\d+$/;
@@ -119,7 +119,7 @@ export function parseHistory(content: string): HistoryRow[] {
 		return digitLineRegex.test(line);
 	}
 
-	const history = splitedLines.reduce((acc, line) => {
+	const history = splitedLines.reduce<Array<HistoryRow>>((acc, line) => {
 		if (line.length === 3 && isDigitString(line[0])) {
 			acc.push({
 				change: Number(line[0]),
@@ -129,7 +129,7 @@ export function parseHistory(content: string): HistoryRow[] {
 		}
 
 		return acc;
-	}, [] as HistoryRow[]);
+	}, []);
 
-	return history as HistoryRow[];
+	return history;
 }

@@ -63,7 +63,7 @@ export const findByRegex = (regex: RegExp, task: Task) => {
 export async function getRawFiles(
 	vault: Vault,
 	settings: GrindPluginSettings | undefined,
-): Promise<RawFile[]> {
+): Promise<Array<RawFile>> {
 	let ignoreList: string[] = [];
 
 	if (settings) {
@@ -90,8 +90,8 @@ export async function getRawFiles(
 }
 
 /** Parse all occurance of task line in `file` content and then returns task list */
-export function parseTasksFromFile(file: RawFile): Task[] {
-	const tasks = file.content.reduce((acc, lineContent, index) => {
+export function parseTasksFromFile(file: RawFile): Array<Task> {
+	const tasks = file.content.reduce<Array<Task>>((acc, lineContent, index) => {
 		const regex = /- \[.\]/;
 
 		if (lineContent.match(regex)) {
@@ -104,7 +104,7 @@ export function parseTasksFromFile(file: RawFile): Task[] {
 		}
 
 		return acc;
-	}, [] as Task[]);
+	}, []);
 
 	return tasks;
 }
@@ -120,7 +120,7 @@ export function parseTasksFromFile(file: RawFile): Task[] {
  * const tasks = parseTasks(files)
  * -> [{ tFile: {...}, completed: false, lineNumber: 0, lineContent: '- [ ] one simple task', body: '- [ ] one simple task' }]
  */
-export function parseTasks(files: RawFile[]): Task[] {
+export function parseTasks(files: Array<RawFile>): Array<Task> {
 	const tasks = files.reduce(
 		(acc, file) => [...acc, ...parseTasksFromFile(file)],
 		[],
@@ -132,7 +132,7 @@ export function parseTasks(files: RawFile[]): Task[] {
 /** Stringify task obj by middlewares */
 export function stringifyMiddlewares(
 	task: Task,
-	middlewares: Middleware[],
+	middlewares: Array<Middleware>,
 	settings: GrindPluginSettings | undefined,
 ): string {
 	const taskString = middlewares.reduce(
@@ -145,8 +145,8 @@ export function stringifyMiddlewares(
 
 /** Iterate through all tasks and parse their middlewares and return new task list  */
 export function parseMiddlewares(
-	tasks: Task[],
-	middlewares: Middleware[],
+	tasks: Array<Task>,
+	middlewares: Array<Middleware>,
 	settings: GrindPluginSettings | undefined,
 ): Task[] {
 	middlewares.forEach(
