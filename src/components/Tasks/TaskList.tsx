@@ -37,7 +37,7 @@ export default function TaskList({ tasks, updateTask, filters }: Props) {
 		setFromCurrentNote,
 	} = filters;
 
-	const [isAccordionOpen, setIsAccordionOpen] = useState(false);
+	const [isMoreFiltersOpen, setIsMoreFiltersOpen] = useState(false);
 
 	return (
 		<div>
@@ -60,14 +60,14 @@ export default function TaskList({ tasks, updateTask, filters }: Props) {
 						<input
 							id="more-filters"
 							type="checkbox"
-							checked={isAccordionOpen}
-							onChange={() => setIsAccordionOpen((prev) => !prev)}
+							checked={isMoreFiltersOpen}
+							onChange={() => setIsMoreFiltersOpen((prev) => !prev)}
 						/>
 
 						<label htmlFor="more-filters">Show more filters?</label>
 					</div>
 
-					{isAccordionOpen && (
+					{isMoreFiltersOpen && (
 						<div
 							style={{
 								display: "flex",
