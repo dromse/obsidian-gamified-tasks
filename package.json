@@ -1,6 +1,7 @@
 {
 	"name": "obsidian-grind-manager",
 	"version": "1.0.2",
+	"type": "module",
 	"description": "Task management with rewards system.",
 	"main": "main.js",
 	"scripts": {
@@ -10,12 +11,14 @@
 		"esbuild": "esbuild main.js --bundle --outfile=build/main.js --format=cjs --external:obsidian",
 		"version": "node version-bump.mjs && git add manifest.json versions.json",
 		"watch": "nodemon --ignore build/ -e ts,tsx,css --exec \"pnpm build\" ",
-		"docs": "typedoc"
+		"docs": "typedoc",
+		"eslint": "eslint"
 	},
 	"keywords": [],
 	"author": "dromse",
 	"license": "MIT",
 	"devDependencies": {
+		"@eslint/js": "^9.0.0",
 		"@types/node": "^16.11.6",
 		"@types/react": "^18.2.64",
 		"@types/react-dom": "^18.2.21",
@@ -24,6 +27,7 @@
 		"builtin-modules": "3.3.0",
 		"esbuild": "latest",
 		"esbuild-css-modules-plugin": "^3.1.0",
+		"eslint": "^9.0.0",
 		"minify": "^11.1.1",
 		"nodemon": "^3.1.0",
 		"obsidian": "latest",
@@ -31,6 +35,7 @@
 		"typedoc": "^0.25.12",
 		"typedoc-plugin-markdown": "^3.17.1",
 		"typescript": "4.7.4",
+		"typescript-eslint": "^7.7.0",
 		"typescript-plugin-css-modules": "^5.1.0"
 	},
 	"dependencies": {
