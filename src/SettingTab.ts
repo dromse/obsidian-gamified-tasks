@@ -144,7 +144,7 @@ export default class GrindSettingTab extends PluginSettingTab {
 
 				text
 					.setPlaceholder(
-						"Input to ignore Folder/, Note.md or Path/to/Note.md",
+						"Input to ignore Folder/, Note or Path/to/Note",
 					)
 					.setValue(this.plugin.settings.ignoreList.join("\n"))
 					.onChange(async (value) => {
