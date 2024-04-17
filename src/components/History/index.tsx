@@ -2,18 +2,18 @@ import { useHistory } from "@/hooks";
 import React, { useState } from "react";
 import styles from "./styles.module.css";
 
-export default function History() {
+export default function History(): React.JSX.Element {
 	const { history, balance, isHistoryParsed } = useHistory();
 	const [page, setPage] = useState(0);
 	const [totalPages, setTotalPages] = useState<number | undefined>(undefined);
 	const [pageInput, setPageInput] = useState(String(page + 1));
 
-	const handleClickPage = (pageIndex: number) => {
+	const handleClickPage = (pageIndex: number): void => {
 		setPage(pageIndex);
 		setPageInput(String(pageIndex + 1));
 	};
 
-	const handleChangeInputPage = (pageInput: string) => {
+	const handleChangeInputPage = (pageInput: string): void => {
 		if (totalPages) {
 			if (
 				pageInput === "" ||

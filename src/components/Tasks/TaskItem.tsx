@@ -17,7 +17,10 @@ type Props = {
 	updateTask: (task: Task, newTask: Task) => unknown;
 };
 
-export default function TaskItem({ task, updateTask }: Props) {
+export default function TaskItem({
+	task,
+	updateTask,
+}: Props): React.JSX.Element {
 	const { addHistoryRow } = useHistory();
 	const app = useApp();
 
@@ -27,18 +30,25 @@ export default function TaskItem({ task, updateTask }: Props) {
 
 	const { workspace, vault } = app;
 
-	const handleUpdateCounter = (value: number) => {
-		updateCounter(task, value, updateTask, addHistoryRow);
-	};
-
-	const handleRevealTask = () => {
-		revealTask(task, workspace, vault);
-	};
-
-	const handleUpdateStatus = (value: string) => {
+	const handleUpdateStatus = (value: string): void => {
 		if (StatusKeys.some((status) => status === value)) {
-			updateStatus(task, value as Status, updateTask, addHistoryRow);
+			updateStatus({
+				task,
+				payload: { status: value as Status },
+				updateTask,
+				addHistoryRow,
+			});
+		} else {
+			new Notice(`[GRIND MANAGER]: Invalid status '${value}'`);
 		}
+	};
+
+	const handleUpdateCounter = (change: number): void => {
+		updateCounter({ task, payload: { change }, updateTask, addHistoryRow });
+	};
+
+	const handleRevealTask = (): void => {
+		revealTask(task, workspace, vault);
 	};
 
 	return (
@@ -70,12 +80,18 @@ export default function TaskItem({ task, updateTask }: Props) {
 	);
 }
 
+type UpdateTaskType<Payload> = {
+	task: Task;
+	payload: Payload;
+	updateTask: Function;
+	addHistoryRow: Function;
+};
 const updateCounter = async (
-	task: Task,
-	value: number,
-	updateTask: Function,
-	addHistoryRow: Function,
-) => {
+	props: UpdateTaskType<{ change: number }>,
+): Promise<void> => {
+	const { task, payload, updateTask, addHistoryRow } = props;
+	const { change } = payload;
+
 	const current = Number(task.counter?.current);
 	const goal = Number(task.counter?.goal);
 
@@ -83,8 +99,8 @@ const updateCounter = async (
 		return;
 	}
 
-	const newCurrent = current + value;
-	const isOutOfScope = (value: number) => value < 0 || value > goal;
+	const newCurrent = current + change;
+	const isOutOfScope = (value: number): boolean => value < 0 || value > goal;
 
 	if (isOutOfScope(newCurrent)) {
 		return;
@@ -101,7 +117,7 @@ const updateCounter = async (
 	}
 
 	new Notice(
-		`${task.body} ${value > 0 ? "increased" : "decreased"} by ${Math.abs(value)}`,
+		`${task.body} ${change > 0 ? "increased" : "decreased"} by ${Math.abs(change)}`,
 	);
 
 	if (newCurrent === goal) {
@@ -111,12 +127,12 @@ const updateCounter = async (
 	if (task.difficulty) {
 		addHistoryRow({
 			title: task.body,
-			change: DifficultyPrice[task.difficulty] * value,
+			change: DifficultyPrice[task.difficulty] * change,
 		});
 	}
 };
 
-const revealTask = (task: Task, workspace: Workspace, vault: Vault) => {
+const revealTask = (task: Task, workspace: Workspace, vault: Vault): void => {
 	const tFile = vault.getFileByPath(task.path);
 
 	if (!tFile) {
@@ -124,14 +140,14 @@ const revealTask = (task: Task, workspace: Workspace, vault: Vault) => {
 		return;
 	}
 
-	const leaves = workspace.getLeavesOfType("markdown") as WorkspaceLeaf[];
+	const leaves = workspace.getLeavesOfType("markdown") as Array<WorkspaceLeaf>;
 
 	/**
 	 * Determines if a MarkdownView instance corresponds to an already opened file by explicitly setting `MarkdownView` for `leaf.view`.
 	 * This is necessary because the `getLeavesOfType` method returns instances of type `View`, lacking the `file` field.
 	 */
-	const isFileOpened = (view: MarkdownView) =>
-		view.file && view.file.path === task.path;
+	const isFileOpened = (view: MarkdownView): boolean =>
+		view.file ? view.file.path === task.path : false;
 
 	/**
 	 * Checks if the file is already open among the given leaves.
@@ -159,11 +175,11 @@ const revealTask = (task: Task, workspace: Workspace, vault: Vault) => {
 };
 
 async function updateStatus(
-	task: Task,
-	status: Status,
-	updateTask: Function,
-	addHistoryRow: Function,
-) {
+	props: UpdateTaskType<{ status: Status }>,
+): Promise<void> {
+	const { task, payload, updateTask, addHistoryRow } = props;
+	const { status } = payload;
+
 	await updateTask(task, { ...task, status });
 
 	if (task.counter) {

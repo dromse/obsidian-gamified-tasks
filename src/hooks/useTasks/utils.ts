@@ -5,7 +5,7 @@ import { moment, Vault } from "obsidian";
 import { Middleware, Task } from "./types";
 
 /** Cleans task body from founded metadata */
-export const cleanBody = (regex: RegExp, task: Task) => {
+export const cleanBody = (regex: RegExp, task: Task): string => {
 	const removeWithSpace = new RegExp(regex.source + /\s?/.source);
 
 	const newBody = task.body.replace(removeWithSpace, "").trim();
@@ -14,7 +14,7 @@ export const cleanBody = (regex: RegExp, task: Task) => {
 };
 
 /** Generate an array of past dates starting from the current date. */
-export function generatePastDaysArray(numDays: number) {
+export function generatePastDaysArray(numDays: number): Array<String> {
 	// Get current date
 	const currentDate = moment();
 
@@ -40,7 +40,7 @@ export function generatePastDaysArray(numDays: number) {
  * @param {string} str - The input string containing a numeric value followed by "day" or "week".
  * @returns The extracted numeric value, or null if no match is found.
  */
-export function getAmountOfPastDays(str: string) {
+export function getAmountOfPastDays(str: string): number | null {
 	const regex = /^(\d+)?(day|week)$/;
 
 	const match = str.match(regex);
@@ -54,7 +54,10 @@ export function getAmountOfPastDays(str: string) {
 }
 
 /** Find metadata in a task object  */
-export const findByRegex = (regex: RegExp, task: Task) => {
+export const findByRegex = (
+	regex: RegExp,
+	task: Task,
+): RegExpMatchArray | null => {
 	const match = task.body.match(regex);
 	return match;
 };
@@ -64,7 +67,7 @@ export async function getRawFiles(
 	vault: Vault,
 	settings: GrindPluginSettings | undefined,
 ): Promise<Array<RawFile>> {
-	let ignoreList: string[] = [];
+	let ignoreList: Array<string> = [];
 
 	if (settings) {
 		ignoreList = [...settings.ignoreList];
@@ -148,7 +151,7 @@ export function parseMiddlewares(
 	tasks: Array<Task>,
 	middlewares: Array<Middleware>,
 	settings: GrindPluginSettings | undefined,
-): Task[] {
+): Array<Task> {
 	middlewares.forEach(
 		(middleware) =>
 			(tasks = tasks.map((task) => middleware.parse(task, settings))),

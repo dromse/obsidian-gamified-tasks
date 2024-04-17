@@ -2,7 +2,7 @@ import { moment, TFile } from "obsidian";
 import { useEffect, useState } from "react";
 import { useApp, useSettings } from "..";
 import { ParseState } from "../types";
-import { getLines } from "../utils";
+import { getLines, isDigitString } from "../utils";
 
 export type HistoryRow = {
 	title: string;
@@ -10,8 +10,20 @@ export type HistoryRow = {
 	date: string;
 };
 
+type AddHistoryRowType = {
+	change: number;
+	title: string;
+};
+
+type UseHistoryReturn = {
+	history: Array<HistoryRow>;
+	balance: number;
+	isHistoryParsed: ParseState;
+	addHistoryRow: ({ change, title }: AddHistoryRowType) => Promise<void>;
+};
+
 /** Hook for interacting with history list */
-export default function useHistory() {
+export default function useHistory(): UseHistoryReturn {
 	const [isHistoryParsed, setIsHistoryParsed] =
 		useState<ParseState>("parsing");
 
@@ -26,10 +38,7 @@ export default function useHistory() {
 	async function addHistoryRow({
 		change,
 		title,
-	}: {
-		change: number;
-		title: string;
-	}) {
+	}: AddHistoryRowType): Promise<void> {
 		const rowStr = `${change} | ${title} | ${currentDate()}\n`;
 
 		if (historyFile) {
@@ -46,7 +55,7 @@ export default function useHistory() {
 
 	const { vault } = app;
 
-	async function fetchHistory() {
+	async function fetchHistory(): Promise<void> {
 		if (settings) {
 			const tFile = vault.getFileByPath(settings.pathToHistory);
 
@@ -113,11 +122,6 @@ export function parseHistory(content: string): Array<HistoryRow> {
 		return acc;
 	}, []);
 
-	function isDigitString(line: string) {
-		const digitLineRegex = /^[+-]?\d*\.?\d+$/;
-
-		return digitLineRegex.test(line);
-	}
 
 	const history = splitedLines.reduce<Array<HistoryRow>>((acc, line) => {
 		if (line.length === 3 && isDigitString(line[0])) {

@@ -3,7 +3,7 @@ import { useHistory, useRewards } from "@hooks";
 import { Notice } from "obsidian";
 import styles from "./styles.module.css";
 
-export default function Rewards() {
+export default function Rewards(): React.JSX.Element {
 	const { rewards, isRewardsParsed } = useRewards();
 	const { balance, isHistoryParsed, addHistoryRow } = useHistory();
 

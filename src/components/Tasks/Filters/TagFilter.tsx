@@ -13,7 +13,7 @@ export default function TagFilter({
 	setTagFilter,
 	onlyThisTags,
 	setOnlyThisTags,
-}: Props) {
+}: Props): React.JSX.Element {
 	return (
 		<div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
 			<label htmlFor="tags">Tags:</label>

@@ -8,7 +8,7 @@ type Props = {
 export default function SearchFilter({
 	searchFilter,
 	setSearchFilter,
-}: Props) {
+}: Props): React.JSX.Element {
 	return (
 		<input
 			type="text"

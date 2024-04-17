@@ -10,7 +10,7 @@ type Props = {
 	tabs: Array<Tab>;
 };
 
-export default function Tabs({ tabs }: Props) {
+export default function Tabs({ tabs }: Props): React.JSX.Element {
 	const [activeTab, setActiveTab] = useState<Tab>(tabs[0]);
 
 	return (

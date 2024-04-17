@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import { GrindPluginSettings } from "@types";
 import { ItemView, WorkspaceLeaf } from "obsidian";
 import { createRoot, Root } from "react-dom/client";
@@ -14,18 +14,18 @@ export class MyView extends ItemView {
 	constructor(leaf: WorkspaceLeaf, settings: GrindPluginSettings) {
 		super(leaf);
 		this.pluginSettings = settings;
-		this.icon = 'list-todo'
+		this.icon = "list-todo";
 	}
 
-	getViewType() {
+	getViewType(): string {
 		return MY_VIEW_TYPE;
 	}
 
-	getDisplayText() {
+	getDisplayText(): string {
 		return "Grind View";
 	}
 
-	async onOpen() {
+	async onOpen(): Promise<void> {
 		this.root = createRoot(this.containerEl.children[1]);
 
 		this.root.render(
@@ -39,7 +39,7 @@ export class MyView extends ItemView {
 		);
 	}
 
-	async onClose() {
+	async onClose(): Promise<void> {
 		this.root?.unmount();
 	}
 }

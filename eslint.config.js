@@ -1,10 +1,8 @@
-import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
 const __dirname = import.meta.dirname;
 
 export default tseslint.config(
-	// { ignores: ["**/build/**"] },
-	eslint.configs.recommended,
+	// eslint.configs.recommended,
 	{
 		plugins: {
 			"@typescript-eslint": tseslint.plugin,
@@ -16,13 +14,19 @@ export default tseslint.config(
 				tsconfigRootDir: __dirname,
 			},
 		},
+		files: ["src/**/*.{ts,tsx}"],
 		rules: {
-			// "@typescript-eslint/no-unsafe-argument": "error",
-			// "@typescript-eslint/no-unsafe-assignment": "error",
-			// "@typescript-eslint/no-unsafe-call": "error",
-			// "@typescript-eslint/no-unsafe-member-access": "error",
-			// "@typescript-eslint/no-unsafe-return": "error",
+			"max-params": "error",
+			"@typescript-eslint/ban-ts-comment": [
+				"error",
+				{ "ts-expect-error": "allow-with-description" },
+			],
+			"@typescript-eslint/consistent-type-definitions": ["error", "type"],
+			"@typescript-eslint/array-type": ["error", { default: "generic" }],
+			"@typescript-eslint/switch-exhaustiveness-check": "error",
 			"@typescript-eslint/explicit-function-return-type": "error",
 		},
 	},
+
+	{ ignores: ["build/"] },
 );

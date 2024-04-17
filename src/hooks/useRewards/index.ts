@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useApp, useSettings } from "..";
 import { ParseState } from "../types";
-import { getLines } from "../utils";
+import { getLines, isDigitString } from "../utils";
 
 type Reward = {
 	title: string;
@@ -9,8 +9,13 @@ type Reward = {
 	desc?: string;
 };
 
+type UseRewardsReturn = {
+	rewards: Array<Reward>;
+	isRewardsParsed: ParseState;
+};
+
 /** Hook for interacting with rewards list */
-export default function useRewards() {
+export default function useRewards(): UseRewardsReturn {
 	const [isRewardsParsed, setIsRewardsParsed] =
 		useState<ParseState>("parsing");
 
@@ -27,7 +32,7 @@ export default function useRewards() {
 
 	const { vault } = app;
 
-	async function fetchRewards() {
+	async function fetchRewards(): Promise<void> {
 		if (!settings) {
 			return;
 		}
@@ -92,13 +97,7 @@ function parseRewards(content: string): Array<Reward> {
 		return acc;
 	}, []);
 
-	function isDigitString(line: string) {
-		const digitLineRegex = /^\d+$/;
-
-		return digitLineRegex.test(line);
-	}
-
-	const rewards = splitedLines.reduce<Reward[]>((acc, line) => {
+	const rewards = splitedLines.reduce<Array<Reward>>((acc, line) => {
 		if (line.length === 1) {
 			acc.push({
 				title: line[0],

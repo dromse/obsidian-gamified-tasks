@@ -15,7 +15,7 @@ import {
 } from "./utils";
 
 type UseTasksResult = {
-	tasks: Task[];
+	tasks: Array<Task>;
 	isTasksParsed: ParseState;
 	updateTask: (task: Task, newTask: Task) => void;
 	filters: TaskFilters;
@@ -114,10 +114,7 @@ export default function useTasks(): UseTasksResult {
 		return false;
 	};
 
-	const filterByRecurrance = (task: Task): boolean =>
-		task.every ? true : false;
-
-	function resetReccuringTask(task: Task) {
+	function resetReccuringTask(task: Task): void {
 		const newTask = { ...task };
 		if (task.status === "done") {
 			newTask.status = "todo";
@@ -203,7 +200,7 @@ export default function useTasks(): UseTasksResult {
 		return task.path === noteFilter + ".md";
 	};
 
-	async function fetchTasks() {
+	async function fetchTasks(): Promise<void> {
 		try {
 			const files = await getRawFiles(vault, settings);
 
@@ -226,7 +223,7 @@ export default function useTasks(): UseTasksResult {
 		}
 	}
 
-	const filterTaskList = (taskList: Array<Task>) =>
+	const filterTaskList = (taskList: Array<Task>): Array<Task> =>
 		taskList
 			.filter(filterByNote)
 			.filter(filterByStatus)
@@ -234,7 +231,7 @@ export default function useTasks(): UseTasksResult {
 			.filter(filterBySearch)
 			.slice(0, limit);
 
-	const handleActiveFile = () => {
+	const handleActiveFile = (): void => {
 		const tFile = workspace.getActiveFile();
 		setActiveFile(tFile);
 	};
@@ -245,7 +242,7 @@ export default function useTasks(): UseTasksResult {
 		const tasksJSON = sessionStorage.getItem(GrindConsts.sessionTasks);
 
 		if (tasksJSON) {
-			const tasks: Task[] = JSON.parse(tasksJSON);
+			const tasks: Array<Task> = JSON.parse(tasksJSON);
 
 			if (isRecur) {
 				const allRecurringTasks = tasks.filter(filterByRecurrance);
@@ -295,8 +292,15 @@ export default function useTasks(): UseTasksResult {
 			return;
 		}
 
-		const { limit, statusFilter, isRecurTasks, tagFilter, onlyThisTags, noteFilter, fromCurrentNote } =
-			settings;
+		const {
+			limit,
+			statusFilter,
+			isRecurTasks,
+			tagFilter,
+			onlyThisTags,
+			noteFilter,
+			fromCurrentNote,
+		} = settings;
 
 		if (limit) {
 			setLimit(limit);
@@ -329,3 +333,6 @@ export default function useTasks(): UseTasksResult {
 
 	return { tasks, isTasksParsed, updateTask, filters };
 }
+
+const filterByRecurrance = (task: Task): boolean =>
+	task.every ? true : false;

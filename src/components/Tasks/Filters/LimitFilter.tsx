@@ -5,7 +5,10 @@ type Props = {
 	setLimit: Function;
 };
 
-export default function LimitFilter({ limit, setLimit }: Props) {
+export default function LimitFilter({
+	limit,
+	setLimit,
+}: Props): React.JSX.Element {
 	return (
 		<div>
 			<label htmlFor="limit">Limit:</label>
@@ -13,7 +16,7 @@ export default function LimitFilter({ limit, setLimit }: Props) {
 				type="number"
 				name="limit"
 				id="limit"
-				style={{ width: '100%' }}
+				style={{ width: "100%" }}
 				placeholder="Task to show"
 				value={limit ? limit : ""}
 				onChange={(e) =>

@@ -2,7 +2,7 @@ import React from "react";
 import { useTasks } from "../../hooks";
 import TaskList from "./TaskList";
 
-export default function Tasks() {
+export default function Tasks(): React.JSX.Element {
 	const { tasks, isTasksParsed, updateTask, filters } = useTasks();
 
 	if (isTasksParsed === "parsing") {

@@ -4,7 +4,7 @@ import { moment, Plugin, WorkspaceLeaf } from "obsidian";
 import { MyView, MY_VIEW_TYPE } from "./MyView";
 import GrindSettingTab from "./SettingTab";
 
-const logger = (msg: string) =>
+const logger = (msg: string): void =>
 	console.log(
 		`[grind-manager][${moment().format("YYYY-MM-DD|HH:mm")}]: ${msg}`,
 	);
@@ -12,7 +12,7 @@ const logger = (msg: string) =>
 export default class GrindPlugin extends Plugin {
 	settings: GrindPluginSettings;
 
-	async onload() {
+	async onload(): Promise<void> {
 		await this.loadSettings();
 
 		this.app.workspace.onLayoutReady(() => {
@@ -47,7 +47,7 @@ export default class GrindPlugin extends Plugin {
 		logger(`v${this.manifest.version} is loaded.`);
 	}
 
-	async activateView() {
+	async activateView(): Promise<void> {
 		const { workspace } = this.app;
 
 		let leaf: WorkspaceLeaf | null = null;
@@ -65,17 +65,17 @@ export default class GrindPlugin extends Plugin {
 		}
 	}
 
-	onunload() {
+	onunload(): void {
 		sessionStorage.removeItem(GrindConsts.sessionTasks);
 
 		logger(`v${this.manifest.version} is unloaded.`);
 	}
 
-	async loadSettings() {
+	async loadSettings(): Promise<void> {
 		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
 	}
 
-	async saveSettings() {
+	async saveSettings(): Promise<void> {
 		await this.saveData(this.settings);
 	}
 }

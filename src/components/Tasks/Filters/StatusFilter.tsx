@@ -12,7 +12,7 @@ type Props = {
 export default function StatusFilter({
 	currentStatusFilter,
 	setCurrentStatusFilter,
-}: Props) {
+}: Props): React.JSX.Element {
 	return (
 		<div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
 			<select

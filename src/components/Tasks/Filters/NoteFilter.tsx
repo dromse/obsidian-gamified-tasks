@@ -13,10 +13,10 @@ export default function TagFilter({
 	setNoteFilter,
 	fromCurrentNote,
 	setFromCurrentNote,
-}: Props) {
+}: Props): React.JSX.Element {
 	const [inputValue, setInputValue] = useState(noteFilter);
 
-	const handleClick = () => {
+	const handleClick = (): void => {
 		setNoteFilter(inputValue);
 	};
 
