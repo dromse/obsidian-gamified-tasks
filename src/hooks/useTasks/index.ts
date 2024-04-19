@@ -112,19 +112,20 @@ export default function useTasks(): UseTasksResult {
 
 	function resetReccuringTask(task: Task): void {
 		const newTask = { ...task };
+
 		if (task.status === "done") {
 			newTask.status = "todo";
-		}
 
-		if (task.counter) {
-			if (task.counter.current === task.counter.goal) {
-				const { goal } = task.counter;
+			if (task.counter) {
+				if (task.counter.current === task.counter.goal) {
+					const { goal } = task.counter;
 
-				newTask.counter = { current: 0, goal };
+					newTask.counter = { current: 0, goal };
+				}
 			}
-		}
 
-		updateTask(task, newTask);
+			updateTask(task, newTask);
+		}
 	}
 
 	function toShowTodayFilter(task: Task): boolean {
