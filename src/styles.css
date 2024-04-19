@@ -31,3 +31,7 @@ If your plugin does not need CSS, delete this file.
 .workspace-leaf > [data-type="grind-manager-view"] {
 	container-type: size;
 }
+
+[data-type="grind-manager-view"] > .view-content {
+	padding: 5px;
+}

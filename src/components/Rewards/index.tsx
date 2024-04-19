@@ -1,6 +1,6 @@
-import React from 'react'
 import { useHistory, useRewards } from "@hooks";
 import { Notice } from "obsidian";
+import React from "react";
 import styles from "./styles.module.css";
 
 export default function Rewards(): React.JSX.Element {
@@ -14,8 +14,6 @@ export default function Rewards(): React.JSX.Element {
 	if (isRewardsParsed === "parsed") {
 		return (
 			<div>
-				<h2>Rewards</h2>
-
 				<h3>Balance: {balance} coins</h3>
 
 				<ul className={`list ${styles.list}`}>

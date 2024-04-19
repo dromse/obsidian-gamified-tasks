@@ -12,8 +12,6 @@ export default function Tasks(): React.JSX.Element {
 	if (isTasksParsed === "parsed") {
 		return (
 			<div>
-				<h2>Tasks</h2>
-
 				<TaskList
 					tasks={tasks}
 					updateTask={updateTask}

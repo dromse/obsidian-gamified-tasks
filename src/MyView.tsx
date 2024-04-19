@@ -1,6 +1,6 @@
-import React from "react";
 import { GrindPluginSettings } from "@types";
 import { ItemView, WorkspaceLeaf } from "obsidian";
+import React from "react";
 import { createRoot, Root } from "react-dom/client";
 import { GrindApp } from "./components/GrindApp";
 import { AppContext, SettingsContext } from "./context";
@@ -22,7 +22,7 @@ export class MyView extends ItemView {
 	}
 
 	getDisplayText(): string {
-		return "Grind View";
+		return "Grind Manager";
 	}
 
 	async onOpen(): Promise<void> {
@@ -31,8 +31,6 @@ export class MyView extends ItemView {
 		this.root.render(
 			<AppContext.Provider value={this.app}>
 				<SettingsContext.Provider value={this.pluginSettings}>
-					<h1>Grind Manager</h1>
-
 					<GrindApp />
 				</SettingsContext.Provider>
 			</AppContext.Provider>,

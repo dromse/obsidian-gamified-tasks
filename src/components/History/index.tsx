@@ -33,12 +33,11 @@ export default function History(): React.JSX.Element {
 	}
 
 	if (isHistoryParsed === "parsed") {
-		if (typeof totalPages === 'number') {
+		if (typeof totalPages === "number") {
 			const historyPages = Array.from({ length: totalPages }, (_, i) => i);
 
 			return (
 				<div>
-					<h2>History</h2>
 					<h3>Balance: {balance} coins</h3>
 
 					<div className={styles.pageList}>
