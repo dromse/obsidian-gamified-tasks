@@ -1,6 +1,6 @@
 import { StatusKeys, StatusMarkdown } from "../consts";
 import { Middleware, Status, Task } from "../types";
-import { cleanBody, findByRegex } from "../utils";
+import { cleanBody, findByRegex } from "@utils/middleware";
 
 const parse = (task: Task): Task => {
 	const regex = /- \[(.)\]/;

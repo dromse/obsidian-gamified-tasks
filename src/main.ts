@@ -1,13 +1,9 @@
 import { DEFAULT_SETTINGS, GrindConsts } from "@consts";
 import { GrindPluginSettings } from "@types";
-import { moment, Plugin, WorkspaceLeaf } from "obsidian";
+import { logger } from "@utils/logger";
+import { Plugin, WorkspaceLeaf } from "obsidian";
 import { MyView, MY_VIEW_TYPE } from "./MyView";
 import GrindSettingTab from "./SettingTab";
-
-const logger = (msg: string): void =>
-	console.log(
-		`[grind-manager][${moment().format("YYYY-MM-DD|HH:mm")}]: ${msg}`,
-	);
 
 export default class GrindPlugin extends Plugin {
 	settings: GrindPluginSettings;

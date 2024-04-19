@@ -10,14 +10,18 @@ type Props = {
 	tabs: Array<Tab>;
 };
 
-export default function Tabs({ tabs }: Props): React.JSX.Element {
+export default function Tabs(props: Props): React.JSX.Element {
+	const { tabs } = props;
 	const [activeTab, setActiveTab] = useState<Tab>(tabs[0]);
 
 	return (
 		<div>
 			<ul className={styles.tabs}>
 				{tabs.map((tab) => (
-					<li className="list-item" key={tab.title}>
+					<li
+						className="list-item"
+						key={tab.title}
+					>
 						<button
 							className={`${tab.title === activeTab.title ? styles.active : ""}`}
 							onClick={() => setActiveTab(tab)}

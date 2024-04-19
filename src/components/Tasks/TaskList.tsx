@@ -17,7 +17,9 @@ type Props = {
 	filters: TaskFilters;
 };
 
-export default function TaskList({ tasks, updateTask, filters }: Props): React.JSX.Element {
+export default function TaskList(props: Props): React.JSX.Element {
+	const { tasks, updateTask, filters } = props;
+
 	const {
 		limit,
 		setLimit,

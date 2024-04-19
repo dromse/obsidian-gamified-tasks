@@ -1,5 +1,5 @@
 import { Middleware, Task } from "../types";
-import { cleanBody, findByRegex } from "../utils";
+import { cleanBody, findByRegex } from "@utils/middleware";
 
 const parse = (task: Task): Task => {
 	const regex = /#every\/(\w+)/;

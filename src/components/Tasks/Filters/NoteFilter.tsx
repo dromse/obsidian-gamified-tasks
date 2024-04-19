@@ -8,12 +8,10 @@ type Props = {
 	setFromCurrentNote: Function;
 };
 
-export default function TagFilter({
-	noteFilter,
-	setNoteFilter,
-	fromCurrentNote,
-	setFromCurrentNote,
-}: Props): React.JSX.Element {
+export default function TagFilter(props: Props): React.JSX.Element {
+	const { noteFilter, setNoteFilter, fromCurrentNote, setFromCurrentNote } =
+		props;
+
 	const [inputValue, setInputValue] = useState(noteFilter);
 
 	const handleClick = (): void => {

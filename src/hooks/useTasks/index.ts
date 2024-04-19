@@ -1,18 +1,14 @@
 import { GrindConsts } from "@consts";
+import { generatePastDaysArray, getAmountOfPastDays } from "@utils/date";
+import { getRawFiles } from "@utils/file";
+import { parseMiddlewares, stringifyMiddlewares } from "@utils/middleware";
+import { parseTasks } from "@utils/task";
 import { TFile } from "obsidian";
 import { useEffect, useState } from "react";
 import { useApp, useHistory, useSettings } from "..";
 import { ParseState } from "../types";
 import { middlewares } from "./consts";
 import { StatusFilterOption, Task, TaskFilters } from "./types";
-import {
-	generatePastDaysArray,
-	getAmountOfPastDays,
-	getRawFiles,
-	parseMiddlewares,
-	parseTasks,
-	stringifyMiddlewares,
-} from "./utils";
 
 type UseTasksResult = {
 	tasks: Array<Task>;

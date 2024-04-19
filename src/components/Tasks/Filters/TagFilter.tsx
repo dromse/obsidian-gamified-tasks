@@ -8,12 +8,9 @@ type Props = {
 	setOnlyThisTags: Function;
 };
 
-export default function TagFilter({
-	tagFilter,
-	setTagFilter,
-	onlyThisTags,
-	setOnlyThisTags,
-}: Props): React.JSX.Element {
+export default function TagFilter(props: Props): React.JSX.Element {
+	const { tagFilter, setTagFilter, onlyThisTags, setOnlyThisTags } = props;
+
 	return (
 		<div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
 			<label htmlFor="tags">Tags:</label>

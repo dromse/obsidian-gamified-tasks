@@ -1,7 +1,7 @@
 import { GrindPluginSettings } from "@types";
+import { cleanBody, findByRegex } from "@utils/middleware";
 import { moment } from "obsidian";
 import { Middleware, Task } from "../types";
-import { cleanBody, findByRegex } from "../utils";
 
 const parse = (task: Task, settings: GrindPluginSettings): Task => {
 	// By default parse WikiLink

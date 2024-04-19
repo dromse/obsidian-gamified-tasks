@@ -1,12 +1,13 @@
 import { useApp, useHistory } from "@hooks";
 import { DifficultyPrice, StatusKeys } from "@hooks/useTasks/consts";
 import { Status, Task } from "@hooks/useTasks/types";
+import { logger, loggerMsg } from "@utils/logger";
 import {
 	MarkdownView,
 	Notice,
 	Vault,
 	Workspace,
-	WorkspaceLeaf
+	WorkspaceLeaf,
 } from "obsidian";
 import React from "react";
 
@@ -17,12 +18,11 @@ type Props = {
 	updateTask: (task: Task, newTask: Task) => unknown;
 };
 
-export default function TaskItem({
-	task,
-	updateTask,
-}: Props): React.JSX.Element {
-	const { addHistoryRow } = useHistory();
+export default function TaskItem(props: Props): React.JSX.Element {
+	const { task, updateTask } = props;
+	const [isButtonBlocked, setIsButtonBlocked] = React.useState(false);
 	const app = useApp();
+	const { addHistoryRow } = useHistory();
 
 	if (!app) {
 		return <div>Error: App is not defined.</div>;
@@ -39,16 +39,30 @@ export default function TaskItem({
 				addHistoryRow,
 			});
 		} else {
-			new Notice(`[GRIND MANAGER]: Invalid status '${value}'`);
+			new Notice(loggerMsg(`Invalid status '${value}'`));
 		}
 	};
 
-	const handleUpdateCounter = (change: number): void => {
-		updateCounter({ task, payload: { change }, updateTask, addHistoryRow });
+	const handleUpdateCounter = async (change: number): Promise<void> => {
+		try {
+			setIsButtonBlocked(true);
+
+			await updateCounter({
+				task,
+				payload: { change },
+				updateTask,
+				addHistoryRow,
+			});
+		} catch (err) {
+			logger(err);
+			new Notice(loggerMsg(err));
+		} finally {
+			setIsButtonBlocked(false);
+		}
 	};
 
 	const handleRevealTask = (): void => {
-		revealTask(task, workspace, vault);
+		revealTask({ task, workspace, vault });
 	};
 
 	return (
@@ -71,23 +85,33 @@ export default function TaskItem({
 						{task.counter.current} / {task.counter.goal}
 					</p>
 
-					<button onClick={() => handleUpdateCounter(1)}>+</button>
+					<button
+						onClick={() => handleUpdateCounter(1)}
+						disabled={isButtonBlocked}
+					>
+						+
+					</button>
 
-					<button onClick={() => handleUpdateCounter(-1)}>-</button>
+					<button
+						onClick={() => handleUpdateCounter(-1)}
+						disabled={isButtonBlocked}
+					>
+						-
+					</button>
 				</div>
 			)}
 		</li>
 	);
 }
 
-type UpdateTaskType<Payload> = {
+type UpdateTaskProps<Payload> = {
 	task: Task;
 	payload: Payload;
 	updateTask: Function;
 	addHistoryRow: Function;
 };
 const updateCounter = async (
-	props: UpdateTaskType<{ change: number }>,
+	props: UpdateTaskProps<{ change: number }>,
 ): Promise<void> => {
 	const { task, payload, updateTask, addHistoryRow } = props;
 	const { change } = payload;
@@ -125,14 +149,53 @@ const updateCounter = async (
 	}
 
 	if (task.difficulty) {
-		addHistoryRow({
+		await addHistoryRow({
 			title: task.body,
 			change: DifficultyPrice[task.difficulty] * change,
 		});
 	}
 };
 
-const revealTask = (task: Task, workspace: Workspace, vault: Vault): void => {
+async function updateStatus(
+	props: UpdateTaskProps<{ status: Status }>,
+): Promise<void> {
+	const { task, payload, updateTask, addHistoryRow } = props;
+	const { status } = payload;
+
+	await updateTask(task, { ...task, status });
+
+	if (task.counter) {
+		return;
+	}
+
+	if (!task.difficulty) {
+		return;
+	}
+
+	if (status === "done") {
+		await addHistoryRow({
+			title: task.body,
+			change: DifficultyPrice[task.difficulty],
+		});
+
+		new Notice(`You completed task: '${task.body}'`);
+	}
+
+	if (task.status === "done" && status !== "done") {
+		await addHistoryRow({
+			title: task.body,
+			change: -DifficultyPrice[task.difficulty],
+		});
+	}
+}
+
+type RevealTaskProps = {
+	task: Task;
+	workspace: Workspace;
+	vault: Vault;
+};
+const revealTask = (props: RevealTaskProps): void => {
+	const { task, workspace, vault } = props;
 	const tFile = vault.getFileByPath(task.path);
 
 	if (!tFile) {
@@ -173,36 +236,3 @@ const revealTask = (task: Task, workspace: Workspace, vault: Vault): void => {
 		});
 	}
 };
-
-async function updateStatus(
-	props: UpdateTaskType<{ status: Status }>,
-): Promise<void> {
-	const { task, payload, updateTask, addHistoryRow } = props;
-	const { status } = payload;
-
-	await updateTask(task, { ...task, status });
-
-	if (task.counter) {
-		return;
-	}
-
-	if (!task.difficulty) {
-		return;
-	}
-
-	if (status === "done") {
-		addHistoryRow({
-			title: task.body,
-			change: DifficultyPrice[task.difficulty],
-		});
-
-		new Notice(`You completed task: '${task.body}'`);
-	}
-
-	if (task.status === "done" && status !== "done") {
-		addHistoryRow({
-			title: task.body,
-			change: -DifficultyPrice[task.difficulty],
-		});
-	}
-}

@@ -4,7 +4,9 @@ import styles from "../styles.module.css";
 
 type Props = { isRecur: boolean; setIsRecur: Function };
 
-export default function RecurFilter({ isRecur, setIsRecur }: Props): React.JSX.Element {
+export default function RecurFilter(props: Props): React.JSX.Element {
+	const { isRecur, setIsRecur } = props;
+
 	return (
 		<div className={styles.checkbox}>
 			<input

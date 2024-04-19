@@ -1,7 +1,7 @@
 import { DEFAULT_SETTINGS } from "@consts";
 import { StatusKeys } from "@hooks/useTasks/consts";
 import { StatusFilterOption } from "@hooks/useTasks/types";
-import { getLines } from "@hooks/utils";
+import { getLines } from "@utils/file";
 import { App, PluginSettingTab, Setting } from "obsidian";
 import GrindPlugin from "./main";
 

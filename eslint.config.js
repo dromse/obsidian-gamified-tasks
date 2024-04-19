@@ -25,6 +25,13 @@ export default tseslint.config(
 			"@typescript-eslint/array-type": ["error", { default: "generic" }],
 			"@typescript-eslint/switch-exhaustiveness-check": "error",
 			"@typescript-eslint/explicit-function-return-type": "error",
+			"no-restricted-syntax": [
+				"error",
+				{
+					selector: "TSEnumDeclaration",
+					message: "Use const assertion or a string union type instead.",
+				},
+			],
 		},
 	},
 

@@ -1,7 +1,8 @@
+import { isDigitString } from "@utils/check";
+import { getLines } from "@utils/file";
 import { useEffect, useState } from "react";
 import { useApp, useSettings } from "..";
 import { ParseState } from "../types";
-import { getLines, isDigitString } from "../utils";
 
 type Reward = {
 	title: string;

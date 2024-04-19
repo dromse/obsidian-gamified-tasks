@@ -9,10 +9,9 @@ type Props = {
 	setCurrentStatusFilter: Function;
 };
 
-export default function StatusFilter({
-	currentStatusFilter,
-	setCurrentStatusFilter,
-}: Props): React.JSX.Element {
+export default function StatusFilter(props: Props): React.JSX.Element {
+	const { currentStatusFilter, setCurrentStatusFilter } = props;
+
 	return (
 		<div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
 			<select

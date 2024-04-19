@@ -5,10 +5,9 @@ type Props = {
 	setSearchFilter: Function;
 };
 
-export default function SearchFilter({
-	searchFilter,
-	setSearchFilter,
-}: Props): React.JSX.Element {
+export default function SearchFilter(props: Props): React.JSX.Element {
+	const { searchFilter, setSearchFilter } = props;
+
 	return (
 		<input
 			type="text"

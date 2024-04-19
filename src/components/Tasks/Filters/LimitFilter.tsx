@@ -5,10 +5,9 @@ type Props = {
 	setLimit: Function;
 };
 
-export default function LimitFilter({
-	limit,
-	setLimit,
-}: Props): React.JSX.Element {
+export default function LimitFilter(props: Props): React.JSX.Element {
+	const { limit, setLimit } = props;
+
 	return (
 		<div>
 			<label htmlFor="limit">Limit:</label>
