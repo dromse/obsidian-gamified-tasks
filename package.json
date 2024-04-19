@@ -27,7 +27,6 @@
 		"builtin-modules": "3.3.0",
 		"esbuild": "latest",
 		"esbuild-css-modules-plugin": "^3.1.0",
-		"eslint": "^9.0.0",
 		"minify": "^11.1.1",
 		"nodemon": "^3.1.0",
 		"obsidian": "latest",
