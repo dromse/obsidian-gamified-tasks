@@ -32,6 +32,25 @@ export default tseslint.config(
 					message: "Use const assertion or a string union type instead.",
 				},
 			],
+			"@typescript-eslint/naming-convention": [
+				"error",
+				{
+					selector: "typeAlias",
+					format: ["PascalCase"],
+				},
+				{
+					selector: "variable",
+					types: ["boolean"],
+					format: ["PascalCase"],
+					prefix: ["is", "should", "has", "can", "did", "will"],
+				},
+				{
+					// Generic type parameter must start with letter T, followed by any uppercase letter.
+					selector: "typeParameter",
+					format: ["PascalCase"],
+					custom: { regex: "^T[A-Z]", match: true },
+				},
+			],
 		},
 	},
 
