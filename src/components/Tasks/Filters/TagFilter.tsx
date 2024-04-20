@@ -4,12 +4,13 @@ import styles from "../styles.module.css";
 type Props = {
 	tagFilter: string | undefined;
 	setTagFilter: Function;
-	onlyThisTags: boolean;
-	setOnlyThisTags: Function;
+	hasOnlyThisTags: boolean;
+	setHasOnlyThisTags: Function;
 };
 
 export default function TagFilter(props: Props): React.JSX.Element {
-	const { tagFilter, setTagFilter, onlyThisTags, setOnlyThisTags } = props;
+	const { tagFilter, setTagFilter, hasOnlyThisTags, setHasOnlyThisTags } =
+		props;
 
 	return (
 		<div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
@@ -29,8 +30,8 @@ export default function TagFilter(props: Props): React.JSX.Element {
 					type="checkbox"
 					name="onlyTags"
 					id="onlyTags"
-					checked={onlyThisTags}
-					onChange={() => setOnlyThisTags(!onlyThisTags)}
+					checked={hasOnlyThisTags}
+					onChange={() => setHasOnlyThisTags(!hasOnlyThisTags)}
 				/>
 
 				<label htmlFor="onlyTags">Show only with these tags</label>

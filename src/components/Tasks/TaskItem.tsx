@@ -104,9 +104,9 @@ export default function TaskItem(props: Props): React.JSX.Element {
 	);
 }
 
-type UpdateTaskProps<Payload> = {
+type UpdateTaskProps<TPayload> = {
 	task: Task;
-	payload: Payload;
+	payload: TPayload;
 	updateTask: Function;
 	addHistoryRow: Function;
 };
@@ -215,11 +215,11 @@ const revealTask = (props: RevealTaskProps): void => {
 	/**
 	 * Checks if the file is already open among the given leaves.
 	 */
-	const fileIsAlreadyOpen = leaves.some((leaf) =>
+	const isFileAlreadyOpen = leaves.some((leaf) =>
 		isFileOpened(leaf.view as MarkdownView),
 	);
 
-	if (fileIsAlreadyOpen) {
+	if (isFileAlreadyOpen) {
 		const leaf = leaves.find((leaf) =>
 			isFileOpened(leaf.view as MarkdownView),
 		);

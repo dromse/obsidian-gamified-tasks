@@ -61,9 +61,9 @@ export default class GrindSettingTab extends PluginSettingTab {
 			.setName("Show only with these tags by default?")
 			.addToggle((toggle) =>
 				toggle
-					.setValue(this.plugin.settings.onlyThisTags)
+					.setValue(this.plugin.settings.hasOnlyThisTags)
 					.onChange(async (value) => {
-						this.plugin.settings.onlyThisTags = value;
+						this.plugin.settings.hasOnlyThisTags = value;
 						await this.plugin.saveSettings();
 					}),
 			);
@@ -83,9 +83,9 @@ export default class GrindSettingTab extends PluginSettingTab {
 			.setName("Show tasks from current note by default?")
 			.addToggle((toggle) =>
 				toggle
-					.setValue(this.plugin.settings.fromCurrentNote)
+					.setValue(this.plugin.settings.isFromCurrentNote)
 					.onChange(async (value) => {
-						this.plugin.settings.fromCurrentNote = value;
+						this.plugin.settings.isFromCurrentNote = value;
 						await this.plugin.saveSettings();
 					}),
 			);

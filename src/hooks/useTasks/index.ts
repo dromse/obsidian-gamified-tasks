@@ -23,15 +23,15 @@ type UseTasksResult = {
 export default function useTasks(): UseTasksResult {
 	const [tasks, setTasks] = useState<Array<Task>>([]);
 	const [isTasksParsed, setIsTasksParsed] = useState<ParseState>("parsing");
-	const [triggerUI, setTriggerUI] = useState(false);
+	const [shouldUpdateUI, setSouldUpdateUI] = useState(false);
 	const [limit, setLimit] = useState(0);
 	const [statusFilter, setStatusFilter] = useState<StatusFilterOption>("all");
 	const [isRecur, setIsRecur] = useState(false);
 	const [searchFilter, setSearchFilter] = useState("");
 	const [tagFilter, setTagFilter] = useState("");
-	const [onlyThisTags, setOnlyThisTags] = useState(false);
+	const [hasOnlyThisTags, setHasOnlyThisTags] = useState(false);
 	const [noteFilter, setNoteFilter] = useState("");
-	const [fromCurrentNote, setFromCurrentNote] = useState(false);
+	const [isFromCurrentNote, setIsFromCurrentNote] = useState(false);
 	const [activeFile, setActiveFile] = useState<TFile | null>(null);
 
 	const filters = {
@@ -45,12 +45,12 @@ export default function useTasks(): UseTasksResult {
 		setIsRecur,
 		tagFilter,
 		setTagFilter,
-		onlyThisTags,
-		setOnlyThisTags,
+		hasOnlyThisTags,
+		setHasOnlyThisTags,
 		noteFilter,
 		setNoteFilter,
-		fromCurrentNote,
-		setFromCurrentNote,
+		isFromCurrentNote,
+		setIsFromCurrentNote,
 	};
 
 	const app = useApp();
@@ -172,7 +172,7 @@ export default function useTasks(): UseTasksResult {
 			.filter((trimmedTag) => trimmedTag !== "")
 			.map((tag) => "#" + tag);
 
-		if (onlyThisTags) {
+		if (hasOnlyThisTags) {
 			return tags.every((tag) => task.lineContent.includes(tag));
 		} else {
 			return tags.some((tag) => task.lineContent.includes(tag));
@@ -180,7 +180,7 @@ export default function useTasks(): UseTasksResult {
 	}
 
 	const filterByNote = (task: Task): boolean => {
-		if (fromCurrentNote) {
+		if (isFromCurrentNote) {
 			const activeNote = workspace.getActiveFile();
 
 			if (activeNote) {
@@ -214,7 +214,7 @@ export default function useTasks(): UseTasksResult {
 			);
 
 			setIsTasksParsed("parsed");
-			setTriggerUI((prev) => !prev);
+			setSouldUpdateUI((prev) => !prev);
 		} catch (err) {
 			setIsTasksParsed("error");
 		}
@@ -264,11 +264,11 @@ export default function useTasks(): UseTasksResult {
 		isRecur,
 		statusFilter,
 		tagFilter,
-		onlyThisTags,
+		hasOnlyThisTags,
 		noteFilter,
-		fromCurrentNote,
+		isFromCurrentNote,
 		activeFile,
-		triggerUI,
+		shouldUpdateUI,
 	]);
 
 	/**
@@ -294,9 +294,9 @@ export default function useTasks(): UseTasksResult {
 			statusFilter,
 			isRecurTasks,
 			tagFilter,
-			onlyThisTags,
+			hasOnlyThisTags,
 			noteFilter,
-			fromCurrentNote,
+			isFromCurrentNote,
 		} = settings;
 
 		if (limit) {
@@ -315,16 +315,16 @@ export default function useTasks(): UseTasksResult {
 			setTagFilter(tagFilter);
 		}
 
-		if (onlyThisTags) {
-			setOnlyThisTags(onlyThisTags);
+		if (hasOnlyThisTags) {
+			setHasOnlyThisTags(hasOnlyThisTags);
 		}
 
 		if (noteFilter) {
 			setNoteFilter(noteFilter);
 		}
 
-		if (fromCurrentNote) {
-			setFromCurrentNote(fromCurrentNote);
+		if (isFromCurrentNote) {
+			setIsFromCurrentNote(isFromCurrentNote);
 		}
 	}, []);
 

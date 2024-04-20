@@ -11,7 +11,7 @@ export type GrindPluginSettings = {
 	useMarkdownLinks: boolean;
 	ignoreList: Array<string>;
 	tagFilter: string;
-	onlyThisTags: boolean;
+	hasOnlyThisTags: boolean;
 	noteFilter: string;
-	fromCurrentNote: boolean;
+	isFromCurrentNote: boolean;
 };

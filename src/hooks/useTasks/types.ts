@@ -56,16 +56,16 @@ export type TaskFilters = {
 	/**
 	 *  Specify only show tasks with this tags or all tasks with matched tags
 	 */
-	onlyThisTags: boolean;
+	hasOnlyThisTags: boolean;
 	/**
 	 * A function to set whether to only show tags with these tags.
 	 */
-	setOnlyThisTags: Function;
+	setHasOnlyThisTags: Function;
 
 	noteFilter: string;
 	setNoteFilter: Function;
-	fromCurrentNote: boolean;
-	setFromCurrentNote: Function;
+	isFromCurrentNote: boolean;
+	setIsFromCurrentNote: Function;
 };
 
 /**

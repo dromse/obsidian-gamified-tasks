@@ -15,7 +15,7 @@ export const DEFAULT_SETTINGS: GrindPluginSettings = {
 	useMarkdownLinks: true,
 	ignoreList: [],
 	tagFilter: "",
-	onlyThisTags: false,
+	hasOnlyThisTags: false,
 	noteFilter: "",
-	fromCurrentNote: false
+	isFromCurrentNote: false
 };

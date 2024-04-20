@@ -31,12 +31,12 @@ export default function TaskList(props: Props): React.JSX.Element {
 		setIsRecur,
 		tagFilter,
 		setTagFilter,
-		onlyThisTags,
-		setOnlyThisTags,
+		hasOnlyThisTags,
+		setHasOnlyThisTags,
 		noteFilter,
 		setNoteFilter,
-		fromCurrentNote,
-		setFromCurrentNote,
+		isFromCurrentNote,
+		setIsFromCurrentNote,
 	} = filters;
 
 	const [isMoreFiltersOpen, setIsMoreFiltersOpen] = useState(false);
@@ -85,14 +85,14 @@ export default function TaskList(props: Props): React.JSX.Element {
 							<TagFilter
 								tagFilter={tagFilter}
 								setTagFilter={setTagFilter}
-								onlyThisTags={onlyThisTags}
-								setOnlyThisTags={setOnlyThisTags}
+								hasOnlyThisTags={hasOnlyThisTags}
+								setHasOnlyThisTags={setHasOnlyThisTags}
 							/>
 							<NoteFilter
 								noteFilter={noteFilter}
 								setNoteFilter={setNoteFilter}
-								fromCurrentNote={fromCurrentNote}
-								setFromCurrentNote={setFromCurrentNote}
+								isFromCurrentNote={isFromCurrentNote}
+								setIsFromCurrentNote={setIsFromCurrentNote}
 							/>
 						</div>
 					)}
