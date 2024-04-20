@@ -147,8 +147,12 @@ export default function useTasks(): UseTasksResult {
 
 		const isTaskNotAppearInPastDays = !historyRows.includes(task.body);
 
-		if (task.counter && task.counter.current !== task.counter.goal) {
-			return true;
+		if (task.counter) {
+			const isCounterReset = task.counter.current !== task.counter.goal;
+
+			if (isCounterReset && isTaskNotAppearInPastDays) {
+				return true;
+			}
 		}
 
 		return isTaskNotAppearInPastDays;
