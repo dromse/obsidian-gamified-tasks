@@ -5,14 +5,12 @@
 	"description": "Task management with rewards system.",
 	"main": "main.js",
 	"scripts": {
-		"dev": "node esbuild.config.mjs",
 		"dev:build": "rm -rf build && tsc -noEmit -skipLibCheck && node esbuild.config.mjs && cp manifest.json build && cat src/styles.css build/main.css > build/styles.css && rm build/main.css && touch build/.hotreload",
 		"build": "rm -rf build && tsc -noEmit -skipLibCheck && node esbuild.config.mjs production && cp manifest.json build && minify src/styles.css build/main.css > build/styles.css && rm build/main.css",
-		"esbuild": "esbuild main.js --bundle --outfile=build/main.js --format=cjs --external:obsidian",
-		"version": "node version-bump.mjs && git add manifest.json versions.json",
 		"watch": "nodemon --ignore build/ -e ts,tsx,css --exec \"pnpm build\" ",
 		"docs": "typedoc",
-		"eslint": "eslint"
+		"lint": "eslint",
+		"test": "node --import tsx --test tests/**/*.test.ts"
 	},
 	"keywords": [],
 	"author": "dromse",
@@ -31,6 +29,7 @@
 		"nodemon": "^3.1.0",
 		"obsidian": "latest",
 		"tslib": "2.4.0",
+		"tsx": "^4.7.2",
 		"typedoc": "^0.25.12",
 		"typedoc-plugin-markdown": "^3.17.1",
 		"typescript": "4.7.4",

@@ -2,7 +2,6 @@ import tseslint from "typescript-eslint";
 const __dirname = import.meta.dirname;
 
 export default tseslint.config(
-	// eslint.configs.recommended,
 	{
 		plugins: {
 			"@typescript-eslint": tseslint.plugin,
@@ -14,7 +13,7 @@ export default tseslint.config(
 				tsconfigRootDir: __dirname,
 			},
 		},
-		files: ["src/**/*.{ts,tsx}"],
+		files: ["{src,tests}/**/*.{ts,tsx}"],
 		rules: {
 			"max-params": "error",
 			"@typescript-eslint/ban-ts-comment": [
