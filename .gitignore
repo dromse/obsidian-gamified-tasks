@@ -23,3 +23,5 @@ data.json
 pnpm-lock.yaml
 
 build
+dist
+coverage
