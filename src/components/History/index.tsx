@@ -38,8 +38,6 @@ export default function History(): React.JSX.Element {
 
 			return (
 				<div>
-					<h3>Balance: {balance} coins</h3>
-
 					<div className={styles.pageList}>
 						{historyPages
 							.slice(page === 0 ? page : page - 1, page + 3)
