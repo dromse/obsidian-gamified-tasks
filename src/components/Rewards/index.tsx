@@ -3,6 +3,9 @@ import { Notice } from "obsidian";
 import React from "react";
 import styles from "./styles.module.css";
 
+const coinOrCoins = (coins: number): string =>
+	`${coins} ${coins > 1 ? "coins" : "coin"}`;
+
 export default function Rewards(): React.JSX.Element {
 	const { rewards, isRewardsParsed } = useRewards();
 	const { balance, isHistoryParsed, addHistoryRow } = useHistory();
@@ -14,7 +17,7 @@ export default function Rewards(): React.JSX.Element {
 	if (isRewardsParsed === "parsed") {
 		return (
 			<div>
-				<h3>Balance: {balance} coins</h3>
+				<h3>Balance: {coinOrCoins(balance)}</h3>
 
 				<ul className={`list ${styles.list}`}>
 					{rewards.map((reward) => (
@@ -39,7 +42,7 @@ export default function Rewards(): React.JSX.Element {
 								}}
 								disabled={reward.price > balance}
 							>
-								Buy: {reward.price} coins
+								{coinOrCoins(reward.price)}
 							</button>
 						</li>
 					))}
