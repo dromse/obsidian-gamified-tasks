@@ -1,4 +1,5 @@
 import { Task, TaskFilters } from "@hooks/useTasks/types";
+import { singularOrPlural } from "@utils/string";
 import React, { useState } from "react";
 import {
 	LimitFilter,
@@ -96,6 +97,10 @@ export default function TaskList(props: Props): React.JSX.Element {
 							/>
 						</div>
 					)}
+				</div>
+
+				<div>
+					{singularOrPlural({ amount: tasks.length, singular: "task" })}
 				</div>
 			</div>
 

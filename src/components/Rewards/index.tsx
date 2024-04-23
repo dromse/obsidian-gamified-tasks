@@ -1,10 +1,11 @@
 import { useHistory, useRewards } from "@hooks";
+import { singularOrPlural } from "@utils/string";
 import { Notice } from "obsidian";
 import React from "react";
 import styles from "./styles.module.css";
 
-const coinOrCoins = (coins: number): string =>
-	`${coins} ${coins > 1 ? "coins" : "coin"}`;
+const coins = (amount: number): string =>
+	singularOrPlural({ amount, singular: "coin" });
 
 export default function Rewards(): React.JSX.Element {
 	const { rewards, isRewardsParsed } = useRewards();
@@ -17,7 +18,7 @@ export default function Rewards(): React.JSX.Element {
 	if (isRewardsParsed === "parsed") {
 		return (
 			<div>
-				<h3>Balance: {coinOrCoins(balance)}</h3>
+				<h3>Balance: {coins(balance)}</h3>
 
 				<ul className={`list ${styles.list}`}>
 					{rewards.map((reward) => (
@@ -42,7 +43,7 @@ export default function Rewards(): React.JSX.Element {
 								}}
 								disabled={reward.price > balance}
 							>
-								{coinOrCoins(reward.price)}
+								{coins(reward.price)}
 							</button>
 						</li>
 					))}
