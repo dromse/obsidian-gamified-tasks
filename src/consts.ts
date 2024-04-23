@@ -17,5 +17,6 @@ export const DEFAULT_SETTINGS: GrindPluginSettings = {
 	tagFilter: "",
 	hasOnlyThisTags: false,
 	noteFilter: "",
-	isFromCurrentNote: false
+	isFromCurrentNote: false,
+	shouldShowAllFilters: false,
 };

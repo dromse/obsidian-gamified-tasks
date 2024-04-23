@@ -14,4 +14,5 @@ export type GrindPluginSettings = {
 	hasOnlyThisTags: boolean;
 	noteFilter: string;
 	isFromCurrentNote: boolean;
+	shouldShowAllFilters: boolean;
 };

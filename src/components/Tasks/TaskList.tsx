@@ -1,3 +1,4 @@
+import { useSettings } from "@hooks";
 import { Task, TaskFilters } from "@hooks/useTasks/types";
 import { singularOrPlural } from "@utils/string";
 import React, { useState } from "react";
@@ -20,6 +21,7 @@ type Props = {
 
 export default function TaskList(props: Props): React.JSX.Element {
 	const { tasks, updateTask, filters } = props;
+	const settings = useSettings()
 
 	const {
 		limit,
@@ -40,7 +42,7 @@ export default function TaskList(props: Props): React.JSX.Element {
 		setIsFromCurrentNote,
 	} = filters;
 
-	const [isMoreFiltersOpen, setIsMoreFiltersOpen] = useState(false);
+	const [isMoreFiltersOpen, setIsMoreFiltersOpen] = useState(settings?.shouldShowAllFilters);
 
 	return (
 		<div>

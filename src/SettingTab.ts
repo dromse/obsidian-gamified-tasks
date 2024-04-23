@@ -101,6 +101,17 @@ export default class GrindSettingTab extends PluginSettingTab {
 					}),
 			);
 
+		new Setting(containerEl)
+			.setName("Show all filters by default?")
+			.addToggle((toggle) =>
+				toggle
+					.setValue(this.plugin.settings.shouldShowAllFilters)
+					.onChange(async (value) => {
+						this.plugin.settings.shouldShowAllFilters = value;
+						await this.plugin.saveSettings();
+					}),
+			);
+
 		new Setting(containerEl).setName("Path to rewards file").addText((text) =>
 			text
 				.setPlaceholder("path/to/rewards.md")
