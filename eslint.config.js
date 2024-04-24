@@ -47,7 +47,7 @@ export default tseslint.config(
 					// Generic type parameter must start with letter T, followed by any uppercase letter.
 					selector: "typeParameter",
 					format: ["PascalCase"],
-					custom: { regex: "^T[A-Z]", match: true },
+					// custom: { regex: "^T[A-Z]", match: true },
 				},
 			],
 		},
