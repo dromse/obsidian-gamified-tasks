@@ -6,7 +6,6 @@ import fs from "node:fs";
 import path from "node:path";
 import { describe, it } from "node:test";
 import { TFile, Vault } from "obsidian";
-// @ts-expect-error: This works.
 const __dirname = import.meta.dirname;
 
 const settings: GrindPluginSettings | undefined = undefined;
