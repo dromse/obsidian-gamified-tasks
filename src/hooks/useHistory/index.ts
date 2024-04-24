@@ -1,6 +1,7 @@
 import { isDigitString } from "@utils/check";
+import { currentDate } from "@utils/date";
 import { getLines } from "@utils/file";
-import { moment, TFile } from "obsidian";
+import { TFile } from "obsidian";
 import { useEffect, useState } from "react";
 import { useApp, useSettings } from "..";
 import { ParseState } from "../types";
@@ -11,16 +12,16 @@ export type HistoryRow = {
 	date: string;
 };
 
-type AddHistoryRowType = {
+export type AddHistoryRowType = {
 	change: number;
 	title: string;
 };
 
-type UseHistoryReturn = {
+export type UseHistoryReturn = {
 	history: Array<HistoryRow>;
 	balance: number;
 	isHistoryParsed: ParseState;
-	addHistoryRow: ({ change, title }: AddHistoryRowType) => Promise<void>;
+	addHistoryRow: (newRow: AddHistoryRowType) => Promise<void>;
 };
 
 /** Hook for interacting with history list */
@@ -35,6 +36,14 @@ export default function useHistory(): UseHistoryReturn {
 	const [balance, setBalance] = useState(0);
 	const [historyFile, setHistoryFile] = useState<TFile>();
 
+	if (!app) {
+		setIsHistoryParsed("error");
+
+		return { history, balance, isHistoryParsed, addHistoryRow };
+	}
+
+	const { vault } = app;
+
 	/** Add history row on top of file */
 	async function addHistoryRow({
 		change,
@@ -47,14 +56,6 @@ export default function useHistory(): UseHistoryReturn {
 			setIsHistoryParsed("parsing");
 		}
 	}
-
-	if (!app) {
-		setIsHistoryParsed("error");
-
-		return { history, balance, isHistoryParsed, addHistoryRow };
-	}
-
-	const { vault } = app;
 
 	async function fetchHistory(): Promise<void> {
 		if (settings) {
@@ -92,13 +93,6 @@ function calcBalance(history: Array<HistoryRow>): number {
 	);
 }
 
-/** Stringigy date for locale time */
-function currentDate(): string {
-	const dateStr = moment().format("YYYY-MM-DD HH:mm");
-
-	return dateStr;
-}
-
 /**
  * Parse history from string which represents full file content
  * @param {string} content - full content with `'\n'` delimeters.
@@ -122,7 +116,6 @@ export function parseHistory(content: string): Array<HistoryRow> {
 
 		return acc;
 	}, []);
-
 
 	const history = splitedLines.reduce<Array<HistoryRow>>((acc, line) => {
 		if (line.length === 3 && isDigitString(line[0])) {

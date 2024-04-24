@@ -1,4 +1,12 @@
+import { DATE_FORMAT } from "@consts";
 import { moment } from "obsidian";
+
+/** Stringigy date for locale time */
+export function currentDate(): string {
+	const dateStr = moment().format(DATE_FORMAT);
+
+	return dateStr;
+}
 
 /** Generate an array of past dates starting from the current date. */
 export function generatePastDaysArray(numDays: number): Array<String> {

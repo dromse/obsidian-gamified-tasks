@@ -20,3 +20,5 @@ export const DEFAULT_SETTINGS: GrindPluginSettings = {
 	isFromCurrentNote: false,
 	shouldShowAllFilters: false,
 };
+
+export const DATE_FORMAT = "YYYY-MM-DD HH:mm" as const;
