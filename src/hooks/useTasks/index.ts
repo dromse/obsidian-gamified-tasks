@@ -54,7 +54,7 @@ export default function useTasks(): UseTasksResult {
 	};
 
 	const app = useApp();
-	const { history } = useHistory();
+	const { historyRows: history } = useHistory();
 	const settings = useSettings();
 
 	if (!app) {

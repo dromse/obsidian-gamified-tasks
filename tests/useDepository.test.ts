@@ -39,7 +39,7 @@ describe("Depository", () => {
 				history.push({ title, change, date: moment().format(DATE_FORMAT) });
 			};
 
-			return { history, balance, isHistoryParsed, addHistoryRow };
+			return { historyRows: history, balance, isHistoryParsed, addHistoryRow };
 		}
 
 		test("store to depository middle correct value", async (t) => {
@@ -51,7 +51,7 @@ describe("Depository", () => {
 				transactionState = await result.current.store(2);
 			});
 
-			mockHistory.balance = recalculateBalance(mockHistory.history);
+			mockHistory.balance = recalculateBalance(mockHistory.historyRows);
 
 			await t.test("must return success state of store transaction", () => {
 				assert.strictEqual(
@@ -78,7 +78,7 @@ describe("Depository", () => {
 				transactionState = await result.current.store(mockHistory.balance);
 			});
 
-			mockHistory.balance = recalculateBalance(mockHistory.history);
+			mockHistory.balance = recalculateBalance(mockHistory.historyRows);
 
 			await t.test("must return success state of store transaction", () => {
 				assert.strictEqual(
@@ -105,7 +105,7 @@ describe("Depository", () => {
 				transactionState = await result.current.store(0);
 			});
 
-			mockHistory.balance = recalculateBalance(mockHistory.history);
+			mockHistory.balance = recalculateBalance(mockHistory.historyRows);
 
 			await t.test("must return zero param error state of transaction", () => {
 				assert.strictEqual(
@@ -132,7 +132,7 @@ describe("Depository", () => {
 				transactionState = await result.current.store(-1);
 			});
 
-			mockHistory.balance = recalculateBalance(mockHistory.history);
+			mockHistory.balance = recalculateBalance(mockHistory.historyRows);
 
 			await t.test(
 				"must return negative param error state of transaction",
@@ -162,7 +162,7 @@ describe("Depository", () => {
 				transactionState = await result.current.store(mockHistory.balance + 1);
 			});
 
-			mockHistory.balance = recalculateBalance(mockHistory.history);
+			mockHistory.balance = recalculateBalance(mockHistory.historyRows);
 
 			await t.test(
 				"must return over balance param error state of transaction",
@@ -205,7 +205,7 @@ describe("Depository", () => {
 				history.push({ title, change, date: moment().format(DATE_FORMAT) });
 			};
 
-			return { history, balance, isHistoryParsed, addHistoryRow };
+			return { historyRows: history, balance, isHistoryParsed, addHistoryRow };
 		}
 
 		test("restore from depository middle correct value", async (t) => {
@@ -217,7 +217,7 @@ describe("Depository", () => {
 				transactionState = await result.current.restore(2);
 			});
 
-			mockHistory.balance = recalculateBalance(mockHistory.history);
+			mockHistory.balance = recalculateBalance(mockHistory.historyRows);
 
 			await t.test("must return success state of restore transaction", () => {
 				assert.strictEqual(
@@ -244,7 +244,7 @@ describe("Depository", () => {
 				transactionState = await result.current.restore(5);
 			});
 
-			mockHistory.balance = recalculateBalance(mockHistory.history);
+			mockHistory.balance = recalculateBalance(mockHistory.historyRows);
 
 			await t.test("must return success state of restore transaction", () => {
 				assert.strictEqual(
@@ -271,7 +271,7 @@ describe("Depository", () => {
 				transactionState = await result.current.restore(0);
 			});
 
-			mockHistory.balance = recalculateBalance(mockHistory.history);
+			mockHistory.balance = recalculateBalance(mockHistory.historyRows);
 
 			await t.test("must return zero param error state of transaction", () => {
 				assert.strictEqual(
@@ -298,7 +298,7 @@ describe("Depository", () => {
 				transactionState = await result.current.restore(-1);
 			});
 
-			mockHistory.balance = recalculateBalance(mockHistory.history);
+			mockHistory.balance = recalculateBalance(mockHistory.historyRows);
 
 			await t.test(
 				"must return negative param error state of transaction",
@@ -328,7 +328,7 @@ describe("Depository", () => {
 				transactionState = await result.current.store(mockHistory.balance + 1);
 			});
 
-			mockHistory.balance = recalculateBalance(mockHistory.history);
+			mockHistory.balance = recalculateBalance(mockHistory.historyRows);
 
 			await t.test(
 				"must return over balance param error state of transaction",

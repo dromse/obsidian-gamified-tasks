@@ -44,6 +44,7 @@
 		"typescript-plugin-css-modules": "^5.1.0"
 	},
 	"dependencies": {
+		"lucide-react": "^0.373.0",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0"
 	}

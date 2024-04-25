@@ -11,13 +11,11 @@ export default function Tasks(): React.JSX.Element {
 
 	if (isTasksParsed === "parsed") {
 		return (
-			<div>
-				<TaskList
-					tasks={tasks}
-					updateTask={updateTask}
-					filters={filters}
-				/>
-			</div>
+			<TaskList
+				tasks={tasks}
+				updateTask={updateTask}
+				filters={filters}
+			/>
 		);
 	}
 
@@ -25,5 +23,5 @@ export default function Tasks(): React.JSX.Element {
 		return <div>Error: cannot parsed</div>;
 	}
 
-	return <div></div>;
+	return <></>;
 }

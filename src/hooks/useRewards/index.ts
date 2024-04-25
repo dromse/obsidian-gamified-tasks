@@ -4,13 +4,13 @@ import { useEffect, useState } from "react";
 import { useApp, useSettings } from "..";
 import { ParseState } from "../types";
 
-type Reward = {
+export type Reward = {
 	title: string;
 	price: number;
 	desc?: string;
 };
 
-type UseRewardsReturn = {
+export type UseRewardsReturn = {
 	rewards: Array<Reward>;
 	isRewardsParsed: ParseState;
 };

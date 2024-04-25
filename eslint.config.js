@@ -15,6 +15,21 @@ export default tseslint.config(
 		},
 		files: ["{src,tests}/**/*.{ts,tsx}"],
 		rules: {
+			"no-warning-comments": [
+				"error",
+				{
+					terms: [
+						"todo",
+						"fix",
+						"bug",
+						"perf",
+						"warn",
+						"test",
+						"hack",
+						"note",
+					],
+				},
+			],
 			"max-params": "error",
 			"@typescript-eslint/ban-ts-comment": [
 				"error",

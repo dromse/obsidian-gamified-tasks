@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import styles from "./styles.module.css";
 
 export default function History(): React.JSX.Element {
-	const { history, balance, isHistoryParsed } = useHistory();
+	const { historyRows: history, balance, isHistoryParsed } = useHistory();
 	const [page, setPage] = useState(0);
 	const [totalPages, setTotalPages] = useState<number | undefined>(undefined);
 	const [pageInput, setPageInput] = useState(String(page + 1));

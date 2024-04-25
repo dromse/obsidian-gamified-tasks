@@ -18,7 +18,7 @@ export type AddHistoryRowType = {
 };
 
 export type UseHistoryReturn = {
-	history: Array<HistoryRow>;
+	historyRows: Array<HistoryRow>;
 	balance: number;
 	isHistoryParsed: ParseState;
 	addHistoryRow: (newRow: AddHistoryRowType) => Promise<void>;
@@ -39,7 +39,7 @@ export default function useHistory(): UseHistoryReturn {
 	if (!app) {
 		setIsHistoryParsed("error");
 
-		return { history, balance, isHistoryParsed, addHistoryRow };
+		return { historyRows: history, balance, isHistoryParsed, addHistoryRow };
 	}
 
 	const { vault } = app;
@@ -83,7 +83,7 @@ export default function useHistory(): UseHistoryReturn {
 		return () => vault.off("modify", fetchHistory);
 	}, []);
 
-	return { history, balance, isHistoryParsed, addHistoryRow };
+	return { historyRows: history, balance, isHistoryParsed, addHistoryRow };
 }
 
 /** Calculate balance based on history rows and fixed number to 0.00 */
