@@ -1,5 +1,5 @@
 import { HistoryRow, UseHistoryReturn } from "@hooks/useHistory";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const DEPOSITORY_TRANSACTION_STATE = Object.freeze({
 	SUCCESS: {
@@ -48,8 +48,9 @@ const calcDepositoryBalance = (history: ReadonlyArray<HistoryRow>): number =>
 
 export function useDepository(useHistoryReturn: UseHistoryReturn): Depository {
 	const [balance, setBalance] = useState(
-		calcDepositoryBalance(useHistoryReturn.history),
+		calcDepositoryBalance(useHistoryReturn.historyRows),
 	);
+	const [shouldRerender, setShouldRerender] = useState(false);
 
 	const store = async (
 		amount: number,
@@ -72,7 +73,7 @@ export function useDepository(useHistoryReturn: UseHistoryReturn): Depository {
 				change: -amount,
 			});
 
-			setBalance(calcDepositoryBalance(useHistoryReturn.history));
+			setShouldRerender((prev) => !prev);
 
 			return DEPOSITORY_TRANSACTION_STATE.SUCCESS.STORED;
 		}
@@ -101,13 +102,17 @@ export function useDepository(useHistoryReturn: UseHistoryReturn): Depository {
 				change: amount,
 			});
 
-			setBalance(calcDepositoryBalance(useHistoryReturn.history));
+			setShouldRerender((prev) => !prev);
 
 			return DEPOSITORY_TRANSACTION_STATE.SUCCESS.RESTORED;
 		}
 
 		return DEPOSITORY_TRANSACTION_STATE.ERROR.SOMETHING;
 	};
+
+	useEffect(() => {
+		setBalance(calcDepositoryBalance(useHistoryReturn.historyRows));
+	}, [useHistoryReturn.historyRows, shouldRerender]);
 
 	return { store, restore, balance };
 }
