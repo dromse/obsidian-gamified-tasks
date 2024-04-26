@@ -1,3 +1,16 @@
+.header {
+	display: flex;
+	height: 100%;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.depository {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
 .reward {
 	display: flex;
 	justify-content: space-between;
