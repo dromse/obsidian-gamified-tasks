@@ -2,24 +2,14 @@ import { HistoryRow, UseHistoryReturn } from "@hooks/useHistory";
 import { useEffect, useState } from "react";
 
 export const DEPOSITORY_TRANSACTION_STATE = Object.freeze({
-	SUCCESS: {
-		STORED: "stored",
-		RESTORED: "restored",
-	},
-	ERROR: {
-		ZERO_PARAM: "zero",
-		NEGATIVE_PARAM: "negative",
-		OVER_BALANCE_PARAM: "over",
-		SOMETHING: "error",
-	},
+	SUCCESS: "success",
+	ZERO_PARAM: "zero",
+	NEGATIVE_PARAM: "negative",
+	OVER_BALANCE_PARAM: "over",
+	ERROR: "error",
 } as const);
 
-type ValuesOf<T> = T[keyof T][keyof T[keyof T]];
 type DepositoryTransactionStateType = typeof DEPOSITORY_TRANSACTION_STATE;
-type SuccessTransactionState = ValuesOf<
-	DepositoryTransactionStateType["SUCCESS"]
->;
-type ErrorTransactionState = ValuesOf<DepositoryTransactionStateType["ERROR"]>;
 
 /**
  * 'stored' -> successfully stored to history
@@ -29,9 +19,8 @@ type ErrorTransactionState = ValuesOf<DepositoryTransactionStateType["ERROR"]>;
  * 'over' -> occur when you pass amount of coins which is bigger then your current balance (e.g. history balance: 5, re/store(6))
  * 'error' -> something went wrong...
  */
-export type DepositoryTransactionState =
-	| SuccessTransactionState
-	| ErrorTransactionState;
+export type DepositoryTransactionState = DepositoryTransactionStateType[keyof DepositoryTransactionStateType];
+
 
 export type Depository = {
 	balance: number;
@@ -56,15 +45,15 @@ export function useDepository(useHistoryReturn: UseHistoryReturn): Depository {
 		amount: number,
 	): Promise<DepositoryTransactionState> => {
 		if (amount === 0) {
-			return DEPOSITORY_TRANSACTION_STATE.ERROR.ZERO_PARAM;
+			return DEPOSITORY_TRANSACTION_STATE.ZERO_PARAM;
 		}
 
 		if (amount < 0) {
-			return DEPOSITORY_TRANSACTION_STATE.ERROR.NEGATIVE_PARAM;
+			return DEPOSITORY_TRANSACTION_STATE.NEGATIVE_PARAM;
 		}
 
 		if (amount > useHistoryReturn.balance) {
-			return DEPOSITORY_TRANSACTION_STATE.ERROR.OVER_BALANCE_PARAM;
+			return DEPOSITORY_TRANSACTION_STATE.OVER_BALANCE_PARAM;
 		}
 
 		if (amount <= useHistoryReturn.balance) {
@@ -75,25 +64,25 @@ export function useDepository(useHistoryReturn: UseHistoryReturn): Depository {
 
 			setShouldRerender((prev) => !prev);
 
-			return DEPOSITORY_TRANSACTION_STATE.SUCCESS.STORED;
+			return DEPOSITORY_TRANSACTION_STATE.SUCCESS;
 		}
 
-		return DEPOSITORY_TRANSACTION_STATE.ERROR.SOMETHING;
+		return DEPOSITORY_TRANSACTION_STATE.ERROR;
 	};
 
 	const restore = async (
 		amount: number,
 	): Promise<DepositoryTransactionState> => {
 		if (amount === 0) {
-			return DEPOSITORY_TRANSACTION_STATE.ERROR.ZERO_PARAM;
+			return DEPOSITORY_TRANSACTION_STATE.ZERO_PARAM;
 		}
 
 		if (amount < 0) {
-			return DEPOSITORY_TRANSACTION_STATE.ERROR.NEGATIVE_PARAM;
+			return DEPOSITORY_TRANSACTION_STATE.NEGATIVE_PARAM;
 		}
 
 		if (amount > balance) {
-			return DEPOSITORY_TRANSACTION_STATE.ERROR.OVER_BALANCE_PARAM;
+			return DEPOSITORY_TRANSACTION_STATE.OVER_BALANCE_PARAM;
 		}
 
 		if (amount <= balance) {
@@ -104,10 +93,10 @@ export function useDepository(useHistoryReturn: UseHistoryReturn): Depository {
 
 			setShouldRerender((prev) => !prev);
 
-			return DEPOSITORY_TRANSACTION_STATE.SUCCESS.RESTORED;
+			return DEPOSITORY_TRANSACTION_STATE.SUCCESS;
 		}
 
-		return DEPOSITORY_TRANSACTION_STATE.ERROR.SOMETHING;
+		return DEPOSITORY_TRANSACTION_STATE.ERROR;
 	};
 
 	useEffect(() => {

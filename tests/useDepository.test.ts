@@ -57,7 +57,7 @@ describe("Depository", () => {
 			await t.test("must return success state of store transaction", () => {
 				assert.strictEqual(
 					transactionState,
-					DEPOSITORY_TRANSACTION_STATE.SUCCESS.STORED,
+					DEPOSITORY_TRANSACTION_STATE.SUCCESS,
 				);
 			});
 
@@ -84,7 +84,7 @@ describe("Depository", () => {
 			await t.test("must return success state of store transaction", () => {
 				assert.strictEqual(
 					transactionState,
-					DEPOSITORY_TRANSACTION_STATE.SUCCESS.STORED,
+					DEPOSITORY_TRANSACTION_STATE.SUCCESS,
 				);
 			});
 
@@ -111,7 +111,7 @@ describe("Depository", () => {
 			await t.test("must return zero param error state of transaction", () => {
 				assert.strictEqual(
 					transactionState,
-					DEPOSITORY_TRANSACTION_STATE.ERROR.ZERO_PARAM,
+					DEPOSITORY_TRANSACTION_STATE.ZERO_PARAM,
 				);
 			});
 
@@ -140,7 +140,7 @@ describe("Depository", () => {
 				() => {
 					assert.strictEqual(
 						transactionState,
-						DEPOSITORY_TRANSACTION_STATE.ERROR.NEGATIVE_PARAM,
+						DEPOSITORY_TRANSACTION_STATE.NEGATIVE_PARAM,
 					);
 				},
 			);
@@ -170,7 +170,7 @@ describe("Depository", () => {
 				() => {
 					assert.strictEqual(
 						transactionState,
-						DEPOSITORY_TRANSACTION_STATE.ERROR.OVER_BALANCE_PARAM,
+						DEPOSITORY_TRANSACTION_STATE.OVER_BALANCE_PARAM,
 					);
 				},
 			);
@@ -229,7 +229,7 @@ describe("Depository", () => {
 			await t.test("must return success state of restore transaction", () => {
 				assert.strictEqual(
 					transactionState,
-					DEPOSITORY_TRANSACTION_STATE.SUCCESS.RESTORED,
+					DEPOSITORY_TRANSACTION_STATE.SUCCESS,
 				);
 			});
 
@@ -256,7 +256,7 @@ describe("Depository", () => {
 			await t.test("must return success state of restore transaction", () => {
 				assert.strictEqual(
 					transactionState,
-					DEPOSITORY_TRANSACTION_STATE.SUCCESS.RESTORED,
+					DEPOSITORY_TRANSACTION_STATE.SUCCESS,
 				);
 			});
 
@@ -283,7 +283,7 @@ describe("Depository", () => {
 			await t.test("must return zero param error state of transaction", () => {
 				assert.strictEqual(
 					transactionState,
-					DEPOSITORY_TRANSACTION_STATE.ERROR.ZERO_PARAM,
+					DEPOSITORY_TRANSACTION_STATE.ZERO_PARAM,
 				);
 			});
 
@@ -312,7 +312,7 @@ describe("Depository", () => {
 				() => {
 					assert.strictEqual(
 						transactionState,
-						DEPOSITORY_TRANSACTION_STATE.ERROR.NEGATIVE_PARAM,
+						DEPOSITORY_TRANSACTION_STATE.NEGATIVE_PARAM,
 					);
 				},
 			);
@@ -342,7 +342,7 @@ describe("Depository", () => {
 				() => {
 					assert.strictEqual(
 						transactionState,
-						DEPOSITORY_TRANSACTION_STATE.ERROR.OVER_BALANCE_PARAM,
+						DEPOSITORY_TRANSACTION_STATE.OVER_BALANCE_PARAM,
 					);
 				},
 			);
