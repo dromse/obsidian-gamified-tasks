@@ -15,10 +15,6 @@ import assert from "node:assert";
 import test, { describe } from "node:test";
 import { useState } from "react";
 
-const recalculateBalance = (history: Array<HistoryRow>): number => {
-	return history.reduce((acc, row) => acc + row.change, 0);
-};
-
 describe("Depository", () => {
 	describe("Store to depository", async () => {
 		const mockHistoryForStoreTest: ReadonlyArray<HistoryRow> = [
