@@ -1,3 +1,4 @@
+import { coins } from "@components/Rewards/RewardList";
 import { useApp, useHistory } from "@hooks";
 import { DifficultyPrice, StatusKeys } from "@hooks/useTasks/consts";
 import { Status, Task } from "@hooks/useTasks/types";
@@ -7,7 +8,7 @@ import {
 	Notice,
 	Vault,
 	Workspace,
-	WorkspaceLeaf,
+	WorkspaceLeaf
 } from "obsidian";
 import React from "react";
 
@@ -140,9 +141,12 @@ const updateCounter = async (
 		new Notice("Error during counter update.");
 	}
 
-	new Notice(
-		`${task.body} ${change > 0 ? "increased" : "decreased"} by ${Math.abs(change)}`,
-	);
+	const getEarningString = (): string =>
+		task.difficulty
+			? `You ${change > 0 ? "earned" : "returned"}: ${coins(DifficultyPrice[task.difficulty])}`
+			: "";
+
+	new Notice(getEarningString());
 
 	if (newCurrent === goal) {
 		new Notice(`You completed task: '${task.body}'`);
@@ -178,7 +182,7 @@ async function updateStatus(
 			change: DifficultyPrice[task.difficulty],
 		});
 
-		new Notice(`You completed task: '${task.body}'`);
+		new Notice(`You earned: ${coins(DifficultyPrice[task.difficulty])}`);
 	}
 
 	if (task.status === "done" && status !== "done") {
@@ -186,6 +190,8 @@ async function updateStatus(
 			title: task.body,
 			change: -DifficultyPrice[task.difficulty],
 		});
+
+		new Notice(`You returned: ${coins(DifficultyPrice[task.difficulty])}`);
 	}
 }
 
