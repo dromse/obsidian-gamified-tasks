@@ -26,11 +26,15 @@ const parse = (task: Task, settings: GrindPluginSettings): Task => {
 };
 
 const stringify = (task: Task, settings: GrindPluginSettings): string => {
+	if (settings.isCompletedAtEnabled === false) {
+		return ""
+	}
+
 	let completedAtDate = moment().format(settings.dailyFormat);
 	let completedAtTime = moment().format("HH:mm");
 	let completedAt;
 
-	if (settings && settings.useMarkdownLinks) {
+	if (settings.useMarkdownLinks) {
 		completedAt = ` ✅ [${completedAtDate} | ${completedAtTime}](${settings.pathToDaily}/${completedAtDate}.md)`;
 	} else {
 		completedAt = ` ✅ [[${completedAtDate}|${completedAtDate} | ${completedAtTime}]]`;

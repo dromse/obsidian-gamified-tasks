@@ -19,6 +19,86 @@ export default class GrindSettingTab extends PluginSettingTab {
 
 		containerEl.empty();
 
+		new Setting(containerEl).setName("Path to rewards file").addText((text) =>
+			text
+				.setPlaceholder("path/to/rewards.md")
+				.setValue(String(this.plugin.settings.pathToRewards))
+				.onChange(async (value) => {
+					const trimmedValue = value.trim();
+
+					this.plugin.settings.pathToRewards = trimmedValue
+						? trimmedValue
+						: DEFAULT_SETTINGS.pathToRewards;
+
+					await this.plugin.saveSettings();
+				}),
+		);
+
+		new Setting(containerEl).setName("Path to history file").addText((text) =>
+			text
+				.setPlaceholder("path/to/history.md")
+				.setValue(String(this.plugin.settings.pathToHistory))
+				.onChange(async (value) => {
+					const trimmedValue = value.trim();
+
+					this.plugin.settings.pathToHistory = trimmedValue
+						? trimmedValue
+						: DEFAULT_SETTINGS.pathToHistory;
+
+					await this.plugin.saveSettings();
+				}),
+		);
+
+		new Setting(containerEl)
+			.setName("Ignore")
+			.setDesc("Exclude files or folders from parsing tasks")
+			.addTextArea((text) => {
+				text.inputEl.style.width = "100%";
+				text.inputEl.style.height = "auto";
+				text.inputEl.style.resize = "vertical";
+
+				text.inputEl.style.height = "1px";
+				text.inputEl.style.height = 25 + text.inputEl.scrollHeight + "px";
+
+				text
+					.setPlaceholder("Input to ignore Folder/, Note or Path/to/Note")
+					.setValue(this.plugin.settings.ignoreList.join("\n"))
+					.onChange(async (value) => {
+						const filesToIgnore = getLines(value).map((str) => str.trim());
+						this.plugin.settings.ignoreList =
+							filesToIgnore || DEFAULT_SETTINGS.ignoreList;
+
+						await this.plugin.saveSettings();
+					});
+			});
+
+		new Setting(containerEl)
+			.setName("Show done date in completed task")
+			.setDesc(
+				"Add Markdown or Wiki link to the current daily note when you complete a task ✅",
+			)
+			.addToggle((toggle) =>
+				toggle
+					.setValue(this.plugin.settings.isCompletedAtEnabled)
+					.onChange(async (value) => {
+						this.plugin.settings.isCompletedAtEnabled = value;
+						await this.plugin.saveSettings();
+					}),
+			);
+
+		new Setting(containerEl)
+			.setName("Show all filters by default?")
+			.addToggle((toggle) =>
+				toggle
+					.setValue(this.plugin.settings.shouldShowAllFilters)
+					.onChange(async (value) => {
+						this.plugin.settings.shouldShowAllFilters = value;
+						await this.plugin.saveSettings();
+					}),
+			);
+
+		new Setting(containerEl).setName("Filters").setHeading();
+
 		new Setting(containerEl).setName("Default limit").addText((text) =>
 			text
 				.setPlaceholder("Only number")
@@ -68,16 +148,18 @@ export default class GrindSettingTab extends PluginSettingTab {
 					}),
 			);
 
-		new Setting(containerEl).setName("Default note filter (without .md)").addText((text) =>
-			text
-				.setPlaceholder("Input path to note (without '.md')")
-				.setValue(this.plugin.settings.noteFilter)
-				.onChange(async (value) => {
-					this.plugin.settings.noteFilter = value.trim();
+		new Setting(containerEl)
+			.setName("Default note filter (without .md)")
+			.addText((text) =>
+				text
+					.setPlaceholder("Input path to note (without '.md')")
+					.setValue(this.plugin.settings.noteFilter)
+					.onChange(async (value) => {
+						this.plugin.settings.noteFilter = value.trim();
 
-					await this.plugin.saveSettings();
-				}),
-		);
+						await this.plugin.saveSettings();
+					}),
+			);
 
 		new Setting(containerEl)
 			.setName("Show tasks from current note by default?")
@@ -100,71 +182,5 @@ export default class GrindSettingTab extends PluginSettingTab {
 						await this.plugin.saveSettings();
 					}),
 			);
-
-		new Setting(containerEl)
-			.setName("Show all filters by default?")
-			.addToggle((toggle) =>
-				toggle
-					.setValue(this.plugin.settings.shouldShowAllFilters)
-					.onChange(async (value) => {
-						this.plugin.settings.shouldShowAllFilters = value;
-						await this.plugin.saveSettings();
-					}),
-			);
-
-		new Setting(containerEl).setName("Path to rewards file").addText((text) =>
-			text
-				.setPlaceholder("path/to/rewards.md")
-				.setValue(String(this.plugin.settings.pathToRewards))
-				.onChange(async (value) => {
-					const trimmedValue = value.trim();
-
-					this.plugin.settings.pathToRewards = trimmedValue
-						? trimmedValue
-						: DEFAULT_SETTINGS.pathToRewards;
-
-					await this.plugin.saveSettings();
-				}),
-		);
-
-		new Setting(containerEl).setName("Path to history file").addText((text) =>
-			text
-				.setPlaceholder("path/to/history.md")
-				.setValue(String(this.plugin.settings.pathToHistory))
-				.onChange(async (value) => {
-					const trimmedValue = value.trim();
-
-					this.plugin.settings.pathToHistory = trimmedValue
-						? trimmedValue
-						: DEFAULT_SETTINGS.pathToHistory;
-
-					await this.plugin.saveSettings();
-				}),
-		);
-
-		new Setting(containerEl)
-			.setName("Ignore")
-			.setDesc("Exclude files or folders from parsing tasks")
-			.addTextArea((text) => {
-				text.inputEl.style.width = "100%";
-				text.inputEl.style.height = "auto";
-				text.inputEl.style.resize = "vertical";
-
-				text.inputEl.style.height = "1px";
-				text.inputEl.style.height = 25 + text.inputEl.scrollHeight + "px";
-
-				text
-					.setPlaceholder(
-						"Input to ignore Folder/, Note or Path/to/Note",
-					)
-					.setValue(this.plugin.settings.ignoreList.join("\n"))
-					.onChange(async (value) => {
-						const filesToIgnore = getLines(value).map((str) => str.trim());
-						this.plugin.settings.ignoreList =
-							filesToIgnore || DEFAULT_SETTINGS.ignoreList;
-
-						await this.plugin.saveSettings();
-					});
-			});
 	}
 }

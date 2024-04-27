@@ -15,4 +15,5 @@ export type GrindPluginSettings = {
 	noteFilter: string;
 	isFromCurrentNote: boolean;
 	shouldShowAllFilters: boolean;
+	isCompletedAtEnabled: boolean;
 };

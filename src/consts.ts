@@ -19,6 +19,7 @@ export const DEFAULT_SETTINGS: GrindPluginSettings = {
 	noteFilter: "",
 	isFromCurrentNote: false,
 	shouldShowAllFilters: false,
+	isCompletedAtEnabled: true
 };
 
 export const DATE_FORMAT = "YYYY-MM-DD HH:mm" as const;
