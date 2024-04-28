@@ -106,7 +106,7 @@ export function parseHistory(content: string): Array<HistoryRow> {
 
 	const splitedLines = lines.reduce<Array<Array<string>>>((acc, line) => {
 		const newLine = line
-			.split("|")
+			.split(" | ")
 			.map((item) => item.trim())
 			.slice(0, 3);
 

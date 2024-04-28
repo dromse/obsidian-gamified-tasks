@@ -3,6 +3,7 @@ import { useApp, useHistory } from "@hooks";
 import { DifficultyPrice, StatusKeys } from "@hooks/useTasks/consts";
 import { Status, Task } from "@hooks/useTasks/types";
 import { logger, loggerMsg } from "@utils/logger";
+import { extractTitlesFromLinks } from "@utils/string";
 import {
 	MarkdownView,
 	Notice,
@@ -78,7 +79,7 @@ export default function TaskItem(props: Props): React.JSX.Element {
 				))}
 			</select>
 
-			<a onClick={handleRevealTask}>{task.body}</a>
+			<a onClick={handleRevealTask}>{extractTitlesFromLinks(task.body)}</a>
 
 			{task.counter && (
 				<div className={styles.counter}>
