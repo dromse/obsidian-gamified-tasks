@@ -12,6 +12,7 @@
 		"lint": "eslint .",
 		"test": "node --stack-trace-limit=0 --import tsx --test tests/**/*.ts",
 		"test:coverage": "c8 pnpm test",
+		"test:one": "node --stack-trace-limit=0 --import tsx --test",
 		"prepare": "husky"
 	},
 	"keywords": [],
