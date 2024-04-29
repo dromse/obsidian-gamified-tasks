@@ -54,7 +54,7 @@ export default function useTasks(): UseTasksResult {
 	};
 
 	const app = useApp();
-	const { historyRows: history } = useHistory();
+	const { historyRows } = useHistory();
 	const settings = useSettings();
 
 	if (!app) {
@@ -141,16 +141,16 @@ export default function useTasks(): UseTasksResult {
 
 		const pastDaysList = generatePastDaysArray(amountOfDaysToShowAgain);
 
-		const historyRows = history
+		const dateRange = historyRows
 			.filter((row) => pastDaysList.includes(row.date.split(" ")[0]))
 			.map((row) => row.title);
 
-		const isTaskNotAppearInPastDays = !historyRows.includes(task.body);
+		const isTaskNotAppearInPastDays = !dateRange.includes(task.body);
 
 		if (task.counter) {
-			const isCounterReset = task.counter.current !== task.counter.goal;
+			const isCounterNotFull = task.counter.current !== task.counter.goal;
 
-			if (isCounterReset && isTaskNotAppearInPastDays) {
+			if (isCounterNotFull) {
 				return true;
 			}
 		}
