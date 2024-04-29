@@ -2,6 +2,7 @@ import { coins } from "@components/Rewards/RewardList";
 import { useApp, useHistory } from "@hooks";
 import { DifficultyPrice, StatusKeys } from "@hooks/useTasks/consts";
 import { Status, Task } from "@hooks/useTasks/types";
+import { revealTask } from "@utils/editor";
 import { logger, loggerMsg } from "@utils/logger";
 import { extractTitlesFromLinks } from "@utils/string";
 import {
@@ -196,50 +197,3 @@ async function updateStatus(
 	}
 }
 
-type RevealTaskProps = {
-	task: Task;
-	workspace: Workspace;
-	vault: Vault;
-};
-const revealTask = (props: RevealTaskProps): void => {
-	const { task, workspace, vault } = props;
-	const tFile = vault.getFileByPath(task.path);
-
-	if (!tFile) {
-		new Notice("Error: file associated with task is not found.");
-		return;
-	}
-
-	const leaves = workspace.getLeavesOfType("markdown") as Array<WorkspaceLeaf>;
-
-	/**
-	 * Determines if a MarkdownView instance corresponds to an already opened file by explicitly setting `MarkdownView` for `leaf.view`.
-	 * This is necessary because the `getLeavesOfType` method returns instances of type `View`, lacking the `file` field.
-	 */
-	const isFileOpened = (view: MarkdownView): boolean =>
-		view.file ? view.file.path === task.path : false;
-
-	/**
-	 * Checks if the file is already open among the given leaves.
-	 */
-	const isFileAlreadyOpen = leaves.some((leaf) =>
-		isFileOpened(leaf.view as MarkdownView),
-	);
-
-	if (isFileAlreadyOpen) {
-		const leaf = leaves.find((leaf) =>
-			isFileOpened(leaf.view as MarkdownView),
-		);
-
-		/*
-		 * Displays the already opened file and highlights the line containing the task.
-		 */
-		if (leaf) {
-			leaf.openFile(tFile, { eState: { line: task.lineNumber } });
-		}
-	} else {
-		workspace.getLeaf("tab").openFile(tFile, {
-			eState: { line: task.lineNumber },
-		});
-	}
-};
