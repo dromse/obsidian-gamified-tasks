@@ -114,7 +114,7 @@ export default function useTasks(): UseTasksResult {
 		}
 	}
 
-	function getTodayTasks(tasks: Array<Task>): Array<Task> {
+	function getTodayTasks(tasks: ReadonlyArray<Task>): Array<Task> {
 		const toShowTodayTasks = tasks.filter(byToday(historyRows));
 		toShowTodayTasks.map((task) => resetReccuringTask(task));
 
@@ -144,7 +144,7 @@ export default function useTasks(): UseTasksResult {
 		}
 	}
 
-	const filterTaskList = (taskList: Array<Task>): Array<Task> =>
+	const filterTaskList = (taskList: ReadonlyArray<Task>): Array<Task> =>
 		taskList
 			.filter(byNote(noteFilter, isFromCurrentNote, workspace))
 			.filter(byStatus(statusFilter))
@@ -196,52 +196,35 @@ export default function useTasks(): UseTasksResult {
 		shouldUpdateUI,
 	]);
 
+	const setupDefaultSettings = (): void => {
+		if (!settings) {
+			return;
+		}
+
+		type SettingSetter = {
+			setting: unknown;
+			setter: React.Dispatch<React.SetStateAction<unknown>>;
+		};
+
+		const settingSetters: ReadonlyArray<SettingSetter> = [
+			{ setting: settings.limit, setter: setLimit },
+			{ setting: settings.statusFilter, setter: setStatusFilter },
+			{ setting: settings.isRecurTasks, setter: setIsRecur },
+			{ setting: settings.tagFilter, setter: setTagFilter },
+			{ setting: settings.hasOnlyThisTags, setter: setHasOnlyThisTags },
+			{ setting: settings.noteFilter, setter: setNoteFilter },
+			{ setting: settings.isFromCurrentNote, setter: setIsFromCurrentNote },
+		];
+
+		settingSetters.forEach((obj) => obj.setting && obj.setter(obj.setting));
+	};
+
 	/**
 	 * Apply default settings on mount.
 	 * Fetch tasks when vault is modified.
 	 */
 	useEffect(() => {
-		if (!settings) {
-			return;
-		}
-
-		const {
-			limit,
-			statusFilter,
-			isRecurTasks,
-			tagFilter,
-			hasOnlyThisTags,
-			noteFilter,
-			isFromCurrentNote,
-		} = settings;
-
-		if (limit) {
-			setLimit(limit);
-		}
-
-		if (statusFilter) {
-			setStatusFilter(statusFilter);
-		}
-
-		if (isRecurTasks) {
-			setIsRecur(isRecurTasks);
-		}
-
-		if (tagFilter) {
-			setTagFilter(tagFilter);
-		}
-
-		if (hasOnlyThisTags) {
-			setHasOnlyThisTags(hasOnlyThisTags);
-		}
-
-		if (noteFilter) {
-			setNoteFilter(noteFilter);
-		}
-
-		if (isFromCurrentNote) {
-			setIsFromCurrentNote(isFromCurrentNote);
-		}
+		setupDefaultSettings();
 
 		fetchTasks();
 		vault.on("modify", fetchTasks);
