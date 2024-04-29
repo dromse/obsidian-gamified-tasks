@@ -8,7 +8,6 @@ import { Reward } from "@hooks/useRewards";
 import { singularOrPlural } from "@utils/string";
 import { PiggyBank } from "lucide-react";
 import { Notice } from "obsidian";
-import DepositoryModal from "./Depository";
 import Depository from "./Depository";
 
 export const coins = (amount: number): string =>
@@ -63,7 +62,9 @@ export default function RewardList(props: RewardListProps): React.JSX.Element {
 									change: -reward.price,
 								});
 								new Notice(
-									`You purchase '${reward.title}': -${reward.price} ${reward.price > 1 ? "coins" : "coin"}`,
+									`You purchase '${reward.title}': -${reward.price} ${
+										reward.price > 1 ? "coins" : "coin"
+									}`,
 								);
 							}}
 							disabled={reward.price > balance}
