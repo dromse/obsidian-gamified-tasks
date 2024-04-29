@@ -1,6 +1,13 @@
 import { GrindConsts } from "@consts";
-import { generatePastDaysArray, getAmountOfPastDays } from "@utils/date";
 import { getRawFiles } from "@utils/file";
+import {
+	byNote,
+	byRecurrance,
+	bySearch,
+	byStatus,
+	byTag,
+	byToday
+} from "@utils/filter";
 import { parseMiddlewares, stringifyMiddlewares } from "@utils/middleware";
 import { parseTasks } from "@utils/task";
 import { TFile } from "obsidian";
@@ -89,27 +96,6 @@ export default function useTasks(): UseTasksResult {
 		return "error";
 	}
 
-	const filterBySearch = (task: Task): boolean =>
-		task.body
-			? task.body.toLowerCase().includes(searchFilter.toLowerCase())
-			: true;
-
-	const filterByStatus = (task: Task): boolean => {
-		if (statusFilter === "all") {
-			return true;
-		}
-
-		if (!task.status) {
-			return false;
-		}
-
-		if (statusFilter === task.status) {
-			return true;
-		}
-
-		return false;
-	};
-
 	function resetReccuringTask(task: Task): void {
 		const newTask = { ...task };
 
@@ -128,78 +114,12 @@ export default function useTasks(): UseTasksResult {
 		}
 	}
 
-	function toShowTodayFilter(task: Task): boolean {
-		if (!task.every) {
-			return false;
-		}
-
-		let amountOfDaysToShowAgain = getAmountOfPastDays(task.every);
-
-		if (!amountOfDaysToShowAgain) {
-			return false;
-		}
-
-		const pastDaysList = generatePastDaysArray(amountOfDaysToShowAgain);
-
-		const dateRange = historyRows
-			.filter((row) => pastDaysList.includes(row.date.split(" ")[0]))
-			.map((row) => row.title);
-
-		const isTaskNotAppearInPastDays = !dateRange.includes(task.body);
-
-		if (task.counter) {
-			const isCounterNotFull = task.counter.current !== task.counter.goal;
-
-			if (isCounterNotFull) {
-				return true;
-			}
-		}
-
-		return isTaskNotAppearInPastDays;
-	}
-
 	function getTodayTasks(tasks: Array<Task>): Array<Task> {
-		const toShowTodayTasks = tasks.filter(toShowTodayFilter);
+		const toShowTodayTasks = tasks.filter(byToday(historyRows));
 		toShowTodayTasks.map((task) => resetReccuringTask(task));
 
 		return toShowTodayTasks;
 	}
-
-	function filterByTag(task: Task): boolean {
-		if (tagFilter.length === 0) {
-			return true;
-		}
-
-		const tags = tagFilter
-			.split(",")
-			.map((tag) => tag.trim())
-			.filter((trimmedTag) => trimmedTag !== "")
-			.map((tag) => "#" + tag);
-
-		if (hasOnlyThisTags) {
-			return tags.every((tag) => task.lineContent.includes(tag));
-		} else {
-			return tags.some((tag) => task.lineContent.includes(tag));
-		}
-	}
-
-	const filterByNote = (task: Task): boolean => {
-		if (isFromCurrentNote) {
-			const activeNote = workspace.getActiveFile();
-
-			if (activeNote) {
-				return task.path === activeNote.path;
-			}
-
-			return false;
-		}
-
-		if (noteFilter === "") {
-			return true;
-		}
-
-		return task.path === noteFilter + ".md";
-	};
 
 	async function fetchTasks(): Promise<void> {
 		try {
@@ -226,16 +146,12 @@ export default function useTasks(): UseTasksResult {
 
 	const filterTaskList = (taskList: Array<Task>): Array<Task> =>
 		taskList
-			.filter(filterByNote)
-			.filter(filterByStatus)
-			.filter(filterByTag)
-			.filter(filterBySearch)
+			.filter(byNote(noteFilter, isFromCurrentNote, workspace))
+			.filter(byStatus(statusFilter))
+			.filter(byTag(tagFilter, hasOnlyThisTags))
+			.filter(bySearch(searchFilter))
 			.slice(0, limit);
 
-	const handleActiveFile = (): void => {
-		const tFile = workspace.getActiveFile();
-		setActiveFile(tFile);
-	};
 	/**
 	 * Load tasks from sessionStorage and apply filters.
 	 */
@@ -246,7 +162,7 @@ export default function useTasks(): UseTasksResult {
 			const tasks: Array<Task> = JSON.parse(tasksJSON);
 
 			if (isRecur) {
-				const allRecurringTasks = tasks.filter(filterByRecurrance);
+				const allRecurringTasks = tasks.filter(byRecurrance);
 
 				const todayTasks = getTodayTasks(allRecurringTasks);
 
@@ -259,6 +175,11 @@ export default function useTasks(): UseTasksResult {
 				setTasks(filteredList);
 			}
 		}
+
+		const handleActiveFile = (): void => {
+			const tFile = workspace.getActiveFile();
+			setActiveFile(tFile);
+		};
 
 		workspace.on("active-leaf-change", handleActiveFile);
 		return () => workspace.off("active-leaf-change", handleActiveFile);
@@ -276,17 +197,8 @@ export default function useTasks(): UseTasksResult {
 	]);
 
 	/**
-	 * Fetch tasks from vault on trigger call.
-	 */
-	useEffect(() => {
-		fetchTasks();
-
-		vault.on("modify", fetchTasks);
-		return () => vault.off("modify", fetchTasks);
-	}, []);
-
-	/**
 	 * Apply default settings on mount.
+	 * Fetch tasks when vault is modified.
 	 */
 	useEffect(() => {
 		if (!settings) {
@@ -330,10 +242,11 @@ export default function useTasks(): UseTasksResult {
 		if (isFromCurrentNote) {
 			setIsFromCurrentNote(isFromCurrentNote);
 		}
+
+		fetchTasks();
+		vault.on("modify", fetchTasks);
+		return () => vault.off("modify", fetchTasks);
 	}, []);
 
 	return { tasks, isTasksParsed, updateTask, filters };
 }
-
-const filterByRecurrance = (task: Task): boolean =>
-	task.every ? true : false;
