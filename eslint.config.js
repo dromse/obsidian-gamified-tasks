@@ -1,10 +1,12 @@
 import tseslint from "typescript-eslint";
+import noInlineStyle from "eslint-plugin-no-inline-styles"
 const __dirname = import.meta.dirname;
 
 export default tseslint.config(
 	{
 		plugins: {
 			"@typescript-eslint": tseslint.plugin,
+			"no-inline-style": noInlineStyle
 		},
 		languageOptions: {
 			parser: tseslint.parser,
@@ -15,6 +17,7 @@ export default tseslint.config(
 		},
 		files: ["{src,tests}/**/*.{ts,tsx}"],
 		rules: {
+			"no-inline-style/no-inline-styles": 2,
 			"no-warning-comments": [
 				"error",
 				{
