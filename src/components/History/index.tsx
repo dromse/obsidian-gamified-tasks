@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import styles from "./styles.module.css";
 
 export default function History(): React.JSX.Element {
-	const { historyRows: history, balance, isHistoryParsed } = useHistory();
+	const { historyRows, isHistoryParsed } = useHistory();
 	const [page, setPage] = useState(0);
 	const [totalPages, setTotalPages] = useState<number | undefined>(undefined);
 	const [pageInput, setPageInput] = useState(String(page + 1));
@@ -88,21 +88,23 @@ export default function History(): React.JSX.Element {
 						</thead>
 
 						<tbody>
-							{history.slice(page * 10, (page + 1) * 10).map((row, index) => (
-								<tr key={index}>
-									<th scope="row">
-										{row.change > 0 ? "+" + row.change : row.change}
-									</th>
-									<td>{row.title}</td>
-									<td>{row.date}</td>
-								</tr>
-							))}
+							{historyRows
+								.slice(page * 10, (page + 1) * 10)
+								.map((row, index) => (
+									<tr key={index}>
+										<th scope="row">
+											{row.change > 0 ? "+" + row.change : row.change}
+										</th>
+										<td>{row.title}</td>
+										<td>{row.date}</td>
+									</tr>
+								))}
 						</tbody>
 					</table>
 				</div>
 			);
 		} else {
-			setTotalPages(Math.ceil(history.length / 10));
+			setTotalPages(Math.ceil(historyRows.length / 10));
 		}
 	}
 
