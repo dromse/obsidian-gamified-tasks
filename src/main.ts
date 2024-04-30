@@ -1,8 +1,8 @@
 import { DEFAULT_SETTINGS, GrindConsts } from "@consts";
+import { PluginView, PLUGIN_VIEW_TYPE } from "@PluginView";
 import { GrindPluginSettings } from "@types";
 import { logger } from "@utils/logger";
 import { Plugin, WorkspaceLeaf } from "obsidian";
-import { MyView, MY_VIEW_TYPE } from "./MyView";
 import GrindSettingTab from "./SettingTab";
 
 export default class GrindPlugin extends Plugin {
@@ -34,7 +34,10 @@ export default class GrindPlugin extends Plugin {
 
 		this.addSettingTab(new GrindSettingTab(this.app, this));
 
-		this.registerView(MY_VIEW_TYPE, (leaf) => new MyView(leaf, this.settings));
+		this.registerView(
+			PLUGIN_VIEW_TYPE,
+			(leaf) => new PluginView(leaf, this.settings),
+		);
 
 		this.addRibbonIcon("list-todo", "Show grind manager", () => {
 			this.activateView();
@@ -47,13 +50,13 @@ export default class GrindPlugin extends Plugin {
 		const { workspace } = this.app;
 
 		let leaf: WorkspaceLeaf | null = null;
-		const leaves = workspace.getLeavesOfType(MY_VIEW_TYPE);
+		const leaves = workspace.getLeavesOfType(PLUGIN_VIEW_TYPE);
 
 		if (leaves.length > 0) {
 			leaf = leaves[0];
 		} else {
 			leaf = workspace.getRightLeaf(false);
-			await leaf?.setViewState({ type: MY_VIEW_TYPE, active: true });
+			await leaf?.setViewState({ type: PLUGIN_VIEW_TYPE, active: true });
 		}
 
 		if (leaf) {

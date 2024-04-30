@@ -5,9 +5,9 @@ import React from "react";
 import { createRoot, Root } from "react-dom/client";
 import { AppContext, SettingsContext } from "./context";
 
-export const MY_VIEW_TYPE = "grind-manager-view";
+export const PLUGIN_VIEW_TYPE = "grind-manager-view";
 
-export class MyView extends ItemView {
+export class PluginView extends ItemView {
 	root: Root | null = null;
 	pluginSettings: GrindPluginSettings;
 
@@ -18,7 +18,7 @@ export class MyView extends ItemView {
 	}
 
 	getViewType(): string {
-		return MY_VIEW_TYPE;
+		return PLUGIN_VIEW_TYPE;
 	}
 
 	getDisplayText(): string {
