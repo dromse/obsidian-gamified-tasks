@@ -1,8 +1,8 @@
-import { coins } from "@components/Rewards/RewardList";
 import { RawFile } from "@hooks/types";
 import { DifficultyPrice } from "@hooks/useTasks/consts";
 import { Status, Task } from "@hooks/useTasks/types";
 import { Notice } from "obsidian";
+import { coins } from "./string";
 
 /** Parse all occurance of task line in `file` content and then returns task list */
 export function parseTasksFromFile(file: RawFile): Array<Task> {

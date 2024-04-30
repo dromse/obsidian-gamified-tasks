@@ -1,28 +1,46 @@
-.list-item {
-	list-style-type: none;
-}
+[data-type="grind-manager-view"] {
+	.view-content {
+		padding: 5px;
 
-.todo {
-	display: flex;
-	align-items: center;
-}
+		/* Based on right sidebar width grind manager will adapt layouts to various screens */
+		container-type: size;
+	}
 
-.list {
-	padding: 0;
-	padding-inline-start: none;
-}
+	.checkbox {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+	}
 
-.border {
-	border: 1px solid var(--divider-color);
-	border-radius: 10px;
-	padding: 10px;
-}
+	.list-item {
+		list-style-type: none;
+	}
 
-/* Based on right sidebar width grind manager will adjust its layouts */
-.workspace-leaf > [data-type="grind-manager-view"] {
-	container-type: size;
-}
+	.todo {
+		display: flex;
+		align-items: center;
+	}
 
-[data-type="grind-manager-view"] > .view-content {
-	padding: 5px;
+	.list {
+		padding: 0;
+		padding-inline-start: none;
+	}
+
+	.border {
+		border: 1px solid var(--divider-color);
+		border-radius: 10px;
+		padding: 10px;
+	}
+
+	.flex-items-center {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+	}
+
+	.flex-column {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
 }

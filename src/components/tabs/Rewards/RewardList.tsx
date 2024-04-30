@@ -5,13 +5,10 @@ import styles from "./styles.module.css";
 import { useApp } from "@hooks";
 import { UseHistoryReturn } from "@hooks/useHistory";
 import { Reward } from "@hooks/useRewards";
-import { singularOrPlural } from "@utils/string";
 import { PiggyBank } from "lucide-react";
 import { Notice } from "obsidian";
 import Depository from "./Depository";
-
-export const coins = (amount: number): string =>
-	singularOrPlural({ amount, singular: "coin" });
+import { coins } from "@utils/string";
 
 type RewardListProps = {
 	rewards: ReadonlyArray<Reward>;
@@ -38,7 +35,6 @@ export default function RewardList(props: RewardListProps): React.JSX.Element {
 
 			{isDepositoryOpen && (
 				<Depository
-					style={{ marginTop: "10px" }}
 					className={"border " + styles.depository}
 					history={history}
 				/>

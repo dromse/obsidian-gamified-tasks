@@ -1,14 +1,12 @@
 import React from "react";
 
-import styles from "../styles.module.css";
-
 type Props = { isRecur: boolean; setIsRecur: Function };
 
 export default function RecurFilter(props: Props): React.JSX.Element {
 	const { isRecur, setIsRecur } = props;
 
 	return (
-		<div className={styles.checkbox}>
+		<div className="checkbox">
 			<input
 				type="checkbox"
 				name="is-recur"
@@ -17,7 +15,7 @@ export default function RecurFilter(props: Props): React.JSX.Element {
 				onChange={() => setIsRecur(!isRecur)}
 			/>
 
-			<label htmlFor="is-recur">Is task recurring? (today)</label>
+			<label htmlFor="is-recur">Show recurring tasks</label>
 		</div>
 	);
 }

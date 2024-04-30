@@ -2,7 +2,7 @@ import { useHistory, useRewards } from "@hooks";
 import React from "react";
 import RewardList from "./RewardList";
 
-export default function Rewards(): React.JSX.Element {
+export default function RewardsTab(): React.JSX.Element {
 	const { rewards, isRewardsParsed } = useRewards();
 	const history = useHistory();
 

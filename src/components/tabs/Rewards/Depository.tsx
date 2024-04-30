@@ -1,3 +1,4 @@
+import Input from "@components/reusable/Input";
 import {
 	DepositoryTransactionState,
 	DEPOSITORY_TRANSACTION_STATE,
@@ -5,9 +6,10 @@ import {
 } from "@hooks/useDepository";
 import { UseHistoryReturn } from "@hooks/useHistory";
 import { isDigitString } from "@utils/check";
+import { coins } from "@utils/string";
 import { Notice } from "obsidian";
 import React, { useState } from "react";
-import { coins } from "./RewardList";
+import styles from "./styles.module.css";
 
 type DepositoryProps = {
 	history: UseHistoryReturn;
@@ -23,7 +25,7 @@ export default function Depository(props: DepositoryProps): React.JSX.Element {
 	const handleInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
 		const value = e.currentTarget.value;
 
-		setAmount(0)
+		setAmount(0);
 		setInputValue(value);
 
 		if (isDigitString(value)) {
@@ -79,28 +81,17 @@ export default function Depository(props: DepositoryProps): React.JSX.Element {
 		<div {...dialogAttributes}>
 			<div>Depository: {coins(balance)}</div>
 
-			<input
+			<Input
 				type="number"
-				style={{ width: "100%" }}
+				id={styles.inputCoins}
 				placeholder="input coins"
 				value={inputValue}
 				onChange={handleInput}
 			/>
 
-			<div style={{ display: "flex", width: "100%", gap: "10px" }}>
-				<button
-					style={{ flex: 1 }}
-					onClick={handleStore}
-				>
-					Store
-				</button>
-
-				<button
-					style={{ flex: 1 }}
-					onClick={handleRestore}
-				>
-					Restore
-				</button>
+			<div className={styles.buttons}>
+				<button onClick={handleStore}>Store</button>
+				<button onClick={handleRestore}>Restore</button>
 			</div>
 		</div>
 	);

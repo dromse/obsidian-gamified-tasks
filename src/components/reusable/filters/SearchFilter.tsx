@@ -1,3 +1,4 @@
+import Input from "@components/reusable/Input";
 import React from "react";
 
 type Props = {
@@ -9,10 +10,10 @@ export default function SearchFilter(props: Props): React.JSX.Element {
 	const { searchFilter, setSearchFilter } = props;
 
 	return (
-		<input
+		<Input
 			type="text"
-			name=""
-			id=""
+			name="search"
+			id="search"
 			placeholder="Search tasks"
 			value={searchFilter}
 			onChange={(e) => setSearchFilter(e.currentTarget.value)}

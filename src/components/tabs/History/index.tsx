@@ -1,8 +1,9 @@
 import { useHistory } from "@/hooks";
+import Input from "@components/reusable/Input";
 import React, { useState } from "react";
 import styles from "./styles.module.css";
 
-export default function History(): React.JSX.Element {
+export default function HistoryTab(): React.JSX.Element {
 	const { historyRows, isHistoryParsed } = useHistory();
 	const [page, setPage] = useState(0);
 	const [totalPages, setTotalPages] = useState<number | undefined>(undefined);
@@ -13,7 +14,11 @@ export default function History(): React.JSX.Element {
 		setPageInput(String(pageIndex + 1));
 	};
 
-	const handleChangeInputPage = (pageInput: string): void => {
+	const handleChangeInputPage = (
+		e: React.ChangeEvent<HTMLInputElement>,
+	): void => {
+		const pageInput = e.currentTarget.value;
+
 		if (totalPages) {
 			if (
 				pageInput === "" ||
@@ -65,18 +70,14 @@ export default function History(): React.JSX.Element {
 						)}
 					</div>
 
-					<div>
-						<label htmlFor="page-input">Page:</label>
-
-						<input
-							type="number"
-							name="page-input"
-							style={{ width: "100%" }}
-							id=""
-							value={pageInput}
-							onChange={(e) => handleChangeInputPage(e.currentTarget.value)}
-						/>
-					</div>
+					<Input
+						type="number"
+						name="page-input"
+						id={styles.pageInput}
+						value={pageInput}
+						onChange={handleChangeInputPage}
+						afterclearvalue="1"
+					/>
 
 					<table className={styles.table}>
 						<thead>

@@ -1,0 +1,19 @@
+.note {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.note__input-and-button {
+	display: flex;
+	gap: 10px;
+}
+
+.note__input {
+	flex: 1;
+}
+
+.task__status {
+	text-align: center;
+	padding: 0;
+}

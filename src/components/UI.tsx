@@ -1,10 +1,8 @@
 import React from "react";
-import History from "./History";
-import Rewards from "./Rewards";
-import Tabs from "./Tabs";
-import Tasks from "./Tasks";
+import Tabs from "./reusable/Tabs";
+import { History, Rewards, Tasks } from "./tabs";
 
-export const GrindApp = (): React.JSX.Element => {
+export const UI = (): React.JSX.Element => {
 	const tabs = [
 		{ title: "Tasks", view: Tasks },
 		{ title: "Rewards", view: Rewards },

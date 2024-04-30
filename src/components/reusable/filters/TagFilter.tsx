@@ -1,5 +1,5 @@
+import Input from "@components/reusable/Input";
 import React from "react";
-import styles from "../styles.module.css";
 
 type Props = {
 	tagFilter: string | undefined;
@@ -13,19 +13,21 @@ export default function TagFilter(props: Props): React.JSX.Element {
 		props;
 
 	return (
-		<div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
-			<label htmlFor="tags">Tags:</label>
-			<input
-				type="text"
-				name="tags"
-				id="tags"
-				style={{ width: "100%" }}
-				placeholder="Input tags without # (use comma to separate)"
-				value={tagFilter ? tagFilter : ""}
-				onChange={(e) => setTagFilter(e.currentTarget.value)}
-			/>
+		<div className="flex-column">
+			<div className="flex-items-center">
+				<label htmlFor="tags">Tags:</label>
 
-			<div className={styles.checkbox}>
+				<Input
+					type="search"
+					name="tags"
+					id="tags"
+					placeholder="sport, code..."
+					value={tagFilter ? tagFilter : ""}
+					onChange={(e) => setTagFilter(e.currentTarget.value)}
+				/>
+			</div>
+
+			<div className="checkbox">
 				<input
 					type="checkbox"
 					name="onlyTags"

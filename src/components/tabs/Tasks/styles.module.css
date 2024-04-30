@@ -1,0 +1,37 @@
+/* Adjust grid manager `Tasks` layout when the right sidebar width is 500px or less */
+@container (max-width: 400px) {
+	.task {
+		flex-direction: column;
+		gap: 15px;
+	}
+
+	.counter {
+		margin: auto;
+	}
+
+	.task__status {
+		order: 3;
+	}
+}
+
+.task__status {
+	text-align: center;
+	padding: 0;
+}
+
+.filters {
+	hr {
+		padding: 0;
+		margin: 0;
+		margin: 5px 0;
+	}
+}
+
+.counter {
+	margin-left: auto;
+	white-space: nowrap;
+
+	& button {
+		width: 50px;
+	}
+}

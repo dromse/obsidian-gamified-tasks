@@ -1,5 +1,6 @@
+import Input from "@components/reusable/Input";
 import React, { useState } from "react";
-import styles from "../styles.module.css";
+import styles from "./styles.module.css";
 
 type Props = {
 	noteFilter: string | undefined;
@@ -23,16 +24,16 @@ export default function TagFilter(props: Props): React.JSX.Element {
 	};
 
 	return (
-		<div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+		<div className={styles.note}>
 			<label htmlFor="noteFilter">Tasks from note:</label>
 
-			<div style={{ display: "flex", gap: "10px" }}>
-				<input
+			<div className={styles.noteInputAndButton}>
+				<Input
+					className={styles.noteInput}
 					type="text"
 					name="noteFilter"
 					id="noteFilter"
-					style={{ width: "100%" }}
-					placeholder="Input note path without '.md'"
+					placeholder="path/to/note"
 					value={inputValue ? inputValue : ""}
 					onChange={(e) => setInputValue(e.currentTarget.value.trim())}
 					disabled={isFromCurrentNote}
@@ -41,7 +42,7 @@ export default function TagFilter(props: Props): React.JSX.Element {
 				<button onClick={handleClick}>Apply</button>
 			</div>
 
-			<div className={styles.checkbox}>
+			<div className="checkbox">
 				<input
 					type="checkbox"
 					name="currentNote"

@@ -35,6 +35,9 @@ export function singularOrPlural({
 	return `${amount} ${amount > 1 || amount === 0 ? singular + "s" : singular}`;
 }
 
+export const coins = (amount: number): string =>
+	singularOrPlural({ amount, singular: "coin" });
+
 /**
  * Takes text containing markdown or wiki links and extracts only the title of the links,
  * returning a clean string.

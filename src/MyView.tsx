@@ -1,8 +1,8 @@
+import { UI } from "@components/UI";
 import { GrindPluginSettings } from "@types";
 import { ItemView, WorkspaceLeaf } from "obsidian";
 import React from "react";
 import { createRoot, Root } from "react-dom/client";
-import { GrindApp } from "./components/GrindApp";
 import { AppContext, SettingsContext } from "./context";
 
 export const MY_VIEW_TYPE = "grind-manager-view";
@@ -31,7 +31,7 @@ export class MyView extends ItemView {
 		this.root.render(
 			<AppContext.Provider value={this.app}>
 				<SettingsContext.Provider value={this.pluginSettings}>
-					<GrindApp />
+					<UI />
 				</SettingsContext.Provider>
 			</AppContext.Provider>,
 		);

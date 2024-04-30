@@ -67,7 +67,7 @@ export default function TaskItem(props: Props): React.JSX.Element {
 	};
 
 	return (
-		<li className={`${styles.task} border`}>
+		<li className={`${styles.task} flex-items-center border`}>
 			<select
 				onChange={handleUpdateStatus}
 				value={task.status}
@@ -81,7 +81,7 @@ export default function TaskItem(props: Props): React.JSX.Element {
 			<a onClick={handleRevealTask}>{extractTitlesFromLinks(task.body)}</a>
 
 			{task.counter && (
-				<div className={styles.counter}>
+				<div className={`flex-items-center ${styles.counter}`}>
 					<p>
 						{task.counter.current} / {task.counter.goal}
 					</p>

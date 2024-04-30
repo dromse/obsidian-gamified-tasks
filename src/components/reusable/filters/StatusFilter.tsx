@@ -2,7 +2,7 @@ import React from "react";
 
 import { StatusKeys } from "@hooks/useTasks/consts";
 import { StatusFilterOption } from "@hooks/useTasks/types";
-import styles from "../styles.module.css";
+import styles from "./styles.module.css";
 
 type Props = {
 	currentStatusFilter: StatusFilterOption;
@@ -13,7 +13,7 @@ export default function StatusFilter(props: Props): React.JSX.Element {
 	const { currentStatusFilter, setCurrentStatusFilter } = props;
 
 	return (
-		<div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+		<div className="flex-items-center">
 			<select
 				name="status"
 				id="status"

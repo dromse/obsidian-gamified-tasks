@@ -1,3 +1,4 @@
+import Input from "@components/reusable/Input";
 import React from "react";
 
 type Props = {
@@ -9,13 +10,13 @@ export default function LimitFilter(props: Props): React.JSX.Element {
 	const { limit, setLimit } = props;
 
 	return (
-		<div>
+		<div className="flex-items-center">
 			<label htmlFor="limit">Limit:</label>
-			<input
+
+			<Input
 				type="number"
 				name="limit"
 				id="limit"
-				style={{ width: "100%" }}
 				placeholder="Task to show"
 				value={limit ? limit : ""}
 				onChange={(e) =>
