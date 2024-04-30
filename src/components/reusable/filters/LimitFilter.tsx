@@ -17,7 +17,7 @@ export default function LimitFilter(props: Props): React.JSX.Element {
 				type="number"
 				name="limit"
 				id="limit"
-				placeholder="Task to show"
+				placeholder="number tasks to show"
 				value={limit ? limit : ""}
 				onChange={(e) =>
 					setLimit(
