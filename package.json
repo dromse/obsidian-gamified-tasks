@@ -6,7 +6,7 @@
 	"main": "main.js",
 	"scripts": {
 		"dev:build": "rm -rf build && tsc -noEmit -skipLibCheck && node esbuild.config.mjs && cp manifest.json build && cat src/styles.css build/main.css > build/styles.css && rm build/main.css && touch build/.hotreload",
-		"build": "rm -rf build && node esbuild.config.mjs production && cp manifest.json build && minify src/styles.css build/main.css > build/styles.css && rm build/main.css",
+		"build": "rm -rf build && node esbuild.config.mjs production && cp manifest.json build && cat src/styles.css build/main.css > build/styles.css && rm build/main.css",
 		"watch": "nodemon --ignore build/ -e ts,tsx,css --exec \"pnpm build\" ",
 		"docs": "typedoc",
 		"lint": "eslint .",
@@ -46,7 +46,6 @@
 		"esbuild": "latest",
 		"esbuild-css-modules-plugin": "^3.1.0",
 		"lucide-react": "^0.373.0",
-		"minify": "^11.1.1",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0"
 	}
