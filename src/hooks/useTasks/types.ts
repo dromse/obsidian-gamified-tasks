@@ -81,7 +81,7 @@ export type Status = "todo" | "doing" | "done" | "denied" | "delay";
 /**
  * Type defenition for a counter object.
  */
-export type Counter = {
+export type CounterT = {
 	/**
 	 * The goal value of the counter.
 	 */
@@ -141,11 +141,13 @@ export type Task = {
 	 * The recurrence of the task.
 	 */
 	every?: string;
+	
+	bind?: string;
 
 	/**
 	 * The counter information of the task.
 	 */
-	counter?: Counter;
+	counter?: CounterT;
 };
 
 /**

@@ -9,7 +9,7 @@ import {
 	byToday
 } from "@utils/filter";
 import { parseMiddlewares, stringifyMiddlewares } from "@utils/middleware";
-import { parseTasks } from "@utils/task";
+import { operateYAMLBinding, parseTasks } from "@utils/task";
 import { TFile } from "obsidian";
 import { useEffect, useState } from "react";
 import { useApp, useHistory, useSettings } from "..";
@@ -90,6 +90,10 @@ export default function useTasks(): UseTasksResult {
 
 		if (!tFile) {
 			return;
+		}
+
+		if (task.bind && app && settings) {
+			await operateYAMLBinding({ task: newTask, previousTaskState: task, app, vault, settings })
 		}
 
 		return await vault.process(tFile, (data) =>

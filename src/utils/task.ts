@@ -1,9 +1,11 @@
+import { DAY_FORMAT } from "@consts";
 import { RawFile } from "@hooks/types";
 import { DifficultyPrice } from "@hooks/useTasks/consts";
 import { Status, Task } from "@hooks/useTasks/types";
-import { Notice } from "obsidian";
-import { isOutOfScope } from "./check";
+import { App, Notice, Vault, moment } from "obsidian";
 import { coins } from "./string";
+import { isOutOfScope } from "./check";
+import { GamifiedTasksSettings } from "@types";
 
 /** Parse all occurance of task line in `file` content and then returns task list */
 export function parseTasksFromFile(file: RawFile): Array<Task> {
@@ -139,5 +141,54 @@ export async function updateStatus(
 		});
 
 		new Notice(`You returned: ${coins(DifficultyPrice[task.difficulty])}`);
+	}
+}
+
+type OperateYAMLBindingProps = {
+	task: Task;
+	previousTaskState: Task;
+	app: App;
+	vault: Vault;
+	settings: GamifiedTasksSettings;
+};
+export async function operateYAMLBinding(
+	props: OperateYAMLBindingProps,
+): Promise<void> {
+	const { task, app, vault, settings, previousTaskState } = props;
+
+	const dailyNotePath = moment().format(
+		`[${settings?.pathToDaily}/]${DAY_FORMAT}[.md]`,
+	);
+	const todayTFile = vault.getFileByPath(dailyNotePath);
+
+	let yamlProperty = `${task.bind}: `;
+	let yamlPropertyValue: unknown = "";
+
+	if (todayTFile) {
+		const cache = app.metadataCache.getFileCache(todayTFile);
+
+		if (cache && task.bind && cache.frontmatter) {
+			yamlPropertyValue = cache.frontmatter[task.bind];
+		}
+
+		console.log(yamlPropertyValue);
+	}
+
+	if (task.counter && previousTaskState.counter) {
+		const { current } = task.counter;
+		const change = task.counter.current - previousTaskState.counter.current;
+
+		if (current !== undefined) {
+			yamlProperty += `${Number(yamlPropertyValue) + change}`;
+		}
+	} else {
+		yamlProperty += task.status === "done" ? "1" : "";
+	}
+
+	if (todayTFile) {
+		await vault.process(todayTFile, (data: string) => {
+			const oldLine = new RegExp(`${task.bind}:.*`);
+			return data.replace(oldLine, yamlProperty);
+		});
 	}
 }

@@ -1,4 +1,4 @@
-import { Counter, Task } from "@hooks/useTasks/types";
+import { CounterT, Task } from "@hooks/useTasks/types";
 import { logger, loggerMsg } from "@utils/logger";
 import { updateCounter } from "@utils/task";
 import { Notice } from "obsidian";
@@ -8,7 +8,7 @@ import styles from './styles.module.css';
 
 type CounterProps = {
 	task: Task;
-	counter: Counter;
+	counter: CounterT;
 	updateTask: (task: Task, newTask: Task) => unknown;
 	addHistoryRow: Function;
 };
