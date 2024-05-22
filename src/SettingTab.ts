@@ -64,7 +64,19 @@ export default class GrindSettingTab extends PluginSettingTab {
 					.setPlaceholder("Input to ignore Folder/, Note or Path/to/Note")
 					.setValue(this.plugin.settings.ignoreList.join("\n"))
 					.onChange(async (value) => {
-						const filesToIgnore = getLines(value).map((str) => str.trim());
+						const filesToIgnore = getLines(value).reduce<Array<string>>(
+							(acc, str) => {
+								const trimmedLine = str.trim();
+
+								if (trimmedLine) {
+									acc.push(trimmedLine);
+								}
+
+								return acc;
+							},
+							[],
+						);
+
 						this.plugin.settings.ignoreList =
 							filesToIgnore || DEFAULT_SETTINGS.ignoreList;
 
