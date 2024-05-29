@@ -1,5 +1,4 @@
 import { isDigitString } from "@utils/check";
-import { getLines } from "@utils/file";
 import { useEffect, useState } from "react";
 import { useApp, useSettings } from "..";
 import { ParseState } from "../types";
@@ -81,11 +80,24 @@ export default function useRewards(): UseRewardsReturn {
  * - Line in file: *empty* -> nothing
  * Feature:
  * - You can use `|` like in Ignore to comment things
+ * - Ignore frontmatter enclosed in `---`
  */
 function parseRewards(content: string): Array<Reward> {
-	const lines = getLines(content);
+	const lines = content.split("\n");
+	let isInFrontmatter = false;
 
 	const splitedLines = lines.reduce<Array<Array<string>>>((acc, line) => {
+		// Check for frontmatter start and end
+		if (line.trim() === "---") {
+			isInFrontmatter = !isInFrontmatter;
+			return acc;
+		}
+
+		// Ignore lines in frontmatter or lines that start with `|`
+		if (isInFrontmatter || line.trim().startsWith("|")) {
+			return acc;
+		}
+
 		const newLine = line
 			.split("|")
 			.map((item) => item.trim())
@@ -104,21 +116,18 @@ function parseRewards(content: string): Array<Reward> {
 				title: line[0],
 				price: 1,
 			});
-			return acc;
 		} else if (line.length === 2) {
 			if (isDigitString(line[1])) {
 				acc.push({
 					title: line[0],
 					price: Number(line[1]),
 				});
-				return acc;
 			} else {
 				acc.push({
 					title: line[0],
 					price: 1,
 					desc: line[1],
 				});
-				return acc;
 			}
 		} else if (line.length === 3) {
 			acc.push({
@@ -126,10 +135,8 @@ function parseRewards(content: string): Array<Reward> {
 				price: Number(line[1]),
 				desc: line[2],
 			});
-			return acc;
-		} else {
-			return acc;
 		}
+		return acc;
 	}, []);
 
 	return rewards;

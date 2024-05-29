@@ -36,3 +36,23 @@ export async function getRawFiles(
 
 	return files;
 }
+
+export const appendStartAndIgnoreFrontmatter = (
+	data: string,
+	contentToAppend: string,
+): string => {
+	const frontmatterRegex = /^---\n[\s\S]*?\n---\n/;
+	const match = data.match(frontmatterRegex);
+
+	let newContent;
+
+	if (match) {
+		// If frontmatter is found, append the content after the frontmatter
+		newContent = `${match[0]}${contentToAppend}${data.slice(match[0].length)}`;
+	} else {
+		// If no frontmatter, append the content at the start
+		newContent = `${contentToAppend}${data}`;
+	}
+
+	return newContent;
+};

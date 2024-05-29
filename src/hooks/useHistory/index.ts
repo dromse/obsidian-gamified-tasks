@@ -1,6 +1,6 @@
 import { isDigitString } from "@utils/check";
 import { currentDate } from "@utils/date";
-import { getLines } from "@utils/file";
+import { appendStartAndIgnoreFrontmatter, getLines } from "@utils/file";
 import { TFile } from "obsidian";
 import { useEffect, useState } from "react";
 import { useApp, useSettings } from "..";
@@ -32,14 +32,14 @@ export default function useHistory(): UseHistoryReturn {
 	const app = useApp();
 	const settings = useSettings();
 
-	const [history, setHistory] = useState<Array<HistoryRow>>([]);
+	const [historyRows, setHistoryRows] = useState<Array<HistoryRow>>([]);
 	const [balance, setBalance] = useState(0);
 	const [historyFile, setHistoryFile] = useState<TFile>();
 
 	if (!app) {
 		setIsHistoryParsed("error");
 
-		return { historyRows: history, balance, isHistoryParsed, addHistoryRow };
+		return { historyRows, balance, isHistoryParsed, addHistoryRow };
 	}
 
 	const { vault } = app;
@@ -52,7 +52,9 @@ export default function useHistory(): UseHistoryReturn {
 		const rowStr = `${change} | ${title} | ${currentDate()}\n`;
 
 		if (historyFile) {
-			await vault.process(historyFile, (data) => rowStr + data);
+			await vault.process(historyFile, (data) =>
+				appendStartAndIgnoreFrontmatter(data, rowStr),
+			);
 			setIsHistoryParsed("parsing");
 		}
 	}
@@ -68,7 +70,7 @@ export default function useHistory(): UseHistoryReturn {
 				const balance = calcBalance(history);
 
 				setHistoryFile(tFile);
-				setHistory(history);
+				setHistoryRows(history);
 				setBalance(balance);
 
 				setIsHistoryParsed("parsed");
@@ -83,7 +85,7 @@ export default function useHistory(): UseHistoryReturn {
 		return () => vault.off("modify", fetchHistory);
 	}, []);
 
-	return { historyRows: history, balance, isHistoryParsed, addHistoryRow };
+	return { historyRows, balance, isHistoryParsed, addHistoryRow };
 }
 
 /** Calculate balance based on history rows and fixed number to 0.00 */
