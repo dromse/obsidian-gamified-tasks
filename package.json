@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-grind-manager",
-	"version": "1.2.2",
+	"version": "1.2.3",
 	"type": "module",
 	"description": "Task management with rewards system.",
 	"main": "main.js",
