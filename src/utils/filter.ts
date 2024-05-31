@@ -107,7 +107,6 @@ export const byToday =
 			);
 
 			if (task.counter && task.status === "doing") {
-				console.log(task.status);
 				const isCounterNotFull = task.counter.current !== task.counter.goal;
 
 				if (isCounterNotFull) {

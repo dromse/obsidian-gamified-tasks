@@ -6,7 +6,7 @@ import {
 	bySearch,
 	byStatus,
 	byTag,
-	byToday
+	byToday,
 } from "@utils/filter";
 import { parseMiddlewares, stringifyMiddlewares } from "@utils/middleware";
 import { parseTasks } from "@utils/task";
@@ -96,27 +96,9 @@ export default function useTasks(): UseTasksResult {
 		return "error";
 	}
 
-	function resetReccuringTask(task: Task): void {
-		const newTask = { ...task };
-
-		if (task.status === "done") {
-			newTask.status = "todo";
-
-			if (task.counter) {
-				if (task.counter.current === task.counter.goal) {
-					const { goal } = task.counter;
-
-					newTask.counter = { current: 0, goal };
-				}
-			}
-
-			updateTask(task, newTask);
-		}
-	}
-
 	function getTodayTasks(tasks: ReadonlyArray<Task>): Array<Task> {
 		const toShowTodayTasks = tasks.filter(byToday(historyRows));
-		toShowTodayTasks.map((task) => resetReccuringTask(task));
+		toShowTodayTasks.map((task) => resetReccuringTask(task, updateTask));
 
 		return toShowTodayTasks;
 	}
@@ -232,4 +214,25 @@ export default function useTasks(): UseTasksResult {
 	}, []);
 
 	return { tasks, isTasksParsed, updateTask, filters };
+}
+
+function resetReccuringTask(
+	task: Task,
+	updateTask: (task: Task, newTask: Task) => void,
+): void {
+	const newTask = { ...task };
+
+	if (task.status === "done") {
+		newTask.status = "todo";
+
+		if (task.counter) {
+			if (task.counter.current === task.counter.goal) {
+				const { goal } = task.counter;
+
+				newTask.counter = { current: 0, goal };
+			}
+		}
+
+		updateTask(task, newTask);
+	}
 }
