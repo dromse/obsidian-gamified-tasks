@@ -1,9 +1,9 @@
-# Grind Manager
+# Gamified Tasks
 
 <a href="https://github.com/dromse/obsidian-grind-manager/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/dromse/obsidian-grind-manager?style=for-the-badge&logo=starship&logoColor=D9E0EE&labelColor=302D41&&color=d9b3ff&include_prerelease&sort=semver" /></a>
 <a href="https://github.com/dromse/obsidian-grind-manager/pulse"><img alt="Last commit" src="https://img.shields.io/github/last-commit/dromse/obsidian-grind-manager?style=for-the-badge&logo=github&logoColor=D9E0EE&labelColor=302D41&color=9fdf9f"/></a>
 
-- Unleash the magic of Grind Manager, merging task management with rewards system to your Obsidian workspace!  
+- Unleash the magic of Gamified Tasks, merging task management with rewards system to your Obsidian workspace!  
 - Earn coins by completing tasks and acquire epic rewards!  
 - It's your ticket to excitement and adventure in your digital domain!
 
@@ -24,7 +24,7 @@
 
 ### Available Tags
 
-In Grind Manager `#tags` is used for metadata. Currently list of tags in using:
+In plugin `#tags` is used for metadata. Currently list of tags in using:
 
 - counter: `#count/current/goal` (e.g. `#count/1/4`)
 - recurrence: `#every/recurrence` (e.g. `#every/day` | `#every/week`)
