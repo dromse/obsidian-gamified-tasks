@@ -1,4 +1,5 @@
 import { GamifiedTasksSettings } from "@types";
+import { App } from "obsidian";
 
 /**
  * Represents the status options for filtering tasks.
@@ -80,6 +81,16 @@ export type TaskFilters = {
 	 * Toggle setting to show tasks from the current note.
 	 */
 	setIsFromCurrentNote: Function;
+
+	/**
+	 * Show tasks by success conditions.
+	 */
+	shouldShowByCondition: boolean;
+
+	/**
+	 * Toggle setting to show tasks by success conditions.
+	 */
+	setShouldShowByCondition: Function;
 };
 
 /**
@@ -160,6 +171,26 @@ export type Task = {
 	 * The counter information of the task.
 	 */
 	counter?: CounterT;
+
+	/**
+	 * Information about conditions
+	 */
+	condition?: {
+		/**
+		 * The name of condition.
+		 */
+		name: string;
+
+		/**
+		 * The resource file associated with a module to import dynamically through `import()`.
+		 */
+		file: string;
+
+		/**
+		 * The argument to assign to imported function from module
+		 */
+		arg: string;
+	};
 };
 
 /**
@@ -180,7 +211,7 @@ export type Middleware = {
 	 * @param settings The plugin settings object (optional)
 	 * @returns The task object with metadata cleared from the body, if found or the same task object.
 	 */
-	parse: (task: Task, settings?: GamifiedTasksSettings) => Task;
+	parse: (task: Task, settings?: GamifiedTasksSettings, app?: App) => Task;
 
 	/**
 	 * Function for stringifying a task object to a markdown line.

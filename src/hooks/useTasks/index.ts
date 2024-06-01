@@ -7,6 +7,7 @@ import {
 	byStatus,
 	byTag,
 	byToday,
+	filterBySuccessCondition,
 } from "@utils/filter";
 import { parseMiddlewares, stringifyMiddlewares } from "@utils/middleware";
 import { operateYAMLBinding, parseTasks } from "@utils/task";
@@ -47,6 +48,7 @@ export default function useTasks(): UseTasksResult {
 	const [limit, setLimit] = useState(0);
 	const [statusFilter, setStatusFilter] = useState<StatusFilterOption>("all");
 	const [isRecur, setIsRecur] = useState(false);
+	const [shouldShowByCondition, setShouldShowByCondition] = useState(false);
 	const [searchFilter, setSearchFilter] = useState("");
 	const [tagFilter, setTagFilter] = useState("");
 	const [hasOnlyThisTags, setHasOnlyThisTags] = useState(false);
@@ -71,6 +73,8 @@ export default function useTasks(): UseTasksResult {
 		setNoteFilter,
 		isFromCurrentNote,
 		setIsFromCurrentNote,
+		shouldShowByCondition,
+		setShouldShowByCondition,
 	};
 
 	const app = useApp();
@@ -156,7 +160,10 @@ export default function useTasks(): UseTasksResult {
 			const parsedTaskswithMiddlewares = parseMiddlewares(
 				parsedTasks,
 				middlewares,
-				settings,
+				{
+					settings,
+					app,
+				},
 			);
 
 			sessionStorage.setItem(
@@ -188,18 +195,26 @@ export default function useTasks(): UseTasksResult {
 		);
 
 		if (tasksJSON) {
-			const tasks: Array<Task> = JSON.parse(tasksJSON);
+			const tasksInVanilla: Array<Task> = JSON.parse(tasksJSON);
 
 			if (isRecur) {
-				const allRecurringTasks = tasks.filter(byRecurrance);
+				const allRecurringTasks = tasksInVanilla.filter(byRecurrance);
 
 				const todayTasks = getTodayTasks(allRecurringTasks);
 
 				const filteredList = filterTaskList(todayTasks);
 
 				setTasks(filteredList);
+			} else if (shouldShowByCondition) {
+				filterBySuccessCondition(tasksInVanilla).then(
+					(tasksBySuccessCondition) => {
+						const filteredTasks = filterTaskList(tasksBySuccessCondition);
+
+						setTasks(filteredTasks);
+					},
+				);
 			} else {
-				const filteredList = filterTaskList(tasks);
+				const filteredList = filterTaskList(tasksInVanilla);
 
 				setTasks(filteredList);
 			}
@@ -221,6 +236,7 @@ export default function useTasks(): UseTasksResult {
 		hasOnlyThisTags,
 		noteFilter,
 		isFromCurrentNote,
+		shouldShowByCondition,
 		activeFile,
 		shouldUpdateUI,
 	]);
