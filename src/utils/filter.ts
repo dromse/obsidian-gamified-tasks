@@ -27,12 +27,15 @@ export const byTag =
 				.split(",")
 				.map((tag) => tag.trim())
 				.filter((trimmedTag) => trimmedTag !== "")
-				.map((tag) => "#" + tag);
+				.map((tag) => "#" + tag.toLowerCase());
+
+			const doesTaskInclude = (tag: string): boolean =>
+				task.lineContent.toLowerCase().includes(tag);
 
 			if (hasOnlyThisTags) {
-				return tags.every((tag) => task.lineContent.includes(tag));
+				return tags.every((tag) => doesTaskInclude(tag));
 			} else {
-				return tags.some((tag) => task.lineContent.includes(tag));
+				return tags.some((tag) => doesTaskInclude(tag));
 			}
 		};
 
