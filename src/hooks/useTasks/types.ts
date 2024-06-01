@@ -160,6 +160,21 @@ export type Task = {
 	 * The counter information of the task.
 	 */
 	counter?: CounterT;
+
+	/**
+	 * Information about conditions
+	 */
+	condition?: {
+		/**
+		 * The file associated with the condition.
+		 */
+		file: string;
+
+		/**
+		 * Indicates whether the task should be shown or hidden.
+		 */
+		show: boolean;
+	};
 };
 
 /**
