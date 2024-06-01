@@ -17,6 +17,7 @@ export const DEFAULT_SETTINGS: GamifiedTasksSettings = {
 	isRecurTasks: false,
 	pathToRewards: "rewards.md",
 	pathToHistory: "history.md",
+	pathToConditions: "Conditions",
 	pathToDaily: "",
 	dailyFormat: "YYYY-MM-DD",
 	useMarkdownLinks: true,
