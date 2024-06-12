@@ -2,6 +2,7 @@
 
 <a href="https://github.com/dromse/obsidian-grind-manager/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/dromse/obsidian-grind-manager?style=for-the-badge&logo=starship&logoColor=D9E0EE&labelColor=302D41&&color=d9b3ff&include_prerelease&sort=semver" /></a>
 <a href="https://github.com/dromse/obsidian-grind-manager/pulse"><img alt="Last commit" src="https://img.shields.io/github/last-commit/dromse/obsidian-grind-manager?style=for-the-badge&logo=github&logoColor=D9E0EE&labelColor=302D41&color=9fdf9f"/></a>
+[![](https://dcbadge.vercel.app/api/server/zBXU37xBkf)](https://discord.gg/zBXU37xBkf)
 
 - Unleash the magic of Gamified Tasks, merging task management with rewards system to your Obsidian workspace!  
 - Earn coins by completing tasks and acquire epic rewards!  

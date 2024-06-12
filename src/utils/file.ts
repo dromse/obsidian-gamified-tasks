@@ -21,7 +21,6 @@ export async function getRawFiles(
 	const files = Promise.all(
 		vault.getMarkdownFiles().map(async (file) => ({
 			path: file.path,
-			// cachedRead really increased speed of parsing
 			content: getLines(await vault.cachedRead(file)),
 		})),
 	).then((parsedFiles) =>
