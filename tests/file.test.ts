@@ -1,5 +1,5 @@
 import { RawFile } from "@hooks/types";
-import { GrindPluginSettings } from "@types";
+import { GamifiedTasksSettings } from "@types";
 import { getRawFiles } from "@utils/file";
 import assert from "node:assert";
 import fs from "node:fs";
@@ -8,7 +8,7 @@ import { describe, it } from "node:test";
 import { TFile, Vault } from "obsidian";
 const __dirname = import.meta.dirname;
 
-const settings: GrindPluginSettings | undefined = undefined;
+const settings: GamifiedTasksSettings | undefined = undefined;
 
 const vaultPath = "vault/";
 const vaultFullPath = path.join(__dirname, vaultPath);

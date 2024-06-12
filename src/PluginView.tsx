@@ -1,17 +1,17 @@
 import { UI } from "@components/UI";
-import { GrindPluginSettings } from "@types";
+import { GamifiedTasksSettings } from "@types";
 import { ItemView, WorkspaceLeaf } from "obsidian";
 import React from "react";
 import { createRoot, Root } from "react-dom/client";
 import { AppContext, SettingsContext } from "./context";
 
-export const PLUGIN_VIEW_TYPE = "grind-manager-view";
+export const PLUGIN_VIEW_TYPE = "gamified-tasks-view";
 
 export class PluginView extends ItemView {
 	root: Root | null = null;
-	pluginSettings: GrindPluginSettings;
+	pluginSettings: GamifiedTasksSettings;
 
-	constructor(leaf: WorkspaceLeaf, settings: GrindPluginSettings) {
+	constructor(leaf: WorkspaceLeaf, settings: GamifiedTasksSettings) {
 		super(leaf);
 		this.pluginSettings = settings;
 		this.icon = "list-todo";
@@ -22,7 +22,7 @@ export class PluginView extends ItemView {
 	}
 
 	getDisplayText(): string {
-		return "Grind Manager";
+		return "Gamified Tasks";
 	}
 
 	async onOpen(): Promise<void> {

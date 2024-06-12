@@ -1,4 +1,4 @@
-import { GrindPluginSettings } from "@types";
+import { GamifiedTasksSettings } from "@types";
 import { App } from "obsidian";
 import { useContext } from "react";
 import { AppContext, SettingsContext } from "../context";
@@ -12,7 +12,7 @@ export const useApp = (): App | undefined => {
 };
 
 /** Access `settings` from different components through `useContext` */
-export const useSettings = (): GrindPluginSettings | undefined => {
+export const useSettings = (): GamifiedTasksSettings | undefined => {
 	return useContext(SettingsContext);
 };
 

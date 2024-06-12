@@ -1,9 +1,9 @@
-import { GrindPluginSettings } from "@types";
+import { GamifiedTasksSettings } from "@types";
 import { cleanBody, findByRegex } from "@utils/middleware";
 import { moment } from "obsidian";
 import { Middleware, Task } from "../types";
 
-const parse = (task: Task, settings: GrindPluginSettings): Task => {
+const parse = (task: Task, settings: GamifiedTasksSettings): Task => {
 	// By default parse WikiLink
 	let regex =
 		/✅ \[\[(\d{4}-\d{2}-\d{2})\|(\d{4}-\d{2}-\d{2} \| \d{2}:\d{2})\]\]/;
@@ -25,7 +25,7 @@ const parse = (task: Task, settings: GrindPluginSettings): Task => {
 	return { ...task, completedAt: match[0], body: newBody };
 };
 
-const stringify = (task: Task, settings: GrindPluginSettings): string => {
+const stringify = (task: Task, settings: GamifiedTasksSettings): string => {
 	if (settings.isCompletedAtEnabled === false) {
 		return ""
 	}

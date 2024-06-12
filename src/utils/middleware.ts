@@ -1,11 +1,11 @@
 import { Middleware, Task } from "@hooks/useTasks/types";
-import { GrindPluginSettings } from "@types";
+import { GamifiedTasksSettings } from "@types";
 
 /** Stringify task obj by middlewares */
 export function stringifyMiddlewares(
 	task: Task,
 	middlewares: Array<Middleware>,
-	settings: GrindPluginSettings | undefined,
+	settings: GamifiedTasksSettings | undefined,
 ): string {
 	const taskString = middlewares.reduce(
 		(str, middleware) => (str += middleware.stringify(task, settings)),
@@ -19,7 +19,7 @@ export function stringifyMiddlewares(
 export function parseMiddlewares(
 	tasks: Array<Task>,
 	middlewares: Array<Middleware>,
-	settings: GrindPluginSettings | undefined,
+	settings: GamifiedTasksSettings | undefined,
 ): Array<Task> {
 	middlewares.forEach(
 		(middleware) =>

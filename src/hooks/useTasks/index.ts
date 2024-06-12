@@ -1,4 +1,4 @@
-import { GrindConsts } from "@consts";
+import { GamifiedTasksConstants } from "@consts";
 import { getRawFiles } from "@utils/file";
 import {
 	byNote,
@@ -115,7 +115,7 @@ export default function useTasks(): UseTasksResult {
 			);
 
 			sessionStorage.setItem(
-				GrindConsts.sessionTasks,
+				GamifiedTasksConstants.sessionTasks,
 				JSON.stringify(parsedTaskswithMiddlewares),
 			);
 
@@ -138,7 +138,7 @@ export default function useTasks(): UseTasksResult {
 	 * Load tasks from sessionStorage and apply filters.
 	 */
 	useEffect(() => {
-		const tasksJSON = sessionStorage.getItem(GrindConsts.sessionTasks);
+		const tasksJSON = sessionStorage.getItem(GamifiedTasksConstants.sessionTasks);
 
 		if (tasksJSON) {
 			const tasks: Array<Task> = JSON.parse(tasksJSON);

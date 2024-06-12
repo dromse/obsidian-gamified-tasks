@@ -1,10 +1,10 @@
-import { GrindPluginSettings } from "@types";
+import { GamifiedTasksSettings } from "@types";
 
-export const GrindConsts = {
-	sessionTasks: "grind-manager__tasks",
+export const GamifiedTasksConstants = {
+	sessionTasks: "gamified-tasks__tasks",
 };
 
-export const DEFAULT_SETTINGS: GrindPluginSettings = {
+export const DEFAULT_SETTINGS: GamifiedTasksSettings = {
 	limit: 10,
 	statusFilter: "all",
 	isRecurTasks: false,

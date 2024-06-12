@@ -1,4 +1,4 @@
-import { GrindPluginSettings } from "@types";
+import { GamifiedTasksSettings } from "@types";
 
 /**
  * Represents the status options for filtering tasks.
@@ -161,7 +161,7 @@ export type Middleware = {
 	 * @param settings The plugin settings object (optional)
 	 * @returns The task object with metadata cleared from the body, if found or the same task object.
 	 */
-	parse: (task: Task, settings?: GrindPluginSettings) => Task;
+	parse: (task: Task, settings?: GamifiedTasksSettings) => Task;
 
 	/**
 	 * Function for stringifying a task object to a markdown line.
@@ -173,5 +173,5 @@ export type Middleware = {
 	 * @param settings The plugin settings object (optional)
 	 * @returns The markdown representation of the task, or an empty string if metadata wasn't found.
 	 */
-	stringify: (task: Task, settings?: GrindPluginSettings) => string;
+	stringify: (task: Task, settings?: GamifiedTasksSettings) => string;
 };

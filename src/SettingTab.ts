@@ -3,13 +3,13 @@ import { StatusKeys } from "@hooks/useTasks/consts";
 import { StatusFilterOption } from "@hooks/useTasks/types";
 import { getLines } from "@utils/file";
 import { App, PluginSettingTab, Setting } from "obsidian";
-import GrindPlugin from "./main";
+import GamifiedTasksPlugin from "./main";
 
 /** Class for Setting Tab where user can set default filtering settings for `Grind Manager` */
-export default class GrindSettingTab extends PluginSettingTab {
-	plugin: GrindPlugin;
+export default class GamifiedTasksSettingTab extends PluginSettingTab {
+	plugin: GamifiedTasksPlugin;
 
-	constructor(app: App, plugin: GrindPlugin) {
+	constructor(app: App, plugin: GamifiedTasksPlugin) {
 		super(app, plugin);
 		this.plugin = plugin;
 	}

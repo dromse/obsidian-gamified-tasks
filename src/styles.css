@@ -1,8 +1,8 @@
-[data-type="grind-manager-view"] {
+[data-type="gamified-tasks-view"] {
 	.view-content {
 		padding: 5px;
 
-		/* Based on right sidebar width grind manager will adapt layouts to various screens */
+		/* Based on right sidebar width it will adapt layouts to various screens */
 		container-type: size;
 	}
 

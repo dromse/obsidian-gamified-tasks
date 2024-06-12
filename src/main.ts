@@ -1,12 +1,12 @@
-import { DEFAULT_SETTINGS, GrindConsts } from "@consts";
+import { DEFAULT_SETTINGS, GamifiedTasksConstants } from "@consts";
 import { PluginView, PLUGIN_VIEW_TYPE } from "@PluginView";
-import { GrindPluginSettings } from "@types";
+import { GamifiedTasksSettings } from "@types";
 import { logger } from "@utils/logger";
 import { Plugin, WorkspaceLeaf } from "obsidian";
-import GrindSettingTab from "./SettingTab";
+import GamifiedTasksSettingTab from "./SettingTab";
 
-export default class GrindPlugin extends Plugin {
-	settings: GrindPluginSettings;
+export default class GamifiedTasksPlugin extends Plugin {
+	settings: GamifiedTasksSettings;
 
 	async onload(): Promise<void> {
 		await this.loadSettings();
@@ -32,14 +32,14 @@ export default class GrindPlugin extends Plugin {
 			}
 		});
 
-		this.addSettingTab(new GrindSettingTab(this.app, this));
+		this.addSettingTab(new GamifiedTasksSettingTab(this.app, this));
 
 		this.registerView(
 			PLUGIN_VIEW_TYPE,
 			(leaf) => new PluginView(leaf, this.settings),
 		);
 
-		this.addRibbonIcon("list-todo", "Show grind manager", () => {
+		this.addRibbonIcon("list-todo", "Show gamified tasks", () => {
 			this.activateView();
 		});
 
@@ -65,7 +65,7 @@ export default class GrindPlugin extends Plugin {
 	}
 
 	onunload(): void {
-		sessionStorage.removeItem(GrindConsts.sessionTasks);
+		sessionStorage.removeItem(GamifiedTasksConstants.sessionTasks);
 
 		logger(`v${this.manifest.version} is unloaded.`);
 	}

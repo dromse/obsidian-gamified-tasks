@@ -1,6 +1,6 @@
 import { StatusFilterOption } from "@hooks/useTasks/types";
 
-export type GrindPluginSettings = {
+export type GamifiedTasksSettings = {
 	limit: number | undefined;
 	statusFilter: StatusFilterOption;
 	isRecurTasks: boolean;

@@ -1,5 +1,5 @@
 import { RawFile } from "@hooks/types";
-import { GrindPluginSettings } from "@types";
+import { GamifiedTasksSettings } from "@types";
 import { Vault } from "obsidian";
 
 /** Get array of file lines */
@@ -10,7 +10,7 @@ export function getLines(fileContent: string): Array<string> {
 /** Get all markdown files in vault with their content */
 export async function getRawFiles(
 	vault: Vault,
-	settings: GrindPluginSettings | undefined,
+	settings: GamifiedTasksSettings | undefined,
 ): Promise<Array<RawFile>> {
 	let ignoreList: Array<string> = [];
 
