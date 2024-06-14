@@ -1,6 +1,6 @@
 import { isDigitString } from "@utils/check";
 import { currentDate } from "@utils/date";
-import { appendStartAndIgnoreFrontmatter, getLines } from "@utils/file";
+import { appendStartAndIgnoreFrontmatter, getFileLines } from "@utils/file";
 import { TFile } from "obsidian";
 import { useEffect, useState } from "react";
 import { useApp, useSettings } from "..";
@@ -104,7 +104,7 @@ function calcBalance(history: Array<HistoryRow>): number {
  * - Line in file: +1 | do a push up | 2024-01-01 12:00 -> { title: 'do a push up', change: 1, date: "2024-01-01 12:00" }
  */
 export function parseHistory(content: string): Array<HistoryRow> {
-	const lines = getLines(content);
+	const lines = getFileLines(content);
 
 	const splitedLines = lines.reduce<Array<Array<string>>>((acc, line) => {
 		const newLine = line

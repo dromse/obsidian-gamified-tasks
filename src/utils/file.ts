@@ -3,7 +3,7 @@ import { GamifiedTasksSettings } from "@types";
 import { Vault } from "obsidian";
 
 /** Get array of file lines */
-export function getLines(fileContent: string): Array<string> {
+export function getFileLines(fileContent: string): Array<string> {
 	return fileContent.split("\n");
 }
 
@@ -12,16 +12,12 @@ export async function getRawFiles(
 	vault: Vault,
 	settings: GamifiedTasksSettings | undefined,
 ): Promise<Array<RawFile>> {
-	let ignoreList: Array<string> = [];
+	const { ignoreList = [] } = settings || {}
 
-	if (settings) {
-		ignoreList = [...settings.ignoreList];
-	}
-
-	const files = Promise.all(
+	const rowFiles = Promise.all(
 		vault.getMarkdownFiles().map(async (file) => ({
 			path: file.path,
-			content: getLines(await vault.cachedRead(file)),
+			content: getFileLines(await vault.cachedRead(file)),
 		})),
 	).then((parsedFiles) =>
 		parsedFiles.filter((file) => {
@@ -33,7 +29,7 @@ export async function getRawFiles(
 		}),
 	);
 
-	return files;
+	return rowFiles;
 }
 
 export const appendStartAndIgnoreFrontmatter = (

@@ -1,7 +1,7 @@
 import { DEFAULT_SETTINGS } from "@consts";
 import { StatusKeys } from "@hooks/useTasks/consts";
 import { StatusFilterOption } from "@hooks/useTasks/types";
-import { getLines } from "@utils/file";
+import { getFileLines } from "@utils/file";
 import { App, PluginSettingTab, Setting } from "obsidian";
 import GamifiedTasksPlugin from "./main";
 
@@ -64,7 +64,7 @@ export default class GamifiedTasksSettingTab extends PluginSettingTab {
 					.setPlaceholder("Input to ignore Folder/, Note or Path/to/Note")
 					.setValue(this.plugin.settings.ignoreList.join("\n"))
 					.onChange(async (value) => {
-						const filesToIgnore = getLines(value).reduce<Array<string>>(
+						const filesToIgnore = getFileLines(value).reduce<Array<string>>(
 							(acc, str) => {
 								const trimmedLine = str.trim();
 
