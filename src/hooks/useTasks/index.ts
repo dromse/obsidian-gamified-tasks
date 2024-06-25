@@ -6,7 +6,7 @@ import {
 	bySearch,
 	byStatus,
 	byTag,
-	byToday,
+	byToday
 } from "@utils/filter";
 import { parseMiddlewares, stringifyMiddlewares } from "@utils/middleware";
 import { parseTasks } from "@utils/task";
@@ -72,28 +72,29 @@ export default function useTasks(): UseTasksResult {
 
 	const { vault, workspace } = app;
 
-	/** Update task props and save to vault */
+	/**
+	 * Update task props and save to vault
+	 * @returns new string on success, undefined on failure.
+	 * */
 	async function updateTask(
 		task: Task,
 		newTask: Task,
-	): Promise<"updated" | "error"> {
-		const newStr = stringifyMiddlewares(newTask, middlewares, settings);
+	): Promise<string | undefined> {
+		const newLineContent = stringifyMiddlewares(
+			newTask,
+			middlewares,
+			settings,
+		);
 
 		const tFile = vault.getFileByPath(task.path);
 
 		if (!tFile) {
-			return "error";
+			return;
 		}
 
-		const result = await vault.process(tFile, (data) =>
-			data.replace(task.lineContent, newStr),
+		return await vault.process(tFile, (data) =>
+			data.replace(task.lineContent, newLineContent),
 		);
-
-		if (result) {
-			return "updated";
-		}
-
-		return "error";
 	}
 
 	function getTodayTasks(tasks: ReadonlyArray<Task>): Array<Task> {
@@ -138,7 +139,9 @@ export default function useTasks(): UseTasksResult {
 	 * Load tasks from sessionStorage and apply filters.
 	 */
 	useEffect(() => {
-		const tasksJSON = sessionStorage.getItem(GamifiedTasksConstants.sessionTasks);
+		const tasksJSON = sessionStorage.getItem(
+			GamifiedTasksConstants.sessionTasks,
+		);
 
 		if (tasksJSON) {
 			const tasks: Array<Task> = JSON.parse(tasksJSON);
@@ -222,17 +225,24 @@ function resetReccuringTask(
 ): void {
 	const newTask = { ...task };
 
-	if (task.status === "done") {
-		newTask.status = "todo";
+	const isNotDone = task.status !== "done";
 
-		if (task.counter) {
-			if (task.counter.current === task.counter.goal) {
-				const { goal } = task.counter;
-
-				newTask.counter = { current: 0, goal };
-			}
-		}
-
-		updateTask(task, newTask);
+	if (isNotDone) {
+		return;
 	}
+
+	newTask.status = "todo";
+
+	if (task.counter) {
+		const isGoalNotSet = !task.counter.goal;
+		const isReachedGoal = task.counter.current === task.counter.goal;
+
+		if (isGoalNotSet || isReachedGoal) {
+			const { goal } = task.counter;
+
+			newTask.counter = { current: 0, goal };
+		}
+	}
+
+	updateTask(task, newTask);
 }

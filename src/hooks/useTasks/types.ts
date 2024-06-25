@@ -79,6 +79,21 @@ export type Difficulty = "trivial" | "easy" | "medium" | "hard";
 export type Status = "todo" | "doing" | "done" | "denied" | "delay";
 
 /**
+ * Type defenition for a counter object.
+ */
+export type Counter = {
+	/**
+	 * The goal value of the counter.
+	 */
+	goal: number;
+
+	/**
+	 * The current value of the counter.
+	 */
+	current: number;
+};
+
+/**
  * Type defenition for a task object
  */
 export type Task = {
@@ -130,17 +145,7 @@ export type Task = {
 	/**
 	 * The counter information of the task.
 	 */
-	counter?: {
-		/**
-		 * The goal value of the counter.
-		 */
-		goal: number;
-
-		/**
-		 * The current value of the counter.
-		 */
-		current: number;
-	};
+	counter?: Counter;
 };
 
 /**

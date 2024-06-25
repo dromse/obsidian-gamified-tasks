@@ -1,8 +1,8 @@
-import { Middleware, Task } from "../types";
 import { cleanBody, findByRegex } from "@utils/middleware";
+import { Middleware, Task } from "../types";
 
 const parse = (task: Task): Task => {
-	const regex = /#count\/(\d+)\/(\d+)/;
+	const regex = /#count\/(\d+)\/?(\d+)?/;
 
 	const match = findByRegex(regex, task);
 
@@ -23,6 +23,8 @@ const parse = (task: Task): Task => {
 };
 
 const stringify = (task: Task): string =>
-	task.counter ? ` #count/${task.counter.current}/${task.counter.goal}` : "";
+	task.counter
+		? ` #count/${task.counter.current}${task.counter.goal ? "/" + task.counter.goal : ""}`
+		: "";
 
 export default { parse, stringify } as Middleware;

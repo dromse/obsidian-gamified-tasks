@@ -2,6 +2,7 @@ import { RawFile } from "@hooks/types";
 import { DifficultyPrice } from "@hooks/useTasks/consts";
 import { Status, Task } from "@hooks/useTasks/types";
 import { Notice } from "obsidian";
+import { isOutOfScope } from "./check";
 import { coins } from "./string";
 
 /** Parse all occurance of task line in `file` content and then returns task list */
@@ -60,26 +61,17 @@ export const updateCounter = async (
 	const current = Number(task.counter?.current);
 	const goal = Number(task.counter?.goal);
 
-	if (!current && !goal) {
-		return;
-	}
-
 	const newCurrent = current + change;
-	const isOutOfScope = (value: number): boolean => value < 0 || value > goal;
 
-	if (isOutOfScope(newCurrent)) {
+	if (isOutOfScope(newCurrent, goal)) {
 		return;
 	}
 
-	const result = await updateTask(task, {
+	await updateTask(task, {
 		...task,
-		status: newCurrent === goal ? "done" : "doing",
+		status: goal && newCurrent === goal ? "done" : "doing",
 		counter: { current: newCurrent, goal },
 	});
-
-	if (result === "error") {
-		new Notice("Error during counter update.");
-	}
 
 	const getEarningString = (): string =>
 		task.difficulty
@@ -90,7 +82,7 @@ export const updateCounter = async (
 
 	new Notice(getEarningString());
 
-	if (newCurrent === goal) {
+	if (goal && newCurrent === goal) {
 		new Notice(`You completed task: '${task.body}'`);
 	}
 
@@ -110,7 +102,16 @@ export async function updateStatus(
 
 	await updateTask(task, { ...task, status });
 
+	const isNewStatusDone = status === "done";
+
 	if (task.counter) {
+		const isCurrentNotZero = task.counter.current !== 0;
+		const isGoalNotSet = !task.counter.goal;
+
+		if (isNewStatusDone && isCurrentNotZero && isGoalNotSet) {
+			new Notice(`You completed task: '${task.body}'`);
+		}
+
 		return;
 	}
 
@@ -118,7 +119,7 @@ export async function updateStatus(
 		return;
 	}
 
-	if (status === "done") {
+	if (isNewStatusDone) {
 		await addHistoryRow({
 			title: task.body,
 			change: DifficultyPrice[task.difficulty],
@@ -128,7 +129,10 @@ export async function updateStatus(
 		new Notice(`You completed task: '${task.body}'`);
 	}
 
-	if (task.status === "done" && status !== "done") {
+	const isOldStatusDone = task.status === "done";
+	const shouldReturnCoins = isOldStatusDone && !isNewStatusDone;
+
+	if (shouldReturnCoins) {
 		await addHistoryRow({
 			title: task.body,
 			change: -DifficultyPrice[task.difficulty],

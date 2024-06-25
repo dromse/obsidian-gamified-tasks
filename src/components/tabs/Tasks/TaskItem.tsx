@@ -2,11 +2,10 @@ import { useApp, useHistory } from "@hooks";
 import { StatusMarkdown } from "@hooks/useTasks/consts";
 import { Task } from "@hooks/useTasks/types";
 import { revealTask } from "@utils/editor";
-import { logger, loggerMsg } from "@utils/logger";
 import { extractTitlesFromLinks } from "@utils/string";
-import { updateCounter, updateStatus } from "@utils/task";
-import { Notice } from "obsidian";
+import { updateStatus } from "@utils/task";
 import React from "react";
+import Counter from "./Counter";
 
 import styles from "./styles.module.css";
 
@@ -17,7 +16,6 @@ type Props = {
 
 export default function TaskItem(props: Props): React.JSX.Element {
 	const { task, updateTask } = props;
-	const [isButtonBlocked, setIsButtonBlocked] = React.useState(false);
 	const app = useApp();
 	const { addHistoryRow } = useHistory();
 
@@ -48,31 +46,13 @@ export default function TaskItem(props: Props): React.JSX.Element {
 		}
 	};
 
-	const handleUpdateCounter = (change: number) => async (): Promise<void> => {
-		try {
-			setIsButtonBlocked(true);
-
-			await updateCounter({
-				task,
-				payload: { change },
-				updateTask,
-				addHistoryRow,
-			});
-		} catch (err) {
-			logger(err);
-			new Notice(loggerMsg(err));
-		} finally {
-			setIsButtonBlocked(false);
-		}
-	};
-
 	const handleRevealTask = (): void => {
 		revealTask({ task, workspace, vault });
 	};
 
 	return (
 		<li
-			className={` task-list-item ${styles.task}  flex-items-center border`}
+			className={`task-list-item ${styles.task} flex-items-center border`}
 			data-task={StatusMarkdown[task.status ? task.status : "todo"]}
 		>
 			<input
@@ -86,19 +66,12 @@ export default function TaskItem(props: Props): React.JSX.Element {
 			<div onClick={handleRevealTask}>{extractTitlesFromLinks(task.body)}</div>
 
 			{task.counter && (
-				<div className={`flex-items-center ${styles.counter}`}>
-					<p>
-						{task.counter.current} / {task.counter.goal}
-					</p>
-
-					<button onClick={handleUpdateCounter(1)} disabled={isButtonBlocked}>
-						+
-					</button>
-
-					<button onClick={handleUpdateCounter(-1)} disabled={isButtonBlocked}>
-						-
-					</button>
-				</div>
+				<Counter
+					task={task}
+					counter={task.counter}
+					updateTask={updateTask}
+					addHistoryRow={addHistoryRow}
+				/>
 			)}
 		</li>
 	);

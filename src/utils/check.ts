@@ -3,3 +3,8 @@ export function isDigitString(line: string): boolean {
 
 	return digitLineRegex.test(line);
 }
+
+const biggerThenGoal = (value: number, goal: number): boolean => value > goal;
+const lessThenZero = (value: number): boolean => value < 0;
+export const isOutOfScope = (value: number, goal: number): boolean =>
+	lessThenZero(value) || (goal ? biggerThenGoal(value, goal) : false);
