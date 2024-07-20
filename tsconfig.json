@@ -28,8 +28,6 @@
 	},
 	"include": [
 		"**/*.ts",
-		"**/*.tsx",
-		"./eslint.config.js",
-		"./esbuild.config.mjs"
+		"**/*.tsx"
 	]
 }
