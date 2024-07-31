@@ -14,6 +14,30 @@
 	}
 }
 
+.task {
+	position: relative;
+}
+
+.menu {
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	z-index: 5;
+}
+
+.difficulty {
+	font-size: 0.75rem;
+	position: absolute;
+	color: var(--tag-color);
+	top: 0.125rem;
+	right: 0.55rem;
+}
+
+.title {
+	width: 100%;
+}
+
 .task__status {
 	text-align: center;
 	padding: 0;

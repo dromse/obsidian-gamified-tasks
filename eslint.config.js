@@ -17,6 +17,7 @@ export default tseslint.config(
 		},
 		files: ["{src,tests}/**/*.{ts,tsx}"],
 		rules: {
+			"no-console": "error",
 			"no-inline-style/no-inline-styles": 2,
 			"no-warning-comments": [
 				"error",
