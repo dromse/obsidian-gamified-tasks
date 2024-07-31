@@ -85,7 +85,7 @@ export type CounterT = {
 	/**
 	 * The goal value of the counter.
 	 */
-	goal: number;
+	goal?: number;
 
 	/**
 	 * The current value of the counter.
