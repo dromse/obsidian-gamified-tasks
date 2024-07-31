@@ -170,8 +170,8 @@ export async function operateYAMLBinding(
 		if (cache && task.bind && cache.frontmatter) {
 			yamlPropertyValue = cache.frontmatter[task.bind];
 		}
-
-		console.log(yamlPropertyValue);
+	} else {
+		new Notice(`'${dailyNotePath}' was not found for binding property '${task.bind}'`)
 	}
 
 	if (task.counter && previousTaskState.counter) {
