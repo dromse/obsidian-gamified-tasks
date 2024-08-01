@@ -5,6 +5,10 @@
 		gap: 5px;
 	}
 
+	.title {
+		text-align: center;
+	}
+
 	.counter {
 		margin: auto;
 	}
