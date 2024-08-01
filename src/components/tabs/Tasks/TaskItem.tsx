@@ -169,7 +169,7 @@ const TaskEditor = (props: TaskEditorProps): React.JSX.Element => {
 
 	return (
 		<Dialog isOpen={isOpen} setIsOpen={setIsOpen}>
-			<input value={newBodyValue} onChange={onEditBody} />
+			<input type="text" value={newBodyValue} onChange={onEditBody} />
 			<button onClick={saveNewTask}>Save</button>
 		</Dialog>
 	);
