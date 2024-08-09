@@ -1,9 +1,17 @@
-import { DifficultyKeys } from "../consts";
-import { Difficulty, Middleware, Task } from "../types";
+import { GamifiedTasksSettings } from "@types";
 import { cleanBody, findByRegex } from "@utils/middleware";
+import { Middleware, Task } from "../types";
 
-const parse = (task: Task): Task => {
-	const regex = new RegExp(`#diff/(${DifficultyKeys.join("|")})`);
+const parse = (task: Task, settings: GamifiedTasksSettings): Task => {
+	const difficultyListForRegex = settings.difficulties.reduce<Array<string>>(
+		(acc, diff) => {
+			acc.push(diff.name);
+			return acc;
+		},
+		[],
+	);
+
+	const regex = new RegExp(`#diff/(${difficultyListForRegex.join("|")})`);
 
 	const match = findByRegex(regex, task);
 
@@ -13,7 +21,7 @@ const parse = (task: Task): Task => {
 
 	const newBody = cleanBody(regex, task);
 
-	return { ...task, difficulty: match[1] as Difficulty, body: newBody };
+	return { ...task, difficulty: match[1], body: newBody };
 };
 
 const stringify = (task: Task): string =>

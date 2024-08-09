@@ -43,5 +43,11 @@ export default class GamifiedTasksSettingTab extends PluginSettingTab {
 		showTasksFromNote(containerEl, this);
 		showFromCurrentNote(containerEl, this);
 		showRecurringTasks(containerEl, this);
+
+		new Setting(containerEl)
+			.setName("Difficulty")
+			.setHeading()
+			.setDesc("Change or add new difficulty");
+		changeDifficulty(containerEl, this);
 	}
 }

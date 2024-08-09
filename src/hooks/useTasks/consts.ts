@@ -8,40 +8,7 @@ import {
 	indention,
 	status
 } from "./middleware";
-import { Difficulty, Middleware, Status } from "./types";
-
-/**
- * Prices for different difficulty levels.
- * Inspired by Habitica: {@link https://habitica.com/}
- */
-export const DifficultyPrice: Record<Difficulty, number> = {
-	/**
-	 * Price for tasks of trivial difficulty.
-	 */
-	trivial: 0.1,
-
-	/**
-	 * Price for tasks of easy difficulty.
-	 */
-	easy: 1,
-
-	/**
-	 * Price for tasks of medium difficulty.
-	 */
-	medium: 2.5,
-
-	/**
-	 * Price for tasks of hard difficulty.
-	 */
-	hard: 5,
-};
-
-/**
- * Array of difficulty keys.
- */
-export const DifficultyKeys = Object.keys(
-	DifficultyPrice,
-) as Array<Difficulty>;
+import { Middleware, Status } from "./types";
 
 /**
  * Statuses for tasks with markdown values
@@ -80,7 +47,7 @@ export const StatusMarkdown: Record<Status, string> = {
 export const StatusKeys = Object.keys(StatusMarkdown) as Array<Status>;
 
 /**
- * Middlewares used for parsing tasks metadata and stringifying back to markdown line.
+ * Gamified Tasks uses middlewares for parsing tasks metadata (tags) and stringifying back to markdown line.
  *
  * These middlewares handle various aspects of task parsing and stringification,
  * including indention, task status, body content, counters, bindings, difficulty level,

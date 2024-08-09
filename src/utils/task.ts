@@ -1,11 +1,10 @@
 import { DAY_FORMAT } from "@consts";
 import { RawFile } from "@hooks/types";
-import { DifficultyPrice } from "@hooks/useTasks/consts";
 import { Status, Task } from "@hooks/useTasks/types";
-import { App, Notice, Vault, moment } from "obsidian";
-import { coins } from "./string";
-import { isOutOfScope } from "./check";
 import { GamifiedTasksSettings } from "@types";
+import { App, moment, Notice, Vault } from "obsidian";
+import { isOutOfScope } from "./check";
+import { coins } from "./string";
 
 /** Parse all occurance of task line in `file` content and then returns task list */
 export function parseTasksFromFile(file: RawFile): Array<Task> {
@@ -52,12 +51,13 @@ type UpdateTaskProps<TPayload> = {
 	payload: TPayload;
 	updateTask: Function;
 	addHistoryRow: Function;
+	settings: GamifiedTasksSettings;
 };
 
 export const updateCounter = async (
 	props: UpdateTaskProps<{ change: number }>,
 ): Promise<void> => {
-	const { task, payload, updateTask, addHistoryRow } = props;
+	const { task, payload, updateTask, addHistoryRow, settings } = props;
 	const { change } = payload;
 
 	const current = Number(task.counter?.current);
@@ -75,11 +75,18 @@ export const updateCounter = async (
 		counter: { current: newCurrent, goal },
 	});
 
+	const difficulty = settings.difficulties.find(
+		(diff) => diff.name === task.difficulty,
+	);
+	let price = 0;
+
+	if (difficulty) {
+		price = difficulty.price;
+	}
+
 	const getEarningString = (): string =>
 		task.difficulty
-			? `You ${change > 0 ? "earned" : "returned"}: ${coins(
-				DifficultyPrice[task.difficulty],
-			)}`
+			? `You ${change > 0 ? "earned" : "returned"}: ${coins(price)}`
 			: "";
 
 	new Notice(getEarningString());
@@ -91,7 +98,7 @@ export const updateCounter = async (
 	if (task.difficulty) {
 		await addHistoryRow({
 			title: task.body,
-			change: DifficultyPrice[task.difficulty] * change,
+			change: price * change,
 		});
 	}
 };
@@ -99,7 +106,7 @@ export const updateCounter = async (
 export async function updateStatus(
 	props: UpdateTaskProps<{ status: Status }>,
 ): Promise<void> {
-	const { task, payload, updateTask, addHistoryRow } = props;
+	const { task, payload, updateTask, addHistoryRow, settings } = props;
 	const { status } = payload;
 
 	await updateTask(task, { ...task, status });
@@ -121,13 +128,22 @@ export async function updateStatus(
 		return;
 	}
 
+	const difficulty = settings.difficulties.find(
+		(diff) => diff.name === task.difficulty,
+	);
+	let price = 0;
+
+	if (difficulty) {
+		price = difficulty.price;
+	}
+
 	if (isNewStatusDone) {
 		await addHistoryRow({
 			title: task.body,
-			change: DifficultyPrice[task.difficulty],
+			change: price,
 		});
 
-		new Notice(`You earned: ${coins(DifficultyPrice[task.difficulty])}`);
+		new Notice(`You earned: ${coins(price)}`);
 		new Notice(`You completed task: '${task.body}'`);
 	}
 
@@ -137,10 +153,10 @@ export async function updateStatus(
 	if (shouldReturnCoins) {
 		await addHistoryRow({
 			title: task.body,
-			change: -DifficultyPrice[task.difficulty],
+			change: -price,
 		});
 
-		new Notice(`You returned: ${coins(DifficultyPrice[task.difficulty])}`);
+		new Notice(`You returned: ${coins(price)}`);
 	}
 }
 
@@ -171,7 +187,9 @@ export async function operateYAMLBinding(
 			yamlPropertyValue = cache.frontmatter[task.bind];
 		}
 	} else {
-		new Notice(`'${dailyNotePath}' was not found for binding property '${task.bind}'`)
+		new Notice(
+			`'${dailyNotePath}' was not found for binding property '${task.bind}'`,
+		);
 	}
 
 	if (task.counter && previousTaskState.counter) {

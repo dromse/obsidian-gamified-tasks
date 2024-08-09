@@ -1,3 +1,4 @@
+import { useSettings } from "@hooks";
 import { CounterT, Task } from "@hooks/useTasks/types";
 import { logger, loggerMsg } from "@utils/logger";
 import { updateCounter } from "@utils/task";
@@ -15,6 +16,11 @@ type CounterProps = {
 
 export default function Counter(props: CounterProps): React.JSX.Element {
 	const { counter, task, updateTask, addHistoryRow } = props;
+	const settings = useSettings()
+
+	if(!settings) {
+		return <div>Settings is not defined!</div>
+	}
 
 	const [isButtonBlocked, setIsButtonBlocked] = React.useState(false);
 
@@ -27,6 +33,7 @@ export default function Counter(props: CounterProps): React.JSX.Element {
 				payload: { change },
 				updateTask,
 				addHistoryRow,
+				settings
 			});
 		} catch (err) {
 			logger(err);

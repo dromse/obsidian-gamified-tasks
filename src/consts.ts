@@ -4,6 +4,13 @@ export const GamifiedTasksConstants = {
 	sessionTasks: "gamified-tasks__tasks",
 };
 
+const DefaultDifficulties = [
+	{ name: "trivial", price: 0.1 },
+	{ name: "easy", price: 1 },
+	{ name: "medium", price: 2.5 },
+	{ name: "hard", price: 5 },
+];
+
 export const DEFAULT_SETTINGS: GamifiedTasksSettings = {
 	limit: 10,
 	statusFilter: "all",
@@ -20,6 +27,7 @@ export const DEFAULT_SETTINGS: GamifiedTasksSettings = {
 	isFromCurrentNote: false,
 	shouldShowAllFilters: false,
 	isCompletedAtEnabled: true,
+	difficulties: DefaultDifficulties,
 };
 
 export const DAY_FORMAT = "YYYY-MM-DD" as const;

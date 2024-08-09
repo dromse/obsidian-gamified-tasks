@@ -16,4 +16,7 @@ export type GamifiedTasksSettings = {
 	isFromCurrentNote: boolean;
 	shouldShowAllFilters: boolean;
 	isCompletedAtEnabled: boolean;
+	difficulties: Array<DifficultySetting>;
 };
+
+export type DifficultySetting = { name: string; price: number };

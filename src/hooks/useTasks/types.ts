@@ -53,6 +53,7 @@ export type TaskFilters = {
 	 * A function to set filtering by specific tag.
 	 */
 	setTagFilter: Function;
+
 	/**
 	 *  Specify only show tasks with this tags or all tasks with matched tags
 	 */
@@ -62,16 +63,24 @@ export type TaskFilters = {
 	 */
 	setHasOnlyThisTags: Function;
 
+	/**
+	 * Show tasks from this note.
+	 */
 	noteFilter: string;
+	/**
+	 * A function to show tasks from specific note.
+	 */
 	setNoteFilter: Function;
+
+	/**
+	 * Show tasks from the current note.
+	 */
 	isFromCurrentNote: boolean;
+	/**
+	 * Toggle setting to show tasks from the current note.
+	 */
 	setIsFromCurrentNote: Function;
 };
-
-/**
- * Represents the possible difficulty levels of a task.
- */
-export type Difficulty = "trivial" | "easy" | "medium" | "hard";
 
 /**
  * Represents the possible statuses of a task.
@@ -130,7 +139,7 @@ export type Task = {
 	/**
 	 * The difficulty level of the task.
 	 */
-	difficulty?: Difficulty;
+	difficulty?: string;
 
 	/**
 	 * The completion status of the task.
@@ -141,7 +150,10 @@ export type Task = {
 	 * The recurrence of the task.
 	 */
 	every?: string;
-	
+
+	/**
+	 * Binding to YAML frontmatter property in daily note.
+	 */
 	bind?: string;
 
 	/**

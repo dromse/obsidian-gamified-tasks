@@ -1,4 +1,4 @@
-import { useApp, useHistory } from "@hooks";
+import { useApp, useHistory, useSettings } from "@hooks";
 import { StatusKeys, StatusMarkdown } from "@hooks/useTasks/consts";
 import { Status, Task } from "@hooks/useTasks/types";
 import { revealTask } from "@utils/editor";
@@ -22,6 +22,12 @@ export default function TaskItem(props: Props): React.JSX.Element {
 	const [isStatusMenuOpen, setIsStatusMenuOpen] = React.useState(false);
 	const [isTaskEditorOpen, setIsTaskEditorOpen] = React.useState(false);
 
+	const settings = useSettings();
+
+	if (!settings) {
+		return <div>Error: Settings is not defined.</div>;
+	}
+
 	if (!app) {
 		return <div>Error: App is not defined.</div>;
 	}
@@ -38,6 +44,7 @@ export default function TaskItem(props: Props): React.JSX.Element {
 				payload: { status: "todo" },
 				updateTask,
 				addHistoryRow,
+				settings,
 			});
 		} else {
 			updateStatus({
@@ -45,6 +52,7 @@ export default function TaskItem(props: Props): React.JSX.Element {
 				payload: { status: "done" },
 				updateTask,
 				addHistoryRow,
+				settings,
 			});
 		}
 	};
@@ -84,6 +92,7 @@ export default function TaskItem(props: Props): React.JSX.Element {
 						payload: { status: key },
 						updateTask,
 						addHistoryRow,
+						settings,
 					}),
 			});
 

@@ -44,3 +44,19 @@
 		gap: 10px;
 	}
 }
+
+.gamified-tasks__difficulty-setting {
+	display: flex;
+	flex-direction: column;
+	gap: 25px;
+}
+
+.gamified-tasks__difficulty-entry {
+	display: flex;
+	gap: 15px;
+	align-items: center;
+
+	&>input {
+		width: 100%;
+	}
+}
