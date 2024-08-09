@@ -2,6 +2,7 @@ import { useHistory } from "@/hooks";
 import Input from "@components/reusable/Input";
 import React, { useState } from "react";
 import styles from "./styles.module.css";
+import { Table } from "./Table";
 
 export default function HistoryTab(): React.JSX.Element {
 	const { historyRows, isHistoryParsed } = useHistory();
@@ -79,29 +80,7 @@ export default function HistoryTab(): React.JSX.Element {
 						afterclearvalue="1"
 					/>
 
-					<table className={styles.table}>
-						<thead>
-							<tr>
-								<th scope="col">Change</th>
-								<th scope="col">Title</th>
-								<th scope="col">Date</th>
-							</tr>
-						</thead>
-
-						<tbody>
-							{historyRows
-								.slice(page * 10, (page + 1) * 10)
-								.map((row, index) => (
-									<tr key={index}>
-										<th scope="row">
-											{row.change > 0 ? "+" + row.change : row.change}
-										</th>
-										<td>{row.title}</td>
-										<td>{row.date}</td>
-									</tr>
-								))}
-						</tbody>
-					</table>
+					<Table page={page} historyRows={historyRows} />
 				</div>
 			);
 		} else {
