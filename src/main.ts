@@ -3,7 +3,7 @@ import { PluginView, PLUGIN_VIEW_TYPE } from "@PluginView";
 import { GamifiedTasksSettings } from "@types";
 import { logger } from "@utils/logger";
 import { Plugin, WorkspaceLeaf } from "obsidian";
-import GamifiedTasksSettingTab from "./SettingTab";
+import GamifiedTasksSettingTab from "./settings";
 
 export default class GamifiedTasksPlugin extends Plugin {
 	settings: GamifiedTasksSettings;
