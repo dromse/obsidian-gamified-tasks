@@ -1,25 +1,28 @@
 import { useSettings } from "@hooks";
-import { CounterT, Task } from "@hooks/useTasks/types";
+import { Task } from "@hooks/useTasks/types";
 import { logger, loggerMsg } from "@utils/logger";
 import { updateCounter } from "@utils/task";
 import { Notice } from "obsidian";
 import React from "react";
 
-import styles from './styles.module.css';
+import styles from "./styles.module.css";
 
 type CounterProps = {
 	task: Task;
-	counter: CounterT;
 	updateTask: (task: Task, newTask: Task) => unknown;
 	addHistoryRow: Function;
 };
 
 export default function Counter(props: CounterProps): React.JSX.Element {
-	const { counter, task, updateTask, addHistoryRow } = props;
-	const settings = useSettings()
+	const { task, updateTask, addHistoryRow } = props;
+	const settings = useSettings();
 
-	if(!settings) {
-		return <div>Settings is not defined!</div>
+	if (!settings) {
+		return <div>Settings is not defined!</div>;
+	}
+
+	if (!task.counter) {
+		return <div>Counter is not defined!</div>;
 	}
 
 	const [isButtonBlocked, setIsButtonBlocked] = React.useState(false);
@@ -33,7 +36,7 @@ export default function Counter(props: CounterProps): React.JSX.Element {
 				payload: { change },
 				updateTask,
 				addHistoryRow,
-				settings
+				settings,
 			});
 		} catch (err) {
 			logger(err);
@@ -46,7 +49,8 @@ export default function Counter(props: CounterProps): React.JSX.Element {
 	return (
 		<div className={`flex-items-center ${styles.counter}`}>
 			<p>
-				{counter.current} {counter.goal ? " / " + counter.goal : ""}
+				{task.counter.current}
+				{task.counter.goal ? " / " + task.counter.goal : ""}
 			</p>
 
 			<button onClick={handleUpdateCounter(1)} disabled={isButtonBlocked}>

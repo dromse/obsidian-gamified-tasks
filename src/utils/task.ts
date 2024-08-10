@@ -1,3 +1,4 @@
+import { MenuOption } from "@components/tabs/Tasks/Menu";
 import { DAY_FORMAT } from "@consts";
 import { RawFile } from "@hooks/types";
 import { Status, Task } from "@hooks/useTasks/types";
@@ -46,7 +47,7 @@ export function parseTasks(files: Array<RawFile>): Array<Task> {
 	return tasks;
 }
 
-type UpdateTaskProps<TPayload> = {
+export type UpdateTaskProps<TPayload> = {
 	task: Task;
 	payload: TPayload;
 	updateTask: Function;
@@ -101,6 +102,45 @@ export const updateCounter = async (
 			change: price * change,
 		});
 	}
+};
+
+export const handleResetCounter = async (
+	task: Task,
+	updateTask: Function,
+): Promise<void> => {
+	await updateTask(task, {
+		...task,
+		counter: { ...task.counter, current: 0 },
+	});
+};
+
+export const getStatusOptionsWithHandlers = (
+	StatusKeys: Array<Status>,
+	buildUpdateStatusProps: (
+		status: Status,
+	) => UpdateTaskProps<{ status: Status }>,
+): Array<MenuOption> =>
+	StatusKeys.reduce<Array<MenuOption>>((acc, key) => {
+		acc.push({
+			title: key,
+			handler: () => updateStatus(buildUpdateStatusProps(key)),
+		});
+
+		return acc;
+	}, []);
+
+export const handleUpdateCheckbox = (
+	task: Task,
+	buildUpdateStatusProps: (
+		status: Status,
+	) => UpdateTaskProps<{ status: Status }>,
+): void => {
+	const isDone = task.status === "done";
+	const isDenied = task.status === "denied";
+
+	isDone || isDenied
+		? updateStatus(buildUpdateStatusProps("todo"))
+		: updateStatus(buildUpdateStatusProps("done"));
 };
 
 export async function updateStatus(
@@ -167,6 +207,7 @@ type OperateYAMLBindingProps = {
 	vault: Vault;
 	settings: GamifiedTasksSettings;
 };
+
 export async function operateYAMLBinding(
 	props: OperateYAMLBindingProps,
 ): Promise<void> {

@@ -3,9 +3,16 @@ import { StatusKeys, StatusMarkdown } from "@hooks/useTasks/consts";
 import { Status, Task } from "@hooks/useTasks/types";
 import { revealTask } from "@utils/editor";
 import { extractTitlesFromLinks } from "@utils/string";
-import { updateStatus } from "@utils/task";
+import {
+	getStatusOptionsWithHandlers,
+	handleResetCounter,
+	handleUpdateCheckbox,
+	UpdateTaskProps
+} from "@utils/task";
 import React from "react";
 import Counter from "./Counter";
+import { Menu, MenuOption } from "./Menu";
+import { TaskEditor } from "./TaskEditor";
 
 import styles from "./styles.module.css";
 
@@ -21,54 +28,32 @@ export default function TaskItem(props: Props): React.JSX.Element {
 	const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 	const [isStatusMenuOpen, setIsStatusMenuOpen] = React.useState(false);
 	const [isTaskEditorOpen, setIsTaskEditorOpen] = React.useState(false);
-
 	const settings = useSettings();
-
-	if (!settings) {
-		return <div>Error: Settings is not defined.</div>;
-	}
 
 	if (!app) {
 		return <div>Error: App is not defined.</div>;
 	}
 
+	if (!settings) {
+		return <div>Error: Settings is not defined.</div>;
+	}
+
 	const { workspace, vault } = app;
 
-	const handleUpdateCheckbox = (): void => {
-		const isDone = task.status === "done";
-		const isDenied = task.status === "denied";
-
-		if (isDone || isDenied) {
-			updateStatus({
-				task,
-				payload: { status: "todo" },
-				updateTask,
-				addHistoryRow,
-				settings,
-			});
-		} else {
-			updateStatus({
-				task,
-				payload: { status: "done" },
-				updateTask,
-				addHistoryRow,
-				settings,
-			});
-		}
-	};
-
-	const handleRevealTask = (): void => {
-		revealTask({ task, workspace, vault });
-	};
-
-	const toggleMenu = (): void => {
-		setIsMenuOpen((prev) => !prev);
-	};
+	const buildUpdateStatusProps = (
+		status: Status,
+	): UpdateTaskProps<{ status: Status }> => ({
+		task,
+		payload: { status },
+		updateTask,
+		addHistoryRow,
+		settings,
+	});
 
 	const options: Array<MenuOption> = [
 		{
 			title: "Reveal Task",
-			handler: handleRevealTask,
+			handler: () => revealTask({ task, workspace, vault }),
 		},
 		{
 			title: "Change Status",
@@ -80,36 +65,16 @@ export default function TaskItem(props: Props): React.JSX.Element {
 		},
 	];
 
-	const getMenuStatusOptionsWithHandlers = (
-		StatusKeys: Array<Status>,
-	): Array<MenuOption> =>
-		StatusKeys.reduce<Array<MenuOption>>((acc, key) => {
-			acc.push({
-				title: key,
-				handler: () =>
-					updateStatus({
-						task,
-						payload: { status: key },
-						updateTask,
-						addHistoryRow,
-						settings,
-					}),
-			});
-
-			return acc;
-		}, []);
-
-	const statusOptions = getMenuStatusOptionsWithHandlers(StatusKeys);
+	const statusOptions = getStatusOptionsWithHandlers(
+		StatusKeys,
+		buildUpdateStatusProps,
+	);
 
 	if (task.counter) {
-		const handleResetCounter = async (): Promise<void> => {
-			await updateTask(task, {
-				...task,
-				counter: { ...task.counter, current: 0 },
-			});
-		};
-
-		options.push({ title: "Reset Counter", handler: handleResetCounter });
+		options.push({
+			title: "Reset Counter",
+			handler: () => handleResetCounter(task, updateTask),
+		});
 	}
 
 	return (
@@ -119,20 +84,20 @@ export default function TaskItem(props: Props): React.JSX.Element {
 		>
 			<input
 				type="checkbox"
-				onChange={handleUpdateCheckbox}
-				name=""
-				id=""
+				onChange={() => handleUpdateCheckbox(task, buildUpdateStatusProps)}
 				checked={task.status !== "todo"}
 			/>
 
-			<div onClick={toggleMenu} className={`${styles.title}`}>
+			<div
+				onClick={() => setIsMenuOpen((p) => !p)}
+				className={`${styles.title}`}
+			>
 				{extractTitlesFromLinks(task.body)}
 			</div>
 
 			{task.counter && (
 				<Counter
 					task={task}
-					counter={task.counter}
 					updateTask={updateTask}
 					addHistoryRow={addHistoryRow}
 				/>
@@ -155,89 +120,3 @@ export default function TaskItem(props: Props): React.JSX.Element {
 		</li>
 	);
 }
-
-type TaskEditorProps = DialogProps & {
-	task: Task;
-	updateTask: Function;
-};
-const TaskEditor = (props: TaskEditorProps): React.JSX.Element => {
-	const { isOpen, setIsOpen, task, updateTask } = props;
-	const [newBodyValue, setNewBodyValue] = React.useState(task.body);
-
-	const onEditBody = (e: React.ChangeEvent<HTMLInputElement>): void => {
-		const newBody = e.currentTarget.value;
-		setNewBodyValue(newBody);
-	};
-
-	const saveNewTask = (): void => {
-		if (newBodyValue.trim()) {
-			updateTask(task, { ...task, body: newBodyValue });
-			setIsOpen(false);
-		}
-	};
-
-	return (
-		<Dialog isOpen={isOpen} setIsOpen={setIsOpen}>
-			<input type="text" value={newBodyValue} onChange={onEditBody} />
-			<button onClick={saveNewTask}>Save</button>
-		</Dialog>
-	);
-};
-
-type MenuOption = { title: string; handler: Function };
-type MenuProps = DialogProps & {
-	options: Array<MenuOption>;
-};
-const Menu = (props: MenuProps): React.JSX.Element => {
-	const { isOpen, setIsOpen, options } = props;
-
-	return (
-		<Dialog isOpen={isOpen} setIsOpen={setIsOpen}>
-			{options.map((option) => (
-				<button
-					onClick={() => {
-						option.handler();
-						setIsOpen(false);
-					}}
-					key={option.title}
-				>
-					{option.title}
-				</button>
-			))}
-		</Dialog>
-	);
-};
-
-type DialogProps = {
-	isOpen: boolean;
-	setIsOpen: (arg: boolean) => void;
-	children?: string | React.JSX.Element | Array<React.JSX.Element>;
-};
-const Dialog = (props: DialogProps): React.JSX.Element => {
-	const { isOpen, setIsOpen, children } = props;
-	const ref = React.useRef<HTMLDialogElement>(null);
-
-	React.useEffect(() => {
-		function onClick(event: MouseEvent): void {
-			if (ref.current && !ref.current.contains(event.target as Node)) {
-				setIsOpen(false);
-			}
-		}
-
-		if (isOpen) {
-			setTimeout(() => document.addEventListener("click", onClick), 0);
-		}
-
-		return () => {
-			document.removeEventListener("click", onClick);
-		};
-	}, [isOpen]);
-
-	return isOpen ? (
-		<dialog open={isOpen} ref={ref} className={`${styles.menu} border`}>
-			{children}
-		</dialog>
-	) : (
-		<></>
-	);
-};
