@@ -10,7 +10,7 @@ const BodyEditor = ({
 }): React.JSX.Element => (
 	<input
 		type="text"
-		placeholder="body"
+		placeholder="task.."
 		value={newTask.body}
 		onChange={(e) => {
 			const newBody = e.currentTarget.value;

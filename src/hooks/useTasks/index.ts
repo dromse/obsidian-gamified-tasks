@@ -21,6 +21,7 @@ type UseTasksResult = {
 	tasks: Array<Task>;
 	isTasksParsed: ParseState;
 	updateTask: (task: Task, newTask: Task) => void;
+	addTask: (task: Task) => void;
 	filters: TaskFilters;
 };
 
@@ -67,10 +68,28 @@ export default function useTasks(): UseTasksResult {
 	if (!app) {
 		setIsTasksParsed("error");
 
-		return { tasks, isTasksParsed, updateTask, filters };
+		return { tasks, isTasksParsed, updateTask, filters, addTask };
 	}
 
 	const { vault, workspace } = app;
+
+	async function addTask(taskToAdd: Task): Promise<string | undefined> {
+		const newLineContent = stringifyMiddlewares(
+			taskToAdd,
+			middlewares,
+			settings,
+		);
+
+		const tFile = vault.getFileByPath(taskToAdd.path);
+
+		if (!tFile) {
+			return;
+		}
+
+		return await vault.process(tFile, (fileContent) =>
+			fileContent.concat("\n", newLineContent),
+		);
+	}
 
 	/**
 	 * Update task props and save to vault
@@ -93,7 +112,13 @@ export default function useTasks(): UseTasksResult {
 		}
 
 		if (task.bind && app && settings) {
-			await operateYAMLBinding({ task: newTask, previousTaskState: task, app, vault, settings })
+			await operateYAMLBinding({
+				task: newTask,
+				previousTaskState: task,
+				app,
+				vault,
+				settings,
+			});
 		}
 
 		return await vault.process(tFile, (data) =>
@@ -202,7 +227,10 @@ export default function useTasks(): UseTasksResult {
 			{ setting: settings.tagFilter, setter: setTagFilter },
 			{ setting: settings.hasOnlyThisTags, setter: setHasOnlyThisTags },
 			{ setting: settings.noteFilter, setter: setNoteFilter },
-			{ setting: settings.isFromCurrentNote, setter: setIsFromCurrentNote },
+			{
+				setting: settings.isFromCurrentNote,
+				setter: setIsFromCurrentNote,
+			},
 		];
 
 		settingSetters.forEach((obj) => obj.setting && obj.setter(obj.setting));
@@ -220,7 +248,7 @@ export default function useTasks(): UseTasksResult {
 		return () => vault.off("modify", fetchTasks);
 	}, []);
 
-	return { tasks, isTasksParsed, updateTask, filters };
+	return { tasks, isTasksParsed, updateTask, filters, addTask };
 }
 
 function resetReccuringTask(

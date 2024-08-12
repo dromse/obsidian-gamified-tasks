@@ -27,7 +27,7 @@ const parse = (task: Task, settings: GamifiedTasksSettings): Task => {
 
 const stringify = (task: Task, settings: GamifiedTasksSettings): string => {
 	if (settings.isCompletedAtEnabled === false) {
-		return ""
+		return "";
 	}
 
 	let completedAtDate = moment().format(settings.dailyFormat);

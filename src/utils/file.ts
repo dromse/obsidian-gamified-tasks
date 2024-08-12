@@ -12,7 +12,7 @@ export async function getRawFiles(
 	vault: Vault,
 	settings: GamifiedTasksSettings | undefined,
 ): Promise<Array<RawFile>> {
-	const { ignoreList = [] } = settings || {}
+	const { ignoreList = [] } = settings || {};
 
 	const rowFiles = Promise.all(
 		vault.getMarkdownFiles().map(async (file) => ({

@@ -9,16 +9,12 @@ import EveryEditor from "./EveryEditor";
 
 type TaskEditorProps = DialogProps & {
 	task: Task;
-	updateTask: Function;
+	saveTask: (task: Task, saveNewTask?: Function) => void;
+	children?: string | React.JSX.Element | Array<React.JSX.Element>;
 };
 export const TaskEditor = (props: TaskEditorProps): React.JSX.Element => {
-	const { isOpen, setIsOpen, task, updateTask } = props;
+	const { isOpen, setIsOpen, task, saveTask, children } = props;
 	const [newTask, setNewTask] = React.useState(task);
-
-	const saveNewTask = (): void => {
-		updateTask(task, { ...newTask });
-		setIsOpen(false);
-	};
 
 	return (
 		<Dialog isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -28,7 +24,15 @@ export const TaskEditor = (props: TaskEditorProps): React.JSX.Element => {
 			<BindEditor newTask={newTask} setNewTask={setNewTask} />
 			<EveryEditor newTask={newTask} setNewTask={setNewTask} />
 
-			<button onClick={saveNewTask}>Save</button>
+			<>{children}</>
+
+			<button
+				onClick={() => {
+					saveTask(newTask, setNewTask);
+				}}
+			>
+				Save
+			</button>
 		</Dialog>
 	);
 };

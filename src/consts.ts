@@ -28,6 +28,7 @@ export const DEFAULT_SETTINGS: GamifiedTasksSettings = {
 	shouldShowAllFilters: false,
 	isCompletedAtEnabled: true,
 	difficulties: DefaultDifficulties,
+	pathToSaveNewTask: "tasks.md",
 };
 
 export const DAY_FORMAT = "YYYY-MM-DD" as const;

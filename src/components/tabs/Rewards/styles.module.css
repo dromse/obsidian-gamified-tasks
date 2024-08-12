@@ -11,16 +11,16 @@
 	gap: 10px;
 	margin-top: 10px;
 
-	&>#input-coins {
+	& > #input-coins {
 		width: 100%;
 	}
 
-	&>.buttons {
+	& > .buttons {
 		display: flex;
 		width: 100%;
 		gap: 10px;
 
-		&>button {
+		& > button {
 			flex: 1;
 		}
 	}

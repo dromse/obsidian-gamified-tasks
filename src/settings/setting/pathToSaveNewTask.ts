@@ -6,16 +6,16 @@ export default (
 	containerEl: HTMLElement,
 	context: GamifiedTasksSettingTab,
 ): void => {
-	new Setting(containerEl).setName("Path to history file").addText((text) =>
+	new Setting(containerEl).setName("Path to save new task").addText((text) =>
 		text
-			.setPlaceholder("path/to/history.md")
-			.setValue(String(context.plugin.settings.pathToHistory))
+			.setPlaceholder("path/to/tasks.md")
+			.setValue(String(context.plugin.settings.pathToSaveNewTask))
 			.onChange(async (value) => {
 				const trimmedValue = value.trim();
 
-				context.plugin.settings.pathToHistory = trimmedValue
+				context.plugin.settings.pathToSaveNewTask = trimmedValue
 					? trimmedValue
-					: DEFAULT_SETTINGS.pathToHistory;
+					: DEFAULT_SETTINGS.pathToSaveNewTask;
 
 				await context.plugin.saveSettings();
 			}),

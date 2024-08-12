@@ -7,6 +7,7 @@ import limitTasks from "./setting/limitTasks";
 import onlyThisTags from "./setting/onlyThisTags";
 import pathToHistory from "./setting/pathToHistory";
 import pathToRewards from "./setting/pathToRewards";
+import pathToSaveNewTask from "./setting/pathToSaveNewTask";
 import showAllFilters from "./setting/showAllFilters";
 import showByStatus from "./setting/showByStatus";
 import showByTags from "./setting/showByTags";
@@ -31,6 +32,7 @@ export default class GamifiedTasksSettingTab extends PluginSettingTab {
 
 		pathToRewards(containerEl, this);
 		pathToHistory(containerEl, this);
+		pathToSaveNewTask(containerEl, this);
 		excludeFilesFromParsing(containerEl, this);
 		showDoneDate(containerEl, this);
 		showAllFilters(containerEl, this);

@@ -37,7 +37,9 @@ const CounterEditor = ({
 						onChange={(e) =>
 							setNewTask({
 								...newTask,
-								counter: { current: Number(e.currentTarget.value) },
+								counter: {
+									current: Number(e.currentTarget.value),
+								},
 							})
 						}
 					/>

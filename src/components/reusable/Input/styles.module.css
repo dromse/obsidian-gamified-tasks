@@ -4,7 +4,7 @@
 	align-items: center;
 	flex: 1;
 
-	&>input {
+	& > input {
 		width: 100%;
 	}
 }

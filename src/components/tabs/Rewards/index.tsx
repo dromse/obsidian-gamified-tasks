@@ -11,12 +11,7 @@ export default function RewardsTab(): React.JSX.Element {
 	}
 
 	if (isRewardsParsed === "parsed") {
-		return (
-			<RewardList
-				rewards={rewards}
-				history={history}
-			/>
-		);
+		return <RewardList rewards={rewards} history={history} />;
 	}
 
 	if (isRewardsParsed === "error" || history.isHistoryParsed === "error") {

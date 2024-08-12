@@ -5,10 +5,10 @@ import styles from "./styles.module.css";
 import { useApp } from "@hooks";
 import { UseHistoryReturn } from "@hooks/useHistory";
 import { Reward } from "@hooks/useRewards";
+import { coins } from "@utils/string";
 import { PiggyBank } from "lucide-react";
 import { Notice } from "obsidian";
 import Depository from "./Depository";
-import { coins } from "@utils/string";
 
 type RewardListProps = {
 	rewards: ReadonlyArray<Reward>;
@@ -42,10 +42,7 @@ export default function RewardList(props: RewardListProps): React.JSX.Element {
 
 			<ul className={`list ${styles.list}`}>
 				{rewards.map((reward) => (
-					<li
-						className={`${styles.reward} border`}
-						key={reward.title}
-					>
+					<li className={`${styles.reward} border`} key={reward.title}>
 						<div>
 							<h3 className={styles.title}>{reward.title}</h3>
 							<p className={styles.desc}>{reward.desc}</p>
@@ -58,8 +55,7 @@ export default function RewardList(props: RewardListProps): React.JSX.Element {
 									change: -reward.price,
 								});
 								new Notice(
-									`You purchase '${reward.title}': -${reward.price} ${
-										reward.price > 1 ? "coins" : "coin"
+									`You purchase '${reward.title}': -${reward.price} ${reward.price > 1 ? "coins" : "coin"
 									}`,
 								);
 							}}

@@ -26,10 +26,7 @@ export default function StatusFilter(props: Props): React.JSX.Element {
 				<option value="all">all</option>
 
 				{StatusKeys.map((status) => (
-					<option
-						value={status}
-						key={status}
-					>
+					<option value={status} key={status}>
 						{status}
 					</option>
 				))}

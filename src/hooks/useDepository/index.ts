@@ -19,8 +19,8 @@ type DepositoryTransactionStateType = typeof DEPOSITORY_TRANSACTION_STATE;
  * 'over' -> occur when you pass amount of coins which is bigger then your current balance (e.g. history balance: 5, re/store(6))
  * 'error' -> something went wrong...
  */
-export type DepositoryTransactionState = DepositoryTransactionStateType[keyof DepositoryTransactionStateType];
-
+export type DepositoryTransactionState =
+	DepositoryTransactionStateType[keyof DepositoryTransactionStateType];
 
 export type Depository = {
 	balance: number;

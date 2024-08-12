@@ -3,7 +3,7 @@ import React from "react";
 import TaskList from "./TaskList";
 
 export default function TasksTab(): React.JSX.Element {
-	const { tasks, isTasksParsed, updateTask, filters } = useTasks();
+	const { tasks, isTasksParsed, updateTask, filters, addTask } = useTasks();
 
 	if (isTasksParsed === "parsing") {
 		return <div>Parsing...</div>;
@@ -15,6 +15,7 @@ export default function TasksTab(): React.JSX.Element {
 				tasks={tasks}
 				updateTask={updateTask}
 				filters={filters}
+				addTask={addTask}
 			/>
 		);
 	}

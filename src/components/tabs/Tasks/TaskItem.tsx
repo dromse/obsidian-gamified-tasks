@@ -77,6 +77,11 @@ export default function TaskItem(props: Props): React.JSX.Element {
 		});
 	}
 
+	const saveNewTask = (newTask: Task): void => {
+		updateTask(task, { ...newTask });
+		setIsTaskEditorOpen(false);
+	};
+
 	return (
 		<li
 			className={`task-list-item ${styles.task} flex-items-center border`}
@@ -115,7 +120,7 @@ export default function TaskItem(props: Props): React.JSX.Element {
 				isOpen={isTaskEditorOpen}
 				setIsOpen={setIsTaskEditorOpen}
 				task={task}
-				updateTask={updateTask}
+				saveTask={saveNewTask}
 			/>
 		</li>
 	);

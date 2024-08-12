@@ -17,6 +17,7 @@ export type GamifiedTasksSettings = {
 	shouldShowAllFilters: boolean;
 	isCompletedAtEnabled: boolean;
 	difficulties: Array<DifficultySetting>;
+	pathToSaveNewTask: string;
 };
 
 export type DifficultySetting = { name: string; price: number };
