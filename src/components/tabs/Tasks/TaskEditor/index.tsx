@@ -1,4 +1,5 @@
 import { Task } from "@hooks/useTasks/types";
+import { Notice } from "obsidian";
 import React from "react";
 import { Dialog, DialogProps } from "../Dialog";
 import BindEditor from "./BindEditor";
@@ -28,6 +29,11 @@ export const TaskEditor = (props: TaskEditorProps): React.JSX.Element => {
 
 			<button
 				onClick={() => {
+					if (!newTask.body) {
+						new Notice("Task body is empty!");
+						return;
+					}
+
 					saveTask(newTask, setNewTask);
 				}}
 			>
