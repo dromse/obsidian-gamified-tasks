@@ -9,6 +9,7 @@ export default function HistoryTab(): React.JSX.Element {
 	const [page, setPage] = useState(0);
 	const [totalPages, setTotalPages] = useState<number | undefined>(undefined);
 	const [pageInput, setPageInput] = useState(String(page + 1));
+	const [search, setSearch] = useState("");
 
 	const handleClickPage = (pageIndex: number): void => {
 		setPage(pageIndex);
@@ -80,7 +81,21 @@ export default function HistoryTab(): React.JSX.Element {
 						afterclearvalue="1"
 					/>
 
-					<Table page={page} historyRows={historyRows} />
+					<Input
+						type="text"
+						name="search"
+						placeholder="Search.."
+						id={styles.search}
+						value={search}
+						onChange={(e) => setSearch(e.currentTarget.value)}
+					/>
+
+					<Table
+						page={page}
+						historyRows={historyRows.filter((row) =>
+							row.title.toLowerCase().includes(search.toLowerCase()),
+						)}
+					/>
 				</div>
 			);
 		} else {
