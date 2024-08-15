@@ -22,25 +22,29 @@ export default (
 					t
 						.setPlaceholder("alias")
 						.setValue(diff.name)
-						.onChange((newName) => {
+						.onChange(async (newName) => {
 							const index = context.plugin.settings.difficulties.findIndex(
 								(settingDiff) => settingDiff.name === diff.name,
 							);
 
 							context.plugin.settings.difficulties[index].name = newName;
+
+							await context.plugin.saveSettings();
 						}),
 				)
 				.addText((t) =>
 					t
 						.setPlaceholder("price")
 						.setValue(String(diff.price))
-						.onChange((newPrice) => {
+						.onChange(async (newPrice) => {
 							const index = context.plugin.settings.difficulties.findIndex(
 								(settingDiff) => settingDiff.name === diff.name,
 							);
 
 							context.plugin.settings.difficulties[index].price =
 								Number(newPrice);
+
+							await context.plugin.saveSettings();
 						}),
 				)
 				.addButton((b) =>
@@ -51,6 +55,7 @@ export default (
 							);
 						context.plugin.settings.difficulties = newDifficulties;
 						difficultyItem.detach();
+
 						await context.plugin.saveSettings();
 					}),
 				);
