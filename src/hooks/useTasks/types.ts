@@ -1,4 +1,5 @@
 import { GamifiedTasksSettings } from "@types";
+import { App } from "obsidian";
 
 /**
  * Represents the status options for filtering tasks.
@@ -166,14 +167,19 @@ export type Task = {
 	 */
 	condition?: {
 		/**
-		 * The file associated with the condition.
+		 * The name of condition.
+		 */
+		name: string;
+
+		/**
+		 * The resource file associated with a module to import dynamically through `import()`.
 		 */
 		file: string;
 
 		/**
-		 * Indicates whether the task should be shown or hidden.
+		 * The argument to assign to imported function from module
 		 */
-		show: boolean;
+		arg: string;
 	};
 };
 
@@ -195,7 +201,7 @@ export type Middleware = {
 	 * @param settings The plugin settings object (optional)
 	 * @returns The task object with metadata cleared from the body, if found or the same task object.
 	 */
-	parse: (task: Task, settings?: GamifiedTasksSettings) => Task;
+	parse: (task: Task, settings?: GamifiedTasksSettings, app?: App) => Task;
 
 	/**
 	 * Function for stringifying a task object to a markdown line.

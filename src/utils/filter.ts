@@ -84,11 +84,15 @@ export const byStatus =
 		};
 
 /**
- * Use currying to set history rows and return callback to call in filter
+ * Use currying to set history rows and return callback to call in filter, pass conditions
  */
 export const byToday =
 	(historyRows: ReadonlyArray<HistoryRow>) =>
 		(task: Task): boolean => {
+			if (task.condition) {
+				return true;
+			}
+
 			if (!task.every) {
 				return false;
 			}
@@ -121,4 +125,4 @@ export const byToday =
 		};
 
 export const byRecurrance = (task: Task): boolean =>
-	task.every ? true : false;
+	task.every || task.condition ? true : false;

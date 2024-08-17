@@ -156,7 +156,10 @@ export default function useTasks(): UseTasksResult {
 			const parsedTaskswithMiddlewares = parseMiddlewares(
 				parsedTasks,
 				middlewares,
-				settings,
+				{
+					settings,
+					app,
+				},
 			);
 
 			sessionStorage.setItem(
@@ -187,6 +190,45 @@ export default function useTasks(): UseTasksResult {
 			GamifiedTasksConstants.sessionTasks,
 		);
 
+		/**
+		 * Skips recurring tasks, filter tasks with condition by success condition.
+		 */
+		const filterBySuccessCondition = async (
+			allRecurringTasks: Array<Task>,
+		): Promise<Array<Task>> => {
+			// Ignore caching of module by browser.
+			const timestamp = new Date().getTime();
+
+			const tasksToShow = await allRecurringTasks.reduce<Promise<Array<Task>>>(
+				async (promiseAcc, task) => {
+					const acc = await promiseAcc;
+
+					if (task.condition) {
+						const pathToModule =
+							vault.adapter.getResourcePath(task.condition.name + ".js") +
+							`?t=${timestamp}`;
+
+						const result = await (
+							await import(pathToModule)
+						).default(task.condition.arg);
+
+						if (result) {
+							acc.push(task);
+						}
+
+						return acc;
+					}
+
+					acc.push(task);
+
+					return acc;
+				},
+				Promise.resolve([]),
+			);
+
+			return tasksToShow;
+		};
+
 		if (tasksJSON) {
 			const tasks: Array<Task> = JSON.parse(tasksJSON);
 
@@ -195,9 +237,11 @@ export default function useTasks(): UseTasksResult {
 
 				const todayTasks = getTodayTasks(allRecurringTasks);
 
-				const filteredList = filterTaskList(todayTasks);
+				filterBySuccessCondition(todayTasks).then((tasksToShow) => {
+					const filteredList = filterTaskList(tasksToShow);
 
-				setTasks(filteredList);
+					setTasks(filteredList);
+				});
 			} else {
 				const filteredList = filterTaskList(tasks);
 
