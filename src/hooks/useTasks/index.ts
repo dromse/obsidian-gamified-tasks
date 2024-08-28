@@ -31,7 +31,7 @@ type UseTasksResult = {
 export default function useTasks(): UseTasksResult {
 	const [tasks, setTasks] = useState<Array<Task>>([]);
 	const [isTasksParsed, setIsTasksParsed] = useState<ParseState>("parsing");
-	const [shouldUpdateUI, setSouldUpdateUI] = useState(false);
+	const [shouldUpdateUI, setShouldUpdateUI] = useState(false);
 	const [limit, setLimit] = useState(0);
 	const [statusFilter, setStatusFilter] = useState<StatusFilterOption>("all");
 	const [isRecur, setIsRecur] = useState(false);
@@ -150,7 +150,7 @@ export default function useTasks(): UseTasksResult {
 			);
 
 			setIsTasksParsed("parsed");
-			setSouldUpdateUI((prev) => !prev);
+			setShouldUpdateUI((prev) => !prev);
 		} catch (err) {
 			setIsTasksParsed("error");
 		}
