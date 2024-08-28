@@ -7,7 +7,7 @@ import {
 	getStatusOptionsWithHandlers,
 	handleResetCounter,
 	handleUpdateCheckbox,
-	UpdateTaskProps
+	UpdateTaskPayloadProps,
 } from "@utils/task";
 import React from "react";
 import Counter from "./Counter";
@@ -15,10 +15,11 @@ import { Menu, MenuOption } from "./Menu";
 import { TaskEditor } from "./TaskEditor";
 
 import styles from "./styles.module.css";
+import { UpdateTaskFunctionType } from "@hooks/useTasks";
 
 type Props = {
 	task: Task;
-	updateTask: (task: Task, newTask: Task) => unknown;
+	updateTask: UpdateTaskFunctionType;
 };
 
 export default function TaskItem(props: Props): React.JSX.Element {
@@ -42,7 +43,7 @@ export default function TaskItem(props: Props): React.JSX.Element {
 
 	const buildUpdateStatusProps = (
 		status: Status,
-	): UpdateTaskProps<{ status: Status }> => ({
+	): UpdateTaskPayloadProps<{ status: Status }> => ({
 		task,
 		payload: { status },
 		updateTask,

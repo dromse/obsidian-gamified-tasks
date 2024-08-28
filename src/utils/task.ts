@@ -47,7 +47,7 @@ export function parseTasks(files: Array<RawFile>): Array<Task> {
 	return tasks;
 }
 
-export type UpdateTaskProps<TPayload> = {
+export type UpdateTaskPayloadProps<TPayload> = {
 	task: Task;
 	payload: TPayload;
 	updateTask: Function;
@@ -56,7 +56,7 @@ export type UpdateTaskProps<TPayload> = {
 };
 
 export const updateCounter = async (
-	props: UpdateTaskProps<{ change: number }>,
+	props: UpdateTaskPayloadProps<{ change: number }>,
 ): Promise<void> => {
 	const { task, payload, updateTask, addHistoryRow, settings } = props;
 	const { change } = payload;
@@ -108,17 +108,21 @@ export const handleResetCounter = async (
 	task: Task,
 	updateTask: Function,
 ): Promise<void> => {
-	await updateTask(task, {
-		...task,
-		counter: { ...task.counter, current: 0 },
-	});
+	await updateTask(
+		task,
+		{
+			...task,
+			counter: { ...task.counter, current: 0 },
+		},
+		{ ignore: { bind: true } },
+	);
 };
 
 export const getStatusOptionsWithHandlers = (
 	StatusKeys: Array<Status>,
 	buildUpdateStatusProps: (
 		status: Status,
-	) => UpdateTaskProps<{ status: Status }>,
+	) => UpdateTaskPayloadProps<{ status: Status }>,
 ): Array<MenuOption> =>
 	StatusKeys.reduce<Array<MenuOption>>((acc, key) => {
 		acc.push({
@@ -133,7 +137,7 @@ export const handleUpdateCheckbox = (
 	task: Task,
 	buildUpdateStatusProps: (
 		status: Status,
-	) => UpdateTaskProps<{ status: Status }>,
+	) => UpdateTaskPayloadProps<{ status: Status }>,
 ): void => {
 	const isDone = task.status === "done";
 	const isDenied = task.status === "denied";
@@ -144,7 +148,7 @@ export const handleUpdateCheckbox = (
 };
 
 export async function updateStatus(
-	props: UpdateTaskProps<{ status: Status }>,
+	props: UpdateTaskPayloadProps<{ status: Status }>,
 ): Promise<void> {
 	const { task, payload, updateTask, addHistoryRow, settings } = props;
 	const { status } = payload;

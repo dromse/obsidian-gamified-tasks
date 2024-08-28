@@ -4,9 +4,10 @@ import {
 	RecurFilter,
 	SearchFilter,
 	StatusFilter,
-	TagFilter,
+	TagFilter
 } from "@components/reusable/filters";
 import { useApp, useSettings } from "@hooks";
+import { UpdateTaskFunctionType } from "@hooks/useTasks";
 import { Task, TaskFilters } from "@hooks/useTasks/types";
 import { singularOrPlural } from "@utils/string";
 import React, { useState } from "react";
@@ -16,7 +17,7 @@ import TaskItem from "./TaskItem";
 
 type Props = {
 	tasks: Array<Task>;
-	updateTask: (task: Task, newTask: Task) => void;
+	updateTask: UpdateTaskFunctionType;
 	filters: TaskFilters;
 	addTask: (task: Task) => void;
 };

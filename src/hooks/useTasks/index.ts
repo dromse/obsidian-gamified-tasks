@@ -6,7 +6,7 @@ import {
 	bySearch,
 	byStatus,
 	byTag,
-	byToday
+	byToday,
 } from "@utils/filter";
 import { parseMiddlewares, stringifyMiddlewares } from "@utils/middleware";
 import { operateYAMLBinding, parseTasks } from "@utils/task";
@@ -17,10 +17,22 @@ import { ParseState } from "../types";
 import { middlewares } from "./consts";
 import { StatusFilterOption, Task, TaskFilters } from "./types";
 
+export type UpdateTaskOpts = {
+	ignore: {
+		bind: boolean;
+	};
+};
+
+export type UpdateTaskFunctionType = (
+	task: Task,
+	newTask: Task,
+	opts?: UpdateTaskOpts,
+) => Promise<string | undefined>;
+
 type UseTasksResult = {
 	tasks: Array<Task>;
 	isTasksParsed: ParseState;
-	updateTask: (task: Task, newTask: Task) => void;
+	updateTask: UpdateTaskFunctionType;
 	addTask: (task: Task) => void;
 	filters: TaskFilters;
 };
@@ -98,6 +110,7 @@ export default function useTasks(): UseTasksResult {
 	async function updateTask(
 		task: Task,
 		newTask: Task,
+		opts?: UpdateTaskOpts,
 	): Promise<string | undefined> {
 		const newLineContent = stringifyMiddlewares(
 			newTask,
@@ -111,14 +124,16 @@ export default function useTasks(): UseTasksResult {
 			return;
 		}
 
-		if (task.bind && app && settings) {
-			await operateYAMLBinding({
-				task: newTask,
-				previousTaskState: task,
-				app,
-				vault,
-				settings,
-			});
+		if (!opts?.ignore.bind) {
+			if (task.bind && app && settings) {
+				await operateYAMLBinding({
+					task: newTask,
+					previousTaskState: task,
+					app,
+					vault,
+					settings,
+				});
+			}
 		}
 
 		return await vault.process(tFile, (data) =>
@@ -253,7 +268,7 @@ export default function useTasks(): UseTasksResult {
 
 function resetReccuringTask(
 	task: Task,
-	updateTask: (task: Task, newTask: Task) => void,
+	updateTask: UpdateTaskFunctionType
 ): void {
 	const newTask = { ...task };
 
@@ -276,5 +291,5 @@ function resetReccuringTask(
 		}
 	}
 
-	updateTask(task, newTask);
+	updateTask(task, newTask, {ignore: {bind: true}});
 }
