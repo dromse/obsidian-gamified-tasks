@@ -3,8 +3,10 @@ import { App, PluginSettingTab, Setting } from "obsidian";
 import changeDifficulty from "./setting/changeDifficulty";
 
 import excludeFilesFromParsing from "./setting/excludeFilesFromParsing";
+import filterTasksOnOpenBy from "./setting/filterTasksOnOpenBy";
 import limitTasks from "./setting/limitTasks";
 import onlyThisTags from "./setting/onlyThisTags";
+import pathToConditions from "./setting/pathToConditions";
 import pathToHistory from "./setting/pathToHistory";
 import pathToRewards from "./setting/pathToRewards";
 import pathToSaveNewTask from "./setting/pathToSaveNewTask";
@@ -13,7 +15,6 @@ import showByStatus from "./setting/showByStatus";
 import showByTags from "./setting/showByTags";
 import showDoneDate from "./setting/showDoneDate";
 import showFromCurrentNote from "./setting/showFromCurrentNote";
-import showRecurringTasks from "./setting/showRecurringTasks";
 import showTasksFromNote from "./setting/showTasksFromNote";
 
 /** Class for Setting Tab where user can set default filtering settings for `Grind Manager` */
@@ -31,6 +32,7 @@ export default class GamifiedTasksSettingTab extends PluginSettingTab {
 		containerEl.empty();
 
 		pathToRewards(containerEl, this);
+		pathToConditions(containerEl, this);
 		pathToHistory(containerEl, this);
 		pathToSaveNewTask(containerEl, this);
 		excludeFilesFromParsing(containerEl, this);
@@ -44,7 +46,7 @@ export default class GamifiedTasksSettingTab extends PluginSettingTab {
 		onlyThisTags(containerEl, this);
 		showTasksFromNote(containerEl, this);
 		showFromCurrentNote(containerEl, this);
-		showRecurringTasks(containerEl, this);
+		filterTasksOnOpenBy(containerEl, this);
 
 		new Setting(containerEl)
 			.setName("Difficulty")

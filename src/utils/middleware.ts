@@ -1,5 +1,6 @@
 import { Middleware, Task } from "@hooks/useTasks/types";
 import { GamifiedTasksSettings } from "@types";
+import { App } from "obsidian";
 
 /** Stringify task obj by middlewares */
 export function stringifyMiddlewares(
@@ -19,11 +20,14 @@ export function stringifyMiddlewares(
 export function parseMiddlewares(
 	tasks: Array<Task>,
 	middlewares: Array<Middleware>,
-	settings: GamifiedTasksSettings | undefined,
+	additional: {
+		settings: GamifiedTasksSettings | undefined;
+		app: App | undefined;
+	},
 ): Array<Task> {
 	middlewares.forEach(
 		(middleware) =>
-			(tasks = tasks.map((task) => middleware.parse(task, settings))),
+			(tasks = tasks.map((task) => middleware.parse(task, additional.settings, additional.app))),
 	);
 
 	return tasks;
