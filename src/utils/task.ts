@@ -255,3 +255,20 @@ export async function operateYAMLBinding(
 		});
 	}
 }
+
+export const executeCondition = async (task: Task): Promise<boolean> => {
+	if (task.condition) {
+		// Ignore caching of module by browser.
+		const timestamp = new Date().getTime();
+
+		const pathToModule = task.condition.file + `?t=${timestamp}`;
+
+		const result = await (
+			await import(pathToModule)
+		).default(task.condition.arg);
+
+		return result;
+	}
+
+	return false;
+};

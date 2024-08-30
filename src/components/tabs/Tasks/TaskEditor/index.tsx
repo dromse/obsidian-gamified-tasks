@@ -4,6 +4,7 @@ import React from "react";
 import { Dialog, DialogProps } from "../Dialog";
 import BindEditor from "./BindEditor";
 import BodyEditor from "./BodyEditor";
+import ConditionEditor from "./ConditionEditor";
 import CounterEditor from "./CounterEditor";
 import DifficultyEditor from "./DifficultyEditor";
 import EveryEditor from "./EveryEditor";
@@ -24,6 +25,7 @@ export const TaskEditor = (props: TaskEditorProps): React.JSX.Element => {
 			<CounterEditor newTask={newTask} setNewTask={setNewTask} />
 			<BindEditor newTask={newTask} setNewTask={setNewTask} />
 			<EveryEditor newTask={newTask} setNewTask={setNewTask} />
+			<ConditionEditor newTask={newTask} setNewTask={setNewTask} />
 
 			<>{children}</>
 

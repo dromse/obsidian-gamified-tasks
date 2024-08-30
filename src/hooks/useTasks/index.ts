@@ -7,6 +7,7 @@ import {
 	byStatus,
 	byTag,
 	byToday,
+	filterBySuccessCondition,
 } from "@utils/filter";
 import { parseMiddlewares, stringifyMiddlewares } from "@utils/middleware";
 import { operateYAMLBinding, parseTasks } from "@utils/task";
@@ -47,6 +48,7 @@ export default function useTasks(): UseTasksResult {
 	const [limit, setLimit] = useState(0);
 	const [statusFilter, setStatusFilter] = useState<StatusFilterOption>("all");
 	const [isRecur, setIsRecur] = useState(false);
+	const [shouldShowByCondition, setShouldShowByCondition] = useState(false);
 	const [searchFilter, setSearchFilter] = useState("");
 	const [tagFilter, setTagFilter] = useState("");
 	const [hasOnlyThisTags, setHasOnlyThisTags] = useState(false);
@@ -71,6 +73,8 @@ export default function useTasks(): UseTasksResult {
 		setNoteFilter,
 		isFromCurrentNote,
 		setIsFromCurrentNote,
+		shouldShowByCondition,
+		setShouldShowByCondition,
 	};
 
 	const app = useApp();
@@ -190,60 +194,27 @@ export default function useTasks(): UseTasksResult {
 			GamifiedTasksConstants.sessionTasks,
 		);
 
-		/**
-		 * Skips recurring tasks, filter tasks with condition by success condition.
-		 */
-		const filterBySuccessCondition = async (
-			allRecurringTasks: Array<Task>,
-		): Promise<Array<Task>> => {
-			// Ignore caching of module by browser.
-			const timestamp = new Date().getTime();
-
-			const tasksToShow = await allRecurringTasks.reduce<Promise<Array<Task>>>(
-				async (promiseAcc, task) => {
-					const acc = await promiseAcc;
-
-					if (task.condition) {
-						const pathToModule =
-							vault.adapter.getResourcePath(task.condition.name + ".js") +
-							`?t=${timestamp}`;
-
-						const result = await (
-							await import(pathToModule)
-						).default(task.condition.arg);
-
-						if (result) {
-							acc.push(task);
-						}
-
-						return acc;
-					}
-
-					acc.push(task);
-
-					return acc;
-				},
-				Promise.resolve([]),
-			);
-
-			return tasksToShow;
-		};
-
 		if (tasksJSON) {
-			const tasks: Array<Task> = JSON.parse(tasksJSON);
+			const tasksInVanilla: Array<Task> = JSON.parse(tasksJSON);
 
 			if (isRecur) {
-				const allRecurringTasks = tasks.filter(byRecurrance);
+				const allRecurringTasks = tasksInVanilla.filter(byRecurrance);
 
 				const todayTasks = getTodayTasks(allRecurringTasks);
 
-				filterBySuccessCondition(todayTasks).then((tasksToShow) => {
-					const filteredList = filterTaskList(tasksToShow);
+				const filteredList = filterTaskList(todayTasks);
 
-					setTasks(filteredList);
-				});
+				setTasks(filteredList);
+			} else if (shouldShowByCondition) {
+				filterBySuccessCondition(tasksInVanilla).then(
+					(tasksBySuccessCondition) => {
+						const filteredTasks = filterTaskList(tasksBySuccessCondition);
+
+						setTasks(filteredTasks);
+					},
+				);
 			} else {
-				const filteredList = filterTaskList(tasks);
+				const filteredList = filterTaskList(tasksInVanilla);
 
 				setTasks(filteredList);
 			}
@@ -265,6 +236,7 @@ export default function useTasks(): UseTasksResult {
 		hasOnlyThisTags,
 		noteFilter,
 		isFromCurrentNote,
+		shouldShowByCondition,
 		activeFile,
 		shouldUpdateUI,
 	]);

@@ -19,7 +19,7 @@ const parse = (
 	const newBody = cleanBody(regex, task);
 
 	const conditionName = match[1];
-	const pathToFile = conditionName + ".js";
+	const pathToFile = settings.pathToConditions + conditionName + ".js";
 	const resourcePath = app.vault.adapter.getResourcePath(pathToFile);
 
 	const condition = {
@@ -35,7 +35,7 @@ const stringify = (task: Task, settings: GamifiedTasksSettings): string => {
 	let ifTag = "";
 
 	if (task.condition) {
-		ifTag = ` #if/${task.condition.name}`;
+		ifTag = ` #if/${task.condition.name}${task.condition.arg ? "/" + task.condition.arg : ""}`;
 	}
 
 	return ifTag;

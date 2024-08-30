@@ -1,7 +1,6 @@
 import {
 	LimitFilter,
 	NoteFilter,
-	RecurFilter,
 	SearchFilter,
 	StatusFilter,
 	TagFilter
@@ -9,8 +8,9 @@ import {
 import { useApp, useSettings } from "@hooks";
 import { UpdateTaskFunctionType } from "@hooks/useTasks";
 import { Task, TaskFilters } from "@hooks/useTasks/types";
+import { TaskFilterOptionsType } from "@types";
 import { singularOrPlural } from "@utils/string";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./styles.module.css";
 import { TaskEditor } from "./TaskEditor";
 import TaskItem from "./TaskItem";
@@ -47,6 +47,13 @@ export default function TaskList(props: Props): React.JSX.Element {
 		useState<TaskSaveLocation>("default-file");
 	const newTaskTemplate = generateNewTask();
 
+	if (!settings) {
+		return <>Settings is not defined.</>;
+	}
+
+	const [taskFilterChoice, setTaskFilterChoice] =
+		React.useState<TaskFilterOptionsType>(settings.filterTasksOnOpen);
+
 	const app = useApp();
 
 	if (!app) {
@@ -72,6 +79,8 @@ export default function TaskList(props: Props): React.JSX.Element {
 		setNoteFilter,
 		isFromCurrentNote,
 		setIsFromCurrentNote,
+		shouldShowByCondition,
+		setShouldShowByCondition,
 	} = filters;
 
 	const [isMoreFiltersOpen, setIsMoreFiltersOpen] = useState(
@@ -100,11 +109,41 @@ export default function TaskList(props: Props): React.JSX.Element {
 		}
 	};
 
-	const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+	const handleTaskSaveLocationRadioChange = (
+		e: React.ChangeEvent<HTMLInputElement>,
+	): void => {
 		const value = e.currentTarget.value;
 
 		setTaskSaveLocation(value as TaskSaveLocation);
 	};
+
+	const radioFilter: Array<{
+		setIsValue: Function;
+		isValue: boolean;
+		label: string;
+		option: TaskFilterOptionsType;
+	}> = [
+			{
+				label: "Filter by recurring",
+				setIsValue: setIsRecur,
+				isValue: isRecur,
+				option: "recurring",
+			},
+			{
+				label: "Filter by condition",
+				setIsValue: setShouldShowByCondition,
+				isValue: shouldShowByCondition,
+				option: "condition",
+			},
+		];
+
+	useEffect(() => {
+		radioFilter.map((radio) =>
+			radio.option === taskFilterChoice
+				? radio.setIsValue(true)
+				: radio.setIsValue(false),
+		);
+	}, [taskFilterChoice]);
 
 	return (
 		<div>
@@ -117,7 +156,26 @@ export default function TaskList(props: Props): React.JSX.Element {
 					currentStatusFilter={statusFilter}
 					setCurrentStatusFilter={setStatusFilter}
 				/>
-				<RecurFilter isRecur={isRecur} setIsRecur={setIsRecur} />
+
+				{radioFilter.map((radio) => (
+					<div className="checkbox" key={radio.label}>
+						<input
+							type="checkbox"
+							name={radio.label}
+							id={radio.label}
+							checked={radio.option === taskFilterChoice}
+							onChange={() => {
+								setTaskFilterChoice(radio.option);
+
+								if (radio.isValue) {
+									setTaskFilterChoice("all");
+								}
+							}}
+						/>
+
+						<label htmlFor={radio.label}>{radio.label}</label>
+					</div>
+				))}
 
 				<div className="checkbox">
 					<input
@@ -171,7 +229,7 @@ export default function TaskList(props: Props): React.JSX.Element {
 							<div className="todo" key={radio.option}>
 								<input
 									type="checkbox"
-									onChange={handleRadioChange}
+									onChange={handleTaskSaveLocationRadioChange}
 									checked={radio.option === taskSaveLocation}
 									name="path"
 									value={radio.option}

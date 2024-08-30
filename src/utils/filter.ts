@@ -2,6 +2,7 @@ import { HistoryRow } from "@hooks/useHistory";
 import { Task } from "@hooks/useTasks/types";
 import { Workspace } from "obsidian";
 import { generatePastDaysArray, getAmountOfPastDays } from "./date";
+import { executeCondition } from "./task";
 
 /**
  * Use currying to set search filter and return callback to call in filter
@@ -125,4 +126,32 @@ export const byToday =
 		};
 
 export const byRecurrance = (task: Task): boolean =>
-	task.every || task.condition ? true : false;
+	task.every ? true : false;
+
+/**
+ * Filter tasks with condition by success condition.
+ */
+export const filterBySuccessCondition = async (
+	tasks: Array<Task>,
+): Promise<Array<Task>> => {
+	const tasksToShow = await tasks.reduce<Promise<Array<Task>>>(
+		async (promiseAcc, task) => {
+			const acc = await promiseAcc;
+
+			if (task.condition) {
+				const shouldShow = await executeCondition(task);
+
+				if (shouldShow) {
+					acc.push(task);
+				}
+
+				return acc;
+			}
+
+			return acc;
+		},
+		Promise.resolve([]),
+	);
+
+	return tasksToShow;
+};

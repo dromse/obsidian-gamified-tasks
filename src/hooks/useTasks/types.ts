@@ -81,6 +81,16 @@ export type TaskFilters = {
 	 * Toggle setting to show tasks from the current note.
 	 */
 	setIsFromCurrentNote: Function;
+
+	/**
+	 * Show tasks by success conditions.
+	 */
+	shouldShowByCondition: boolean;
+
+	/**
+	 * Toggle setting to show tasks by success conditions.
+	 */
+	setShouldShowByCondition: Function;
 };
 
 /**

@@ -11,13 +11,15 @@ const DefaultDifficulties = [
 	{ name: "hard", price: 5 },
 ];
 
+export const TaskFilterOptions = ["all", "condition", "recurring"] as const;
+
 export const DEFAULT_SETTINGS: GamifiedTasksSettings = {
 	limit: 10,
 	statusFilter: "all",
 	isRecurTasks: false,
 	pathToRewards: "rewards.md",
 	pathToHistory: "history.md",
-	pathToConditions: "Conditions",
+	pathToConditions: "Conditions/",
 	pathToDaily: "",
 	dailyFormat: "YYYY-MM-DD",
 	useMarkdownLinks: true,
@@ -29,7 +31,9 @@ export const DEFAULT_SETTINGS: GamifiedTasksSettings = {
 	shouldShowAllFilters: false,
 	isCompletedAtEnabled: true,
 	difficulties: DefaultDifficulties,
+	shouldShowByCondition: false,
 	pathToSaveNewTask: "tasks.md",
+	filterTasksOnOpen: "all",
 };
 
 export const DAY_FORMAT = "YYYY-MM-DD" as const;
