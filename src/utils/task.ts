@@ -245,7 +245,10 @@ export async function operateYAMLBinding(
 			yamlProperty += `${Number(yamlPropertyValue) + change}`;
 		}
 	} else {
-		yamlProperty += task.status === "done" ? "1" : "";
+		yamlProperty +=
+			task.status === "done"
+				? String(Number(yamlPropertyValue) + 1)
+				: String(Number(yamlPropertyValue) - 1);
 	}
 
 	if (todayTFile) {
