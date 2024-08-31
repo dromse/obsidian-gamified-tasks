@@ -5,6 +5,7 @@ import { Status, Task } from "@hooks/useTasks/types";
 import { GamifiedTasksSettings } from "@types";
 import { App, moment, Notice, Vault } from "obsidian";
 import { isOutOfScope } from "./check";
+import { logger } from "./logger";
 import { coins } from "./string";
 
 /** Parse all occurance of task line in `file` content and then returns task list */
@@ -266,11 +267,20 @@ export const executeCondition = async (task: Task): Promise<boolean> => {
 
 		const pathToModule = task.condition.file + `?t=${timestamp}`;
 
-		const result = await (
-			await import(pathToModule)
-		).default(task.condition.arg);
+		try {
+			const result = await (
+				await import(pathToModule)
+			).default(task.condition.arg);
 
-		return result;
+			return result;
+		} catch (err) {
+			const msg = "Error while execute script: " + task.condition.name + ".js";
+			new Notice(msg);
+
+			logger(msg + "\n" + err);
+
+			return false;
+		}
 	}
 
 	return false;
