@@ -1,16 +1,15 @@
 import React from "react";
 
-import { StatusKeys } from "@hooks/useTasks/consts";
-import { StatusFilterOption } from "@hooks/useTasks/types";
+import { StatusKeys } from "@hooks/useWatchTasks/consts";
+import { FilterState, StatusFilterOption } from "@hooks/useWatchTasks/types";
 import styles from "./styles.module.css";
 
 type Props = {
-	currentStatusFilter: StatusFilterOption;
-	setCurrentStatusFilter: Function;
+	status: FilterState<StatusFilterOption>;
 };
 
 export default function StatusFilter(props: Props): React.JSX.Element {
-	const { currentStatusFilter, setCurrentStatusFilter } = props;
+	const { status } = props;
 
 	return (
 		<div className="flex-items-center">
@@ -18,9 +17,9 @@ export default function StatusFilter(props: Props): React.JSX.Element {
 				name="status"
 				id="status"
 				className={styles.taskStatus}
-				value={currentStatusFilter}
+				value={status.value}
 				onChange={(e) =>
-					setCurrentStatusFilter(e.currentTarget.value as StatusFilterOption)
+					status.setValue(e.currentTarget.value as StatusFilterOption)
 				}
 			>
 				<option value="all">all</option>

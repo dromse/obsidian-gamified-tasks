@@ -1,13 +1,13 @@
 import Input from "@components/reusable/Input";
+import { FilterState } from "@hooks/useWatchTasks/types";
 import React from "react";
 
 type Props = {
-	searchFilter: string;
-	setSearchFilter: Function;
+	search: FilterState<string>;
 };
 
 export default function SearchFilter(props: Props): React.JSX.Element {
-	const { searchFilter, setSearchFilter } = props;
+	const { search } = props;
 
 	return (
 		<Input
@@ -15,8 +15,8 @@ export default function SearchFilter(props: Props): React.JSX.Element {
 			name="search"
 			id="search"
 			placeholder="Search tasks"
-			value={searchFilter}
-			onChange={(e) => setSearchFilter(e.currentTarget.value)}
+			value={search.value}
+			onChange={(e) => search.setValue(e.currentTarget.value)}
 		/>
 	);
 }

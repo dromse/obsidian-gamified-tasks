@@ -6,6 +6,11 @@ import { App } from "obsidian";
  */
 export type StatusFilterOption = "all" | Status;
 
+export type FilterState<T> = {
+	value: T;
+	setValue: React.Dispatch<React.SetStateAction<T>>;
+};
+
 /**
  * Represents the filters for tasks.
  */
@@ -13,84 +18,47 @@ export type TaskFilters = {
 	/**
 	 * The limit of tasks to display.
 	 */
-	limit: number;
-	/**
-	 * A function to set the limit of tasks to display.
-	 */
-	setLimit: Function;
+	limit: FilterState<number | undefined>;
 
 	/**
 	 * The search filter for tasks.
 	 */
-	searchFilter: string;
-	/**
-	 * A function to set the search filter for tasks.
-	 */
-	setSearchFilter: Function;
+	search: FilterState<string>;
 
 	/**
 	 * The status filter option for tasks.
 	 */
-	statusFilter: StatusFilterOption;
-	/**
-	 * A function to set the status filter option for tasks.
-	 */
-	setStatusFilter: Function;
+	status: FilterState<StatusFilterOption>;
 
 	/**
 	 * Indicates whether tasks are recurring.
 	 */
-	isRecur: boolean;
-	/**
-	 * A function to set whether tasks are recurring.
-	 */
-	setIsRecur: Function;
+	recur: FilterState<boolean>;
 
 	/**
 	 *  List of tags to filter tasks.
 	 */
-	tagFilter: string;
-	/**
-	 * A function to set filtering by specific tag.
-	 */
-	setTagFilter: Function;
+	tags: FilterState<string>;
 
 	/**
 	 *  Specify only show tasks with this tags or all tasks with matched tags
 	 */
-	hasOnlyThisTags: boolean;
-	/**
-	 * A function to set whether to only show tags with these tags.
-	 */
-	setHasOnlyThisTags: Function;
+	onlyThisTags: FilterState<boolean>;
 
 	/**
 	 * Show tasks from this note.
 	 */
-	noteFilter: string;
-	/**
-	 * A function to show tasks from specific note.
-	 */
-	setNoteFilter: Function;
+	note: FilterState<string>;
 
 	/**
 	 * Show tasks from the current note.
 	 */
-	isFromCurrentNote: boolean;
-	/**
-	 * Toggle setting to show tasks from the current note.
-	 */
-	setIsFromCurrentNote: Function;
+	currentNote: FilterState<boolean>;
 
 	/**
 	 * Show tasks by success conditions.
 	 */
-	shouldShowByCondition: boolean;
-
-	/**
-	 * Toggle setting to show tasks by success conditions.
-	 */
-	setShouldShowByCondition: Function;
+	condition: FilterState<boolean>;
 };
 
 /**

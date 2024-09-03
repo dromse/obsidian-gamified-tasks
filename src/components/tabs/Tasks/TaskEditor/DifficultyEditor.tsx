@@ -1,5 +1,5 @@
 import { useSettings } from "@hooks";
-import { Task } from "@hooks/useTasks/types";
+import { Task } from "@hooks/useWatchTasks/types";
 import React from "react";
 
 const DifficultyEditor = ({

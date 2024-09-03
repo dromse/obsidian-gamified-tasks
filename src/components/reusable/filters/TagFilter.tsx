@@ -1,16 +1,14 @@
 import Input from "@components/reusable/Input";
+import { FilterState } from "@hooks/useWatchTasks/types";
 import React from "react";
 
 type Props = {
-	tagFilter: string | undefined;
-	setTagFilter: Function;
-	hasOnlyThisTags: boolean;
-	setHasOnlyThisTags: Function;
+	tags: FilterState<string | undefined>;
+	onlyThisTags: FilterState<boolean>;
 };
 
 export default function TagFilter(props: Props): React.JSX.Element {
-	const { tagFilter, setTagFilter, hasOnlyThisTags, setHasOnlyThisTags } =
-		props;
+	const { tags, onlyThisTags } = props;
 
 	return (
 		<div className="flex-column">
@@ -22,8 +20,8 @@ export default function TagFilter(props: Props): React.JSX.Element {
 					name="tags"
 					id="tags"
 					placeholder="sport, code..."
-					value={tagFilter ? tagFilter : ""}
-					onChange={(e) => setTagFilter(e.currentTarget.value)}
+					value={tags.value ? tags.value : ""}
+					onChange={(e) => tags.setValue(e.currentTarget.value)}
 				/>
 			</div>
 
@@ -32,8 +30,8 @@ export default function TagFilter(props: Props): React.JSX.Element {
 					type="checkbox"
 					name="onlyTags"
 					id="onlyTags"
-					checked={hasOnlyThisTags}
-					onChange={() => setHasOnlyThisTags(!hasOnlyThisTags)}
+					checked={onlyThisTags.value}
+					onChange={() => onlyThisTags.setValue(!onlyThisTags)}
 				/>
 
 				<label htmlFor="onlyTags">Show only with these tags</label>

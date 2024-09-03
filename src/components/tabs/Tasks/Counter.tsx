@@ -1,5 +1,6 @@
 import { useSettings } from "@hooks";
-import { Task } from "@hooks/useTasks/types";
+import useEditTasks from "@hooks/useEditTasks";
+import { Task } from "@hooks/useWatchTasks/types";
 import { logger, loggerMsg } from "@utils/logger";
 import { updateCounter } from "@utils/task";
 import { Notice } from "obsidian";
@@ -9,12 +10,12 @@ import styles from "./styles.module.css";
 
 type CounterProps = {
 	task: Task;
-	updateTask: (task: Task, newTask: Task) => unknown;
 	addHistoryRow: Function;
 };
 
 export default function Counter(props: CounterProps): React.JSX.Element {
-	const { task, updateTask, addHistoryRow } = props;
+	const { task, addHistoryRow } = props;
+	const { updateTask } = useEditTasks();
 	const settings = useSettings();
 
 	if (!settings) {

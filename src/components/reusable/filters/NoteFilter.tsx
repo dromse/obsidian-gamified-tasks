@@ -1,26 +1,20 @@
 import Input from "@components/reusable/Input";
+import { FilterState } from "@hooks/useWatchTasks/types";
 import React, { useState } from "react";
 import styles from "./styles.module.css";
 
 type Props = {
-	noteFilter: string | undefined;
-	setNoteFilter: Function;
-	isFromCurrentNote: boolean;
-	setIsFromCurrentNote: Function;
+	note: FilterState<string | undefined>;
+	currentNote: FilterState<boolean>;
 };
 
 export default function TagFilter(props: Props): React.JSX.Element {
-	const {
-		noteFilter,
-		setNoteFilter,
-		isFromCurrentNote,
-		setIsFromCurrentNote,
-	} = props;
+	const { note, currentNote } = props;
 
-	const [inputValue, setInputValue] = useState(noteFilter);
+	const [inputValue, setInputValue] = useState(note.value);
 
 	const handleClick = (): void => {
-		setNoteFilter(inputValue);
+		note.setValue(inputValue);
 	};
 
 	return (
@@ -36,7 +30,7 @@ export default function TagFilter(props: Props): React.JSX.Element {
 					placeholder="path/to/note"
 					value={inputValue ? inputValue : ""}
 					onChange={(e) => setInputValue(e.currentTarget.value.trim())}
-					disabled={isFromCurrentNote}
+					disabled={currentNote.value}
 				/>
 
 				<button onClick={handleClick}>Apply</button>
@@ -47,8 +41,8 @@ export default function TagFilter(props: Props): React.JSX.Element {
 					type="checkbox"
 					name="currentNote"
 					id="currentNote"
-					checked={isFromCurrentNote}
-					onChange={() => setIsFromCurrentNote(!isFromCurrentNote)}
+					checked={currentNote.value}
+					onChange={() => currentNote.setValue(!currentNote)}
 				/>
 
 				<label htmlFor="currentNote">Show tasks from current note</label>

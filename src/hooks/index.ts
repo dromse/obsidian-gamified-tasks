@@ -1,10 +1,11 @@
 import { GamifiedTasksSettings } from "@types";
 import { App } from "obsidian";
 import { useContext } from "react";
-import { AppContext, SettingsContext } from "../context";
+import { AppContext, FiltersContext, SettingsContext } from "../context";
 import { default as useHistory } from "./useHistory";
 import { default as useRewards } from "./useRewards";
-import { default as useTasks } from "./useTasks";
+import { default as useTasks } from "./useWatchTasks";
+import { TaskFilters } from "./useWatchTasks/types";
 
 /** Access `app` from different components through `useContext` */
 export const useApp = (): App | undefined => {
@@ -14,6 +15,10 @@ export const useApp = (): App | undefined => {
 /** Access `settings` from different components through `useContext` */
 export const useSettings = (): GamifiedTasksSettings | undefined => {
 	return useContext(SettingsContext);
+};
+
+export const useFilters = (): TaskFilters | undefined => {
+	return useContext(FiltersContext);
 };
 
 export { useRewards, useTasks, useHistory };

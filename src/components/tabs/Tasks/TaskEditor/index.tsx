@@ -1,4 +1,4 @@
-import { Task } from "@hooks/useTasks/types";
+import { Task } from "@hooks/useWatchTasks/types";
 import { Notice } from "obsidian";
 import React from "react";
 import { Dialog, DialogProps } from "../Dialog";

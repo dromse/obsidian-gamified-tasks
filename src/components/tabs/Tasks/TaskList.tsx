@@ -5,9 +5,9 @@ import {
 	StatusFilter,
 	TagFilter
 } from "@components/reusable/filters";
-import { useApp, useSettings } from "@hooks";
-import { UpdateTaskFunctionType } from "@hooks/useTasks";
-import { Task, TaskFilters } from "@hooks/useTasks/types";
+import { useApp, useFilters, useSettings } from "@hooks";
+import useEditTasks from "@hooks/useEditTasks";
+import { FilterState, Task } from "@hooks/useWatchTasks/types";
 import { TaskFilterOptionsType } from "@types";
 import { singularOrPlural } from "@utils/string";
 import React, { useEffect, useState } from "react";
@@ -17,9 +17,6 @@ import TaskItem from "./TaskItem";
 
 type Props = {
 	tasks: Array<Task>;
-	updateTask: UpdateTaskFunctionType;
-	filters: TaskFilters;
-	addTask: (task: Task) => void;
 };
 
 const generateNewTask = (): Task => ({
@@ -40,49 +37,32 @@ const saveToFileRadios: Array<{ option: TaskSaveLocation; label: string }> = [
 ];
 
 export default function TaskList(props: Props): React.JSX.Element {
-	const { tasks, updateTask, filters, addTask } = props;
-	const settings = useSettings();
+	const { addTask } = useEditTasks();
+	const { tasks } = props;
 	const [isTaskBuilderOpen, setIsTaskBuilderOpen] = useState(false);
 	const [taskSaveLocation, setTaskSaveLocation] =
 		useState<TaskSaveLocation>("default-file");
 	const newTaskTemplate = generateNewTask();
 
-	if (!settings) {
-		return <>Settings is not defined.</>;
+	const filters = useFilters();
+	if (!filters) {
+		return <div>Filters is not defined.</div>;
 	}
 
-	const [taskFilterChoice, setTaskFilterChoice] =
-		React.useState<TaskFilterOptionsType>(settings.filterTasksOnOpen);
+	const settings = useSettings();
+	if (!settings) {
+		return <div>Settings is not defined.</div>;
+	}
 
 	const app = useApp();
-
 	if (!app) {
 		return <div>App is not defined.</div>;
 	}
 
 	const { workspace } = app;
 
-	const {
-		limit,
-		setLimit,
-		searchFilter,
-		setSearchFilter,
-		statusFilter,
-		setStatusFilter,
-		isRecur,
-		setIsRecur,
-		tagFilter,
-		setTagFilter,
-		hasOnlyThisTags,
-		setHasOnlyThisTags,
-		noteFilter,
-		setNoteFilter,
-		isFromCurrentNote,
-		setIsFromCurrentNote,
-		shouldShowByCondition,
-		setShouldShowByCondition,
-	} = filters;
-
+	const [taskFilterChoice, setTaskFilterChoice] =
+		React.useState<TaskFilterOptionsType>(settings.filterTasksOnOpen);
 	const [isMoreFiltersOpen, setIsMoreFiltersOpen] = useState(
 		settings?.shouldShowAllFilters,
 	);
@@ -118,21 +98,18 @@ export default function TaskList(props: Props): React.JSX.Element {
 	};
 
 	const radioFilter: Array<{
-		setIsValue: Function;
-		isValue: boolean;
+		filter: FilterState<boolean>;
 		label: string;
 		option: TaskFilterOptionsType;
 	}> = [
 			{
 				label: "Filter by recurring",
-				setIsValue: setIsRecur,
-				isValue: isRecur,
+				filter: filters.recur,
 				option: "recurring",
 			},
 			{
 				label: "Filter by condition",
-				setIsValue: setShouldShowByCondition,
-				isValue: shouldShowByCondition,
+				filter: filters.condition,
 				option: "condition",
 			},
 		];
@@ -140,22 +117,16 @@ export default function TaskList(props: Props): React.JSX.Element {
 	useEffect(() => {
 		radioFilter.map((radio) =>
 			radio.option === taskFilterChoice
-				? radio.setIsValue(true)
-				: radio.setIsValue(false),
+				? radio.filter.setValue(true)
+				: radio.filter.setValue(false),
 		);
 	}, [taskFilterChoice]);
 
 	return (
 		<div>
 			<div className={`${styles.filters} flex-column border`}>
-				<SearchFilter
-					searchFilter={searchFilter}
-					setSearchFilter={setSearchFilter}
-				/>
-				<StatusFilter
-					currentStatusFilter={statusFilter}
-					setCurrentStatusFilter={setStatusFilter}
-				/>
+				<SearchFilter search={filters.search} />
+				<StatusFilter status={filters.status} />
 
 				{radioFilter.map((radio) => (
 					<div className="checkbox" key={radio.label}>
@@ -167,7 +138,7 @@ export default function TaskList(props: Props): React.JSX.Element {
 							onChange={() => {
 								setTaskFilterChoice(radio.option);
 
-								if (radio.isValue) {
+								if (radio.filter.value) {
 									setTaskFilterChoice("all");
 								}
 							}}
@@ -192,20 +163,16 @@ export default function TaskList(props: Props): React.JSX.Element {
 					<>
 						<hr />
 
-						<LimitFilter limit={limit} setLimit={setLimit} />
+						<LimitFilter limit={filters.limit} />
 
 						<TagFilter
-							tagFilter={tagFilter}
-							setTagFilter={setTagFilter}
-							hasOnlyThisTags={hasOnlyThisTags}
-							setHasOnlyThisTags={setHasOnlyThisTags}
+							tags={filters.tags}
+							onlyThisTags={filters.onlyThisTags}
 						/>
 
 						<NoteFilter
-							noteFilter={noteFilter}
-							setNoteFilter={setNoteFilter}
-							isFromCurrentNote={isFromCurrentNote}
-							setIsFromCurrentNote={setIsFromCurrentNote}
+							note={filters.note}
+							currentNote={filters.currentNote}
 						/>
 					</>
 				)}
@@ -245,11 +212,7 @@ export default function TaskList(props: Props): React.JSX.Element {
 			<ul className="list flex-column contains-task-list">
 				{tasks.length > 0 ? (
 					tasks.map((task) => (
-						<TaskItem
-							key={`${task.lineNumber}${task.path}`}
-							task={task}
-							updateTask={updateTask}
-						/>
+						<TaskItem key={`${task.lineNumber}${task.path}`} task={task} />
 					))
 				) : (
 					<p>Empty list.</p>

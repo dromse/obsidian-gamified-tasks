@@ -1,5 +1,5 @@
 import { TaskFilterOptions } from "@consts";
-import { StatusFilterOption } from "@hooks/useTasks/types";
+import { StatusFilterOption } from "@hooks/useWatchTasks/types";
 
 export type TaskFilterOptionsType = (typeof TaskFilterOptions)[number];
 

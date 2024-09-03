@@ -1,5 +1,5 @@
 import { HistoryRow } from "@hooks/useHistory";
-import { Task } from "@hooks/useTasks/types";
+import { Task } from "@hooks/useWatchTasks/types";
 import { Workspace } from "obsidian";
 import { generatePastDaysArray, getAmountOfPastDays } from "./date";
 import { executeCondition } from "./task";

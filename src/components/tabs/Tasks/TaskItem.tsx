@@ -1,29 +1,29 @@
 import { useApp, useHistory, useSettings } from "@hooks";
-import { StatusKeys, StatusMarkdown } from "@hooks/useTasks/consts";
-import { Status, Task } from "@hooks/useTasks/types";
+import { StatusKeys, StatusMarkdown } from "@hooks/useWatchTasks/consts";
+import { Status, Task } from "@hooks/useWatchTasks/types";
 import { revealTask } from "@utils/editor";
 import { extractTitlesFromLinks } from "@utils/string";
 import {
 	getStatusOptionsWithHandlers,
 	handleResetCounter,
 	handleUpdateCheckbox,
-	UpdateTaskPayloadProps,
+	UpdateTaskPayloadProps
 } from "@utils/task";
 import React from "react";
 import Counter from "./Counter";
 import { Menu, MenuOption } from "./Menu";
 import { TaskEditor } from "./TaskEditor";
 
+import useEditTasks from "@hooks/useEditTasks";
 import styles from "./styles.module.css";
-import { UpdateTaskFunctionType } from "@hooks/useTasks";
 
 type Props = {
 	task: Task;
-	updateTask: UpdateTaskFunctionType;
 };
 
 export default function TaskItem(props: Props): React.JSX.Element {
-	const { task, updateTask } = props;
+	const { task } = props;
+	const { updateTask } = useEditTasks();
 	const app = useApp();
 	const { addHistoryRow } = useHistory();
 	const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -104,7 +104,6 @@ export default function TaskItem(props: Props): React.JSX.Element {
 			{task.counter && (
 				<Counter
 					task={task}
-					updateTask={updateTask}
 					addHistoryRow={addHistoryRow}
 				/>
 			)}

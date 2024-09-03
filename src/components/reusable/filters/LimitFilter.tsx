@@ -1,13 +1,13 @@
 import Input from "@components/reusable/Input";
+import { FilterState } from "@hooks/useWatchTasks/types";
 import React from "react";
 
 type Props = {
-	limit: number | undefined;
-	setLimit: Function;
+	limit: FilterState<number | undefined>;
 };
 
 export default function LimitFilter(props: Props): React.JSX.Element {
-	const { limit, setLimit } = props;
+	const { limit } = props;
 
 	return (
 		<div className="flex-items-center">
@@ -18,9 +18,9 @@ export default function LimitFilter(props: Props): React.JSX.Element {
 				name="limit"
 				id="limit"
 				placeholder="number tasks to show"
-				value={limit ? limit : ""}
+				value={limit.value ? limit.value : ""}
 				onChange={(e) =>
-					setLimit(
+					limit.setValue(
 						e.currentTarget.value ? Number(e.currentTarget.value) : undefined,
 					)
 				}
