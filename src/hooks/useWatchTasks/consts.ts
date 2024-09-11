@@ -1,14 +1,12 @@
 import {
 	bind,
 	body,
-	completedAt,
-	counter,
+	completedAt, condition, counter,
 	difficulty,
 	every,
 	indention,
 	status
-} from "./middleware";
-import condition from "./middleware/condition";
+} from "@core/middleware";
 import { Middleware, Status } from "./types";
 
 /**

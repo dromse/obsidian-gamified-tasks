@@ -1,5 +1,5 @@
-import { StatusKeys, StatusMarkdown } from "../consts";
-import { Middleware, Status, Task } from "../types";
+import { StatusKeys, StatusMarkdown } from "../../hooks/useWatchTasks/consts";
+import { Middleware, Status, Task } from "../../hooks/useWatchTasks/types";
 import { cleanBody, findByRegex } from "@utils/middleware";
 
 const parse = (task: Task): Task => {

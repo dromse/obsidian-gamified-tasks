@@ -6,6 +6,7 @@ import { default as indention } from "./indention";
 import { default as every } from "./every";
 import { default as status } from "./status";
 import { default as bind } from "./bind";
+import { default as condition } from "./condition";
 
 export {
 	body,
@@ -16,4 +17,5 @@ export {
 	indention,
 	status,
 	bind,
+	condition
 };

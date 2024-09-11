@@ -1,8 +1,8 @@
-import { Middleware, Task } from "../types";
+import { Middleware, Task } from "../../hooks/useWatchTasks/types";
 import { cleanBody, findByRegex } from "@utils/middleware";
 
 const parse = (task: Task): Task => {
-	const regex = /^\s*/;
+	const regex = /#every\/(\w+)/;
 
 	const match = findByRegex(regex, task);
 
@@ -12,10 +12,10 @@ const parse = (task: Task): Task => {
 
 	const newBody = cleanBody(regex, task);
 
-	return { ...task, indention: match ? match[0].length : 0, body: newBody };
+	return { ...task, every: match[1], body: newBody };
 };
 
 const stringify = (task: Task): string =>
-	task.indention ? " ".repeat(task.indention) : "";
+	task.every ? ` #every/${task.every}` : "";
 
 export default { parse, stringify } as Middleware;

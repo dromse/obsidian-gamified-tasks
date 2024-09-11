@@ -1,8 +1,8 @@
+import { Middleware, Task } from "../../hooks/useWatchTasks/types";
 import { cleanBody, findByRegex } from "@utils/middleware";
-import { Middleware, Task } from "../types";
 
 const parse = (task: Task): Task => {
-	const regex = /#count\/(\d+)\/?(\d+)?/;
+	const regex = /^\s*/;
 
 	const match = findByRegex(regex, task);
 
@@ -12,19 +12,10 @@ const parse = (task: Task): Task => {
 
 	const newBody = cleanBody(regex, task);
 
-	return {
-		...task,
-		counter: {
-			current: Number(match[1]),
-			goal: Number(match[2]),
-		},
-		body: newBody,
-	};
+	return { ...task, indention: match ? match[0].length : 0, body: newBody };
 };
 
 const stringify = (task: Task): string =>
-	task.counter
-		? ` #count/${task.counter.current}${task.counter.goal ? "/" + task.counter.goal : ""}`
-		: "";
+	task.indention ? " ".repeat(task.indention) : "";
 
 export default { parse, stringify } as Middleware;

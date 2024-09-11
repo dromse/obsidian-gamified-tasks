@@ -1,7 +1,7 @@
 import { GamifiedTasksSettings } from "@types";
 import { cleanBody, findByRegex } from "@utils/middleware";
 import { App } from "obsidian";
-import { Middleware, Task } from "../types";
+import { Middleware, Task } from "../../hooks/useWatchTasks/types";
 
 const parse = (
 	task: Task,
