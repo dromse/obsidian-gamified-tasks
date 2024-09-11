@@ -53,12 +53,12 @@ export type TaskFilters = {
 	/**
 	 * Show tasks from the current note.
 	 */
-	currentNote: FilterState<boolean>;
+	shouldShowCurrentNoteTasks: FilterState<boolean>;
 
 	/**
 	 * Show tasks by success conditions.
 	 */
-	condition: FilterState<boolean>;
+	showByCondition: FilterState<boolean>;
 };
 
 /**

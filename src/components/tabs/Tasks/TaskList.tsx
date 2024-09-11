@@ -109,7 +109,7 @@ export default function TaskList(props: Props): React.JSX.Element {
 			},
 			{
 				label: "Filter by condition",
-				filter: filters.condition,
+				filter: filters.showByCondition,
 				option: "condition",
 			},
 		];
@@ -172,7 +172,7 @@ export default function TaskList(props: Props): React.JSX.Element {
 
 						<NoteFilter
 							note={filters.note}
-							currentNote={filters.currentNote}
+							shouldShowCurrentNoteTasks={filters.shouldShowCurrentNoteTasks}
 						/>
 					</>
 				)}

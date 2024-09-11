@@ -5,11 +5,12 @@ import styles from "./styles.module.css";
 
 type Props = {
 	note: FilterState<string | undefined>;
-	currentNote: FilterState<boolean>;
+	shouldShowCurrentNoteTasks: FilterState<boolean>;
 };
 
 export default function TagFilter(props: Props): React.JSX.Element {
-	const { note, currentNote } = props;
+	const { note, shouldShowCurrentNoteTasks: shouldShowCurrentNoteTasks } =
+		props;
 
 	const [inputValue, setInputValue] = useState(note.value);
 
@@ -30,7 +31,7 @@ export default function TagFilter(props: Props): React.JSX.Element {
 					placeholder="path/to/note"
 					value={inputValue ? inputValue : ""}
 					onChange={(e) => setInputValue(e.currentTarget.value.trim())}
-					disabled={currentNote.value}
+					disabled={shouldShowCurrentNoteTasks.value}
 				/>
 
 				<button onClick={handleClick}>Apply</button>
@@ -41,8 +42,8 @@ export default function TagFilter(props: Props): React.JSX.Element {
 					type="checkbox"
 					name="currentNote"
 					id="currentNote"
-					checked={currentNote.value}
-					onChange={() => currentNote.setValue(!currentNote)}
+					checked={shouldShowCurrentNoteTasks.value}
+					onChange={() => shouldShowCurrentNoteTasks.setValue((prev) => !prev)}
 				/>
 
 				<label htmlFor="currentNote">Show tasks from current note</label>

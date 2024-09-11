@@ -1,6 +1,4 @@
-import {
-	StatusFilterOption, TaskFilters
-} from "@hooks/useWatchTasks/types";
+import { StatusFilterOption, TaskFilters } from "@hooks/useWatchTasks/types";
 import React from "react";
 
 type UseFilterTasks = {
@@ -27,11 +25,11 @@ export default function useFilterTasks(): UseFilterTasks {
 		tags: { value: tagsFilter, setValue: setTagsFilter },
 		onlyThisTags: { value: hasOnlyThisTags, setValue: setHasOnlyThisTags },
 		note: { value: noteFilter, setValue: setNoteFilter },
-		currentNote: {
+		shouldShowCurrentNoteTasks: {
 			value: isFromCurrentNote,
 			setValue: setIsFromCurrentNote,
 		},
-		condition: {
+		showByCondition: {
 			value: shouldShowByCondition,
 			setValue: setShouldShowByCondition,
 		},

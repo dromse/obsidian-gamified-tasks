@@ -31,7 +31,7 @@ export default function TagFilter(props: Props): React.JSX.Element {
 					name="onlyTags"
 					id="onlyTags"
 					checked={onlyThisTags.value}
-					onChange={() => onlyThisTags.setValue(!onlyThisTags)}
+					onChange={() => onlyThisTags.setValue((prev) => !prev)}
 				/>
 
 				<label htmlFor="onlyTags">Show only with these tags</label>

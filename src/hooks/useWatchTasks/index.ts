@@ -90,7 +90,13 @@ export default function useWatchTasks(): UseTasksResult {
 
 	const filterTaskList = (taskList: ReadonlyArray<Task>): Array<Task> =>
 		taskList
-			.filter(byNote(filters.note.value, filters.currentNote.value, workspace))
+			.filter(
+				byNote(
+					filters.note.value,
+					filters.shouldShowCurrentNoteTasks.value,
+					workspace,
+				),
+			)
 			.filter(byStatus(filters.status.value))
 			.filter(byTag(filters.tags.value, filters.onlyThisTags.value))
 			.filter(bySearch(filters.search.value))
@@ -116,7 +122,7 @@ export default function useWatchTasks(): UseTasksResult {
 					const filteredList = filterTaskList(todayTasks);
 
 					setTasks(filteredList);
-				} else if (filters?.condition.value) {
+				} else if (filters?.showByCondition.value) {
 					filterBySuccessCondition(tasksInVanilla).then(
 						(tasksBySuccessCondition) => {
 							const filteredTasks = filterTaskList(tasksBySuccessCondition);
@@ -164,7 +170,7 @@ export default function useWatchTasks(): UseTasksResult {
 			{ setting: settings.noteFilter, filter: filters.note },
 			{
 				setting: settings.isFromCurrentNote,
-				filter: filters.currentNote,
+				filter: filters.shouldShowCurrentNoteTasks,
 			},
 		];
 
