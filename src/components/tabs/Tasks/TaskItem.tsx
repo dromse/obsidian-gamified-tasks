@@ -1,7 +1,7 @@
 import { useApp, useHistory, useSettings } from "@hooks";
 import { StatusKeys, StatusMarkdown } from "@hooks/useWatchTasks/consts";
 import { Status, Task } from "@hooks/useWatchTasks/types";
-import { revealTask } from "@utils/editor";
+import { revealLine } from "@utils/editor";
 import { extractTitlesFromLinks } from "@utils/string";
 import {
 	getStatusOptionsWithHandlers,
@@ -54,7 +54,12 @@ export default function TaskItem(props: Props): React.JSX.Element {
 	const options: Array<MenuOption> = [
 		{
 			title: "Reveal Task",
-			handler: () => revealTask({ task, workspace, vault }),
+			handler: () =>
+				revealLine({
+					location: { path: task.path, lineNumber: task.lineNumber },
+					workspace,
+					vault,
+				}),
 		},
 		{
 			title: "Change Status",
@@ -101,12 +106,7 @@ export default function TaskItem(props: Props): React.JSX.Element {
 				{extractTitlesFromLinks(task.body)}
 			</div>
 
-			{task.counter && (
-				<Counter
-					task={task}
-					addHistoryRow={addHistoryRow}
-				/>
-			)}
+			{task.counter && <Counter task={task} addHistoryRow={addHistoryRow} />}
 
 			<div className={styles.difficulty}>{task.difficulty}</div>
 

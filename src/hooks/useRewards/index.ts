@@ -7,6 +7,7 @@ export type Reward = {
 	title: string;
 	price: number;
 	desc?: string;
+	lineNumber: number;
 };
 
 export type UseRewardsReturn = {
@@ -110,23 +111,26 @@ function parseRewards(content: string): Array<Reward> {
 		return acc;
 	}, []);
 
-	const rewards = splitedLines.reduce<Array<Reward>>((acc, line) => {
+	const rewards = splitedLines.reduce<Array<Reward>>((acc, line, index) => {
 		if (line.length === 1) {
 			acc.push({
 				title: line[0],
 				price: 1,
+				lineNumber: index,
 			});
 		} else if (line.length === 2) {
 			if (isDigitString(line[1])) {
 				acc.push({
 					title: line[0],
 					price: Number(line[1]),
+					lineNumber: index,
 				});
 			} else {
 				acc.push({
 					title: line[0],
 					price: 1,
 					desc: line[1],
+					lineNumber: index,
 				});
 			}
 		} else if (line.length === 3) {
@@ -134,6 +138,7 @@ function parseRewards(content: string): Array<Reward> {
 				title: line[0],
 				price: Number(line[1]),
 				desc: line[2],
+				lineNumber: index,
 			});
 		}
 		return acc;

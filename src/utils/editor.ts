@@ -1,4 +1,3 @@
-import { Task } from "@hooks/useWatchTasks/types";
 import {
 	MarkdownView,
 	Notice,
@@ -7,8 +6,8 @@ import {
 	WorkspaceLeaf
 } from "obsidian";
 
-type RevealTaskProps = {
-	task: Task;
+type RevealLineProps = {
+	location: { path: string; lineNumber: number };
 	workspace: Workspace;
 	vault: Vault;
 };
@@ -16,12 +15,12 @@ type RevealTaskProps = {
 /**
  * Reveal task in editor leaf
  */
-export const revealTask = (props: RevealTaskProps): void => {
-	const { task, workspace, vault } = props;
-	const tFile = vault.getFileByPath(task.path);
+export const revealLine = (props: RevealLineProps): void => {
+	const { location, workspace, vault } = props;
+	const tFile = vault.getFileByPath(location.path);
 
 	if (!tFile) {
-		new Notice("Error: file associated with task is not found.");
+		new Notice("Error: file associated with a line is not found.");
 		return;
 	}
 
@@ -32,7 +31,7 @@ export const revealTask = (props: RevealTaskProps): void => {
 	 * This is necessary because the `getLeavesOfType` method returns instances of type `View`, lacking the `file` field.
 	 */
 	const isFileOpened = (view: MarkdownView): boolean =>
-		view.file ? view.file.path === task.path : false;
+		view.file ? view.file.path === location.path : false;
 
 	/**
 	 * Checks if the file is already open among the given leaves.
@@ -50,11 +49,11 @@ export const revealTask = (props: RevealTaskProps): void => {
 		 * Displays the already opened file and highlights the line containing the task.
 		 */
 		if (leaf) {
-			leaf.openFile(tFile, { eState: { line: task.lineNumber } });
+			leaf.openFile(tFile, { eState: { line: location.lineNumber } });
 		}
 	} else {
 		workspace.getLeaf("tab").openFile(tFile, {
-			eState: { line: task.lineNumber },
+			eState: { line: location.lineNumber },
 		});
 	}
 };

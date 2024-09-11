@@ -2,9 +2,10 @@ import React, { useState } from "react";
 
 import styles from "./styles.module.css";
 
-import { useApp } from "@hooks";
+import { useApp, useSettings } from "@hooks";
 import { UseHistoryReturn } from "@hooks/useHistory";
 import { Reward } from "@hooks/useRewards";
+import { revealLine } from "@utils/editor";
 import { coins } from "@utils/string";
 import { PiggyBank } from "lucide-react";
 import { Notice } from "obsidian";
@@ -20,6 +21,9 @@ export default function RewardList(props: RewardListProps): React.JSX.Element {
 	const { balance, addHistoryRow } = history;
 	const app = useApp();
 	const [isDepositoryOpen, setIsDepositoryOpen] = useState(false);
+
+	const settings = useSettings();
+	const { workspace, vault } = app!;
 
 	return (
 		<div>
@@ -44,7 +48,21 @@ export default function RewardList(props: RewardListProps): React.JSX.Element {
 				{rewards.map((reward) => (
 					<li className={`${styles.reward} border`} key={reward.title}>
 						<div>
-							<h3 className={styles.title}>{reward.title}</h3>
+							<h3
+								className={styles.title}
+								onClick={() =>
+									revealLine({
+										location: {
+											path: settings!.pathToRewards,
+											lineNumber: reward.lineNumber,
+										},
+										workspace,
+										vault,
+									})
+								}
+							>
+								{reward.title}
+							</h3>
 							<p className={styles.desc}>{reward.desc}</p>
 						</div>
 
