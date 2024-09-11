@@ -1,5 +1,6 @@
 import { HistoryRow } from "@hooks/useHistory";
 import { Task } from "@hooks/useWatchTasks/types";
+import { GamifiedTasksSettings } from "@types";
 import { Workspace } from "obsidian";
 import { generatePastDaysArray, getAmountOfPastDays } from "./date";
 import { executeCondition } from "./task";
@@ -155,3 +156,15 @@ export const filterBySuccessCondition = async (
 
 	return tasksToShow;
 };
+
+export const byIgnore =
+	(settings: GamifiedTasksSettings) =>
+		(task: Task): boolean => {
+			const { ignoreList = [] } = settings || {};
+
+			const isIgnoreFile = !ignoreList.some((ignorePattern) =>
+				task.path.startsWith(ignorePattern),
+			);
+
+			return isIgnoreFile;
+		};

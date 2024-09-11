@@ -69,7 +69,7 @@ describe("Markdown content", () => {
 			},
 		];
 
-		const actual = await getRawFiles(vault, settings);
+		const actual = await getRawFiles(vault);
 
 		assert.deepStrictEqual(actual, expected);
 	});

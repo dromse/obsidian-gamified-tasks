@@ -2,6 +2,7 @@ import { GamifiedTasksConstants } from "@consts";
 import useEditTasks from "@hooks/useEditTasks";
 import { getRawFiles } from "@utils/file";
 import {
+	byIgnore,
 	byNote,
 	byRecurrance,
 	bySearch,
@@ -63,7 +64,7 @@ export default function useWatchTasks(): UseTasksResult {
 
 	async function fetchTasks(): Promise<void> {
 		try {
-			const files = await getRawFiles(vault, settings);
+			const files = await getRawFiles(vault);
 
 			const parsedTasks = parseTasks(files);
 			const parsedTaskswithMiddlewares = parseMiddlewares(
@@ -88,8 +89,17 @@ export default function useWatchTasks(): UseTasksResult {
 		}
 	}
 
-	const filterTaskList = (taskList: ReadonlyArray<Task>): Array<Task> =>
-		taskList
+	const filterTaskList = (taskList: ReadonlyArray<Task>): Array<Task> => {
+		let filteredTaskList: Array<Task> = taskList.concat();
+
+		const shouldIgnore =
+			!filters.note.value && !filters.shouldShowCurrentNoteTasks.value;
+
+		if (shouldIgnore) {
+			filteredTaskList = filteredTaskList.filter(byIgnore(settings));
+		}
+
+		return filteredTaskList
 			.filter(
 				byNote(
 					filters.note.value,
@@ -101,6 +111,7 @@ export default function useWatchTasks(): UseTasksResult {
 			.filter(byTag(filters.tags.value, filters.onlyThisTags.value))
 			.filter(bySearch(filters.search.value))
 			.slice(0, filters.limit.value);
+	};
 
 	/**
 	 * Load tasks from sessionStorage and apply filters.
