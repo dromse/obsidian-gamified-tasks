@@ -30,6 +30,7 @@ export const DEFAULT_SETTINGS: GamifiedTasksSettings = {
 	isFromCurrentNote: false,
 	shouldShowAllFilters: false,
 	isCompletedAtEnabled: true,
+	completedAtFormat: "",
 	difficulties: DefaultDifficulties,
 	shouldShowByCondition: false,
 	pathToSaveNewTask: "tasks.md",

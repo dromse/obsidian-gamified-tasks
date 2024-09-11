@@ -1,5 +1,6 @@
 import GamifiedTasksPlugin from "@main";
 import { App, PluginSettingTab, Setting } from "obsidian";
+import changeCompletedAtFormat from "./setting/changeCompletedAtFormat";
 import changeDifficulty from "./setting/changeDifficulty";
 
 import excludeFilesFromParsing from "./setting/excludeFilesFromParsing";
@@ -13,7 +14,7 @@ import pathToSaveNewTask from "./setting/pathToSaveNewTask";
 import showAllFilters from "./setting/showAllFilters";
 import showByStatus from "./setting/showByStatus";
 import showByTags from "./setting/showByTags";
-import showDoneDate from "./setting/showDoneDate";
+import showDoneDate from "./setting/showCompletedAtDate";
 import showFromCurrentNote from "./setting/showFromCurrentNote";
 import showTasksFromNote from "./setting/showTasksFromNote";
 
@@ -32,11 +33,12 @@ export default class GamifiedTasksSettingTab extends PluginSettingTab {
 		containerEl.empty();
 
 		pathToRewards(containerEl, this);
-		pathToConditions(containerEl, this);
 		pathToHistory(containerEl, this);
 		pathToSaveNewTask(containerEl, this);
+		pathToConditions(containerEl, this);
 		excludeFilesFromParsing(containerEl, this);
 		showDoneDate(containerEl, this);
+		changeCompletedAtFormat(containerEl, this);
 		showAllFilters(containerEl, this);
 
 		new Setting(containerEl).setName("Filters").setHeading();

@@ -20,6 +20,7 @@ export type GamifiedTasksSettings = {
 	isFromCurrentNote: boolean;
 	shouldShowAllFilters: boolean;
 	isCompletedAtEnabled: boolean;
+	completedAtFormat: string;
 	difficulties: Array<DifficultySetting>;
 	pathToSaveNewTask: string;
 	shouldShowByCondition: boolean;

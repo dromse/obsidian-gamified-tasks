@@ -6,9 +6,9 @@ export default (
 	context: GamifiedTasksSettingTab,
 ): void => {
 	new Setting(containerEl)
-		.setName("Show done date in completed task")
+		.setName("Show completedAt marker on complete task?")
 		.setDesc(
-			"Add Markdown or Wiki link to the current daily note when you complete a task ✅",
+			"Add Markdown or Wiki link to the current daily note or custom marker when you complete a task ✅",
 		)
 		.addToggle((toggle) =>
 			toggle
