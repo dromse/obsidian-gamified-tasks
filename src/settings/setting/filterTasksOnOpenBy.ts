@@ -18,7 +18,7 @@ export default (
 		.addDropdown((dropDown) =>
 			dropDown
 				.addOptions(taskFilterRecords)
-				.setValue(context.plugin.settings.statusFilter)
+				.setValue(context.plugin.settings.filterTasksOnOpen)
 				.onChange(async (value) => {
 					context.plugin.settings.filterTasksOnOpen = value as TaskFilterOptionsType;
 					await context.plugin.saveSettings();
