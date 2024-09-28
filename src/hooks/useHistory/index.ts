@@ -1,9 +1,10 @@
+import { useApp } from "@hooks/useApp";
+import { useSettings } from "@hooks/useSettings";
 import { isDigitString } from "@utils/check";
 import { currentDate } from "@utils/date";
 import { appendStartAndIgnoreFrontmatter, getFileLines } from "@utils/file";
 import { TFile } from "obsidian";
 import { useEffect, useState } from "react";
-import { useApp, useSettings } from "..";
 import { ParseState } from "../types";
 
 export type HistoryRow = {

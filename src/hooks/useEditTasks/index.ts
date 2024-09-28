@@ -1,6 +1,7 @@
-import { useApp, useSettings } from "@hooks";
 import { middlewares } from "@core/consts";
 import { Task } from "@core/types";
+import { useApp } from "@hooks/useApp";
+import { useSettings } from "@hooks/useSettings";
 import { stringifyMiddlewares } from "@utils/middleware";
 import { operateYAMLBinding } from "@utils/task";
 

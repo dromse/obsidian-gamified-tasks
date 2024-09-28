@@ -1,7 +1,9 @@
 import { GamifiedTasksConstants } from "@consts";
 import { middlewares } from "@core/consts";
+import { useApp } from "@hooks/useApp";
 import useEditTasks from "@hooks/useEditTasks";
 import useHistory from "@hooks/useHistory";
+import { useSettings } from "@hooks/useSettings";
 import { useFilters } from "@providers/FiltersProvider";
 import { useSorting } from "@providers/SortingProvider";
 import { getRawFiles } from "@utils/file";
@@ -20,7 +22,6 @@ import { sortBy } from "@utils/sort";
 import { parseTasks } from "@utils/task";
 import { TFile } from "obsidian";
 import React from "react";
-import { useApp, useSettings } from "..";
 import { State, Task } from "../../core/types";
 import { ParseState } from "../types";
 

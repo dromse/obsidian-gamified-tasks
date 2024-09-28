@@ -2,7 +2,6 @@ import React, { useState } from "react";
 
 import styles from "./styles.module.css";
 
-import { useApp, useSettings } from "@hooks";
 import { UseHistoryReturn } from "@hooks/useHistory";
 import { Reward } from "@hooks/useRewards";
 import { revealLine } from "@utils/editor";
@@ -10,6 +9,8 @@ import { coins } from "@utils/string";
 import { PiggyBank } from "lucide-react";
 import { Notice } from "obsidian";
 import Depository from "./Depository";
+import { useApp } from "@hooks/useApp";
+import { useSettings } from "@hooks/useSettings";
 
 type RewardListProps = {
 	rewards: ReadonlyArray<Reward>;

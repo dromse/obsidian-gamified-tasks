@@ -9,8 +9,9 @@ import ShouldSortAfterLimit from "@components/reusable/sorting/ShouldSortAfterLi
 import SortByOrder from "@components/reusable/sorting/SortByOrder";
 import SortByType from "@components/reusable/sorting/SortByType";
 import { State, Task, TaskFilterOptionsType } from "@core/types";
-import { useApp, useSettings } from "@hooks";
+import { useApp } from "@hooks/useApp";
 import useEditTasks from "@hooks/useEditTasks";
+import { useSettings } from "@hooks/useSettings";
 import { useFilters } from "@providers/FiltersProvider";
 import { singularOrPlural } from "@utils/string";
 import React, { useEffect, useState } from "react";

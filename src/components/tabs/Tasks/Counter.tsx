@@ -1,4 +1,3 @@
-import { useSettings } from "@hooks";
 import useEditTasks from "@hooks/useEditTasks";
 import { Task } from "@core/types";
 import { logger, loggerMsg } from "@utils/logger";
@@ -7,6 +6,7 @@ import { Notice } from "obsidian";
 import React from "react";
 
 import styles from "./styles.module.css";
+import { useSettings } from "@hooks/useSettings";
 
 type CounterProps = {
 	task: Task;

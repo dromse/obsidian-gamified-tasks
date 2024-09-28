@@ -1,6 +1,7 @@
+import { useApp } from "@hooks/useApp";
+import { useSettings } from "@hooks/useSettings";
 import { isDigitString } from "@utils/check";
 import { useEffect, useState } from "react";
-import { useApp, useSettings } from "..";
 import { ParseState } from "../types";
 
 export type Reward = {
