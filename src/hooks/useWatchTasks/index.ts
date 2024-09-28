@@ -1,12 +1,10 @@
 import { GamifiedTasksConstants } from "@consts";
-import { middlewares } from "@core/consts";
 import { useApp } from "@hooks/useApp";
 import useEditTasks from "@hooks/useEditTasks";
 import useHistory from "@hooks/useHistory";
 import { useSettings } from "@hooks/useSettings";
 import { useFilters } from "@providers/FiltersProvider";
 import { useSorting } from "@providers/SortingProvider";
-import { getRawFiles } from "@utils/file";
 import {
 	byIgnore,
 	byNote,
@@ -15,15 +13,14 @@ import {
 	byStatus,
 	byTag,
 	byToday,
-	filterBySuccessCondition,
+	filterBySuccessCondition
 } from "@utils/filter";
-import { parseMiddlewares } from "@utils/middleware";
 import { sortBy } from "@utils/sort";
-import { parseTasks } from "@utils/task";
 import { TFile } from "obsidian";
 import React from "react";
 import { State, Task } from "../../core/types";
 import { ParseState } from "../types";
+import { useFetchTasks } from "./useFetchTasks";
 
 type UseTasksResult = {
 	tasks: Array<Task>;
@@ -36,15 +33,17 @@ type UseTasksResult = {
  * Hook for interaction with tasks in current vault
  */
 export default function useWatchTasks(): UseTasksResult {
-	const [isTasksParsed, setIsTasksParsed] =
-		React.useState<ParseState>("parsing");
 	const [tasks, setTasks] = React.useState<Array<Task>>([]);
 	const [shouldUpdateUI, setShouldUpdateUI] = React.useState(false);
 	const [activeFile, setActiveFile] = React.useState<TFile | null>(null);
 	const { historyRows } = useHistory();
 
+	const [isTasksParsed, setIsTasksParsed] =
+		React.useState<ParseState>("parsing");
+
 	const app = useApp();
 	const settings = useSettings();
+
 	if (!app || !settings) {
 		setIsTasksParsed("error");
 
@@ -67,33 +66,6 @@ export default function useWatchTasks(): UseTasksResult {
 		toShowTodayTasks.map((task) => resetRecurringTask(task));
 
 		return toShowTodayTasks;
-	}
-
-	async function fetchTasks(): Promise<void> {
-		try {
-			const files = await getRawFiles(vault);
-
-			const parsedTasks = parseTasks(files);
-			const parsedTaskswithMiddlewares = parseMiddlewares(
-				parsedTasks,
-				middlewares,
-				{
-					settings,
-					app,
-				},
-			);
-
-			// cache tasks
-			sessionStorage.setItem(
-				GamifiedTasksConstants.sessionTasks,
-				JSON.stringify(parsedTaskswithMiddlewares),
-			);
-
-			setIsTasksParsed("parsed");
-			setShouldUpdateUI((prev) => !prev);
-		} catch (err) {
-			setIsTasksParsed("error");
-		}
 	}
 
 	const filterAndSortTasks = (tasks: ReadonlyArray<Task>): Array<Task> => {
@@ -233,6 +205,8 @@ export default function useWatchTasks(): UseTasksResult {
 		);
 	};
 
+	const fetchTasksInCache = useFetchTasks();
+
 	/**
 	 * Apply default settings on mount.
 	 * Fetch tasks when vault is modified.
@@ -241,9 +215,18 @@ export default function useWatchTasks(): UseTasksResult {
 		React.useEffect(() => {
 			setupDefaultSettings();
 
-			fetchTasks();
-			vault.on("modify", fetchTasks);
-			return () => vault.off("modify", fetchTasks);
+			const syncTasksForUI = (): void => {
+				fetchTasksInCache().then((isParsed) => {
+					if (isParsed) {
+						setIsTasksParsed(isParsed), setShouldUpdateUI((p) => !p);
+					}
+				});
+			};
+
+			syncTasksForUI();
+
+			vault.on("modify", syncTasksForUI);
+			return () => vault.off("modify", syncTasksForUI);
 		}, []);
 	}
 
