@@ -1,11 +1,11 @@
 import Input from "@components/reusable/Input";
-import { FilterState } from "@hooks/useWatchTasks/types";
+import { State } from "@core/types";
 import React, { useState } from "react";
-import styles from "./styles.module.css";
+import styles from "../styles.module.css";
 
 type Props = {
-	note: FilterState<string | undefined>;
-	shouldShowCurrentNoteTasks: FilterState<boolean>;
+	note: State<string | undefined>;
+	shouldShowCurrentNoteTasks: State<boolean>;
 };
 
 export default function TagFilter(props: Props): React.JSX.Element {

@@ -1,13 +1,34 @@
 import { GamifiedTasksSettings } from "@types";
 import { App } from "obsidian";
+import {
+	SortOrderOptions,
+	SortTypeOptions,
+	TaskFilterOptions
+} from "./consts";
+
+export type TaskFilterOptionsType = (typeof TaskFilterOptions)[number];
+export type SortOrder = (typeof SortOrderOptions)[number];
+export type SortType = (typeof SortTypeOptions)[number];
 
 /**
  * Represents the status options for filtering tasks.
  */
 export type StatusFilterOption = "all" | Status;
 
-export type FilterState<T> = {
+/**
+ * Represents the state for filtering or sorting tasks in the plugin.
+ * @template T - The type of data which stores in a state, such as strings or objects.
+ */
+export type State<T> = {
+	/**
+	 * Current value of state.
+	 */
 	value: T;
+
+	/**
+	 * Function responsible for updating the state with a new `value`.
+	 * @param {React.SetStateAction<T>} action - The new value or updater function to update the current state value.
+	 */
 	setValue: React.Dispatch<React.SetStateAction<T>>;
 };
 
@@ -18,47 +39,47 @@ export type TaskFilters = {
 	/**
 	 * The limit of tasks to display.
 	 */
-	limit: FilterState<number | undefined>;
+	limit: State<number | undefined>;
 
 	/**
 	 * The search filter for tasks.
 	 */
-	search: FilterState<string>;
+	search: State<string>;
 
 	/**
 	 * The status filter option for tasks.
 	 */
-	status: FilterState<StatusFilterOption>;
+	status: State<StatusFilterOption>;
 
 	/**
 	 * Indicates whether tasks are recurring.
 	 */
-	recur: FilterState<boolean>;
+	recur: State<boolean>;
 
 	/**
 	 *  List of tags to filter tasks.
 	 */
-	tags: FilterState<string>;
+	tags: State<string>;
 
 	/**
 	 *  Specify only show tasks with this tags or all tasks with matched tags
 	 */
-	onlyThisTags: FilterState<boolean>;
+	onlyThisTags: State<boolean>;
 
 	/**
 	 * Show tasks from this note.
 	 */
-	note: FilterState<string>;
+	note: State<string>;
 
 	/**
 	 * Show tasks from the current note.
 	 */
-	shouldShowCurrentNoteTasks: FilterState<boolean>;
+	shouldShowCurrentNoteTasks: State<boolean>;
 
 	/**
 	 * Show tasks by success conditions.
 	 */
-	showByCondition: FilterState<boolean>;
+	showByCondition: State<boolean>;
 };
 
 /**

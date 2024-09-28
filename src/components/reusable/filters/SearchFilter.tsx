@@ -1,9 +1,9 @@
 import Input from "@components/reusable/Input";
-import { FilterState } from "@hooks/useWatchTasks/types";
+import { State } from "@core/types";
 import React from "react";
 
 type Props = {
-	search: FilterState<string>;
+	search: State<string>;
 };
 
 export default function SearchFilter(props: Props): React.JSX.Element {

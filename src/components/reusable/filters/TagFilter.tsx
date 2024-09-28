@@ -1,10 +1,10 @@
 import Input from "@components/reusable/Input";
-import { FilterState } from "@hooks/useWatchTasks/types";
+import { State } from "@core/types";
 import React from "react";
 
 type Props = {
-	tags: FilterState<string | undefined>;
-	onlyThisTags: FilterState<boolean>;
+	tags: State<string | undefined>;
+	onlyThisTags: State<boolean>;
 };
 
 export default function TagFilter(props: Props): React.JSX.Element {

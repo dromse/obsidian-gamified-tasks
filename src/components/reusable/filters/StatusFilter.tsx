@@ -1,11 +1,11 @@
 import React from "react";
 
 import { StatusKeys } from "@hooks/useWatchTasks/consts";
-import { FilterState, StatusFilterOption } from "@hooks/useWatchTasks/types";
-import styles from "./styles.module.css";
+import { State, StatusFilterOption } from "@core/types";
+import styles from "../styles.module.css";
 
 type Props = {
-	status: FilterState<StatusFilterOption>;
+	status: State<StatusFilterOption>;
 };
 
 export default function StatusFilter(props: Props): React.JSX.Element {
@@ -16,7 +16,7 @@ export default function StatusFilter(props: Props): React.JSX.Element {
 			<select
 				name="status"
 				id="status"
-				className={styles.taskStatus}
+				className={styles.taskSelectOption}
 				value={status.value}
 				onChange={(e) =>
 					status.setValue(e.currentTarget.value as StatusFilterOption)

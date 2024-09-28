@@ -1,9 +1,9 @@
 import Input from "@components/reusable/Input";
-import { FilterState } from "@hooks/useWatchTasks/types";
+import { State } from "@core/types";
 import React from "react";
 
 type Props = {
-	limit: FilterState<number | undefined>;
+	limit: State<number | undefined>;
 };
 
 export default function LimitFilter(props: Props): React.JSX.Element {
