@@ -5,7 +5,7 @@ import { currentDate } from "@utils/date";
 import { appendStartAndIgnoreFrontmatter, getFileLines } from "@utils/file";
 import { TFile } from "obsidian";
 import { useEffect, useState } from "react";
-import { ParseState } from "../types";
+import { ParseState } from "@hooks/types";
 
 export type HistoryRow = {
 	title: string;
