@@ -1,6 +1,6 @@
 import React from "react";
 
-import { StatusKeys } from "@hooks/useWatchTasks/consts";
+import { StatusKeys } from "@core/consts";
 import { State, StatusFilterOption } from "@core/types";
 import styles from "../styles.module.css";
 

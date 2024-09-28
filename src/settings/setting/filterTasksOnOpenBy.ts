@@ -1,6 +1,6 @@
-import { TaskFilterOptions } from "@consts";
+import { TaskFilterOptions } from "@core/consts";
+import { TaskFilterOptionsType } from "@core/types";
 import GamifiedTasksSettingTab from "@settings";
-import { TaskFilterOptionsType } from "@types";
 import { Setting } from "obsidian";
 
 export default (

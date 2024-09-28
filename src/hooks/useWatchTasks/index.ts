@@ -1,5 +1,6 @@
 import { GamifiedTasksConstants } from "@consts";
 import useEditTasks from "@hooks/useEditTasks";
+import { useSorting } from "@providers/SortingProvider";
 import { getRawFiles } from "@utils/file";
 import {
 	byIgnore,
@@ -12,13 +13,14 @@ import {
 	filterBySuccessCondition
 } from "@utils/filter";
 import { parseMiddlewares } from "@utils/middleware";
+import { sortBy } from "@utils/sort";
 import { parseTasks } from "@utils/task";
 import { TFile } from "obsidian";
 import React from "react";
 import { useApp, useFilters, useHistory, useSettings } from "..";
+import { State, Task } from "../../core/types";
 import { ParseState } from "../types";
-import { middlewares } from "./consts";
-import { FilterState, Task } from "./types";
+import { middlewares } from "@core/consts";
 
 type UseTasksResult = {
 	tasks: Array<Task>;
@@ -47,10 +49,12 @@ export default function useWatchTasks(): UseTasksResult {
 		return {
 			tasks,
 			isTasksParsed,
-			watchFilters,
+			watchFilters: watchFilterSort,
 			watchTasks,
 		};
 	}
+
+	const sorting = useSorting();
 
 	const { vault, workspace } = app;
 	const { resetRecurringTask } = useEditTasks();
@@ -89,17 +93,17 @@ export default function useWatchTasks(): UseTasksResult {
 		}
 	}
 
-	const filterTaskList = (taskList: ReadonlyArray<Task>): Array<Task> => {
-		let filteredTaskList: Array<Task> = taskList.concat();
+	const filterAndSortTasks = (tasks: ReadonlyArray<Task>): Array<Task> => {
+		let tasksCopy: Array<Task> = tasks.concat();
 
 		const shouldIgnore =
 			!filters.note.value && !filters.shouldShowCurrentNoteTasks.value;
 
 		if (shouldIgnore) {
-			filteredTaskList = filteredTaskList.filter(byIgnore(settings));
+			tasksCopy = tasksCopy.filter(byIgnore(settings));
 		}
 
-		return filteredTaskList
+		const filteredTasks = tasksCopy
 			.filter(
 				byNote(
 					filters.note.value,
@@ -109,14 +113,38 @@ export default function useWatchTasks(): UseTasksResult {
 			)
 			.filter(byStatus(filters.status.value))
 			.filter(byTag(filters.tags.value, filters.onlyThisTags.value))
-			.filter(bySearch(filters.search.value))
-			.slice(0, filters.limit.value);
+			.filter(bySearch(filters.search.value));
+
+		const { sortByType, sortByOrder, shouldSortAfterLimit } = sorting;
+
+		const isDescendingAny =
+			sortByType.value === "any" && sortByOrder.value === "descending";
+
+		const sortAndLimit = (list: Array<Task>): Array<Task> =>
+			isDescendingAny
+				? list.reverse().slice(0, filters.limit.value)
+				: list
+					.sort(sortBy(sortByType.value, sortByOrder.value))
+					.slice(0, filters.limit.value);
+
+		const limitAndSort = (list: Array<Task>): Array<Task> =>
+			isDescendingAny
+				? list.slice(0, filters.limit.value).reverse()
+				: list
+					.slice(0, filters.limit.value)
+					.sort(sortBy(sortByType.value, sortByOrder.value));
+
+		const filteredAndSortedTasks = shouldSortAfterLimit.value
+			? limitAndSort(filteredTasks)
+			: sortAndLimit(tasksCopy);
+
+		return filteredAndSortedTasks;
 	};
 
 	/**
-	 * Load tasks from sessionStorage and apply filters.
+	 * Load tasks from sessionStorage and apply filters and sorting.
 	 */
-	function watchFilters(): void {
+	function watchFilterSort(): void {
 		React.useEffect(() => {
 			const tasksJSON = sessionStorage.getItem(
 				GamifiedTasksConstants.sessionTasks,
@@ -130,19 +158,21 @@ export default function useWatchTasks(): UseTasksResult {
 
 					const todayTasks = getTodayTasks(allRecurringTasks);
 
-					const filteredList = filterTaskList(todayTasks);
+					const filteredList = filterAndSortTasks(todayTasks);
 
 					setTasks(filteredList);
 				} else if (filters?.showByCondition.value) {
 					filterBySuccessCondition(tasksInVanilla).then(
 						(tasksBySuccessCondition) => {
-							const filteredTasks = filterTaskList(tasksBySuccessCondition);
+							const filteredTasks = filterAndSortTasks(
+								tasksBySuccessCondition,
+							);
 
 							setTasks(filteredTasks);
 						},
 					);
 				} else {
-					const filteredList = filterTaskList(tasksInVanilla);
+					const filteredList = filterAndSortTasks(tasksInVanilla);
 
 					setTasks(filteredList);
 				}
@@ -157,6 +187,7 @@ export default function useWatchTasks(): UseTasksResult {
 			return () => workspace.off("active-leaf-change", handleActiveFile);
 		}, [
 			...Object.values(filters!).map(({ value }) => value),
+			...Object.values(sorting!).map(({ value }) => value),
 			activeFile,
 			shouldUpdateUI,
 		]);
@@ -169,24 +200,33 @@ export default function useWatchTasks(): UseTasksResult {
 
 		type SettingSetter = {
 			setting: unknown;
-			filter: FilterState<unknown>;
+			state: State<unknown>;
 		};
 
-		const settingSetters: ReadonlyArray<SettingSetter> = [
-			{ setting: settings.limit, filter: filters.limit },
-			{ setting: settings.statusFilter, filter: filters.status },
-			{ setting: settings.isRecurTasks, filter: filters.recur },
-			{ setting: settings.tagFilter, filter: filters.tags },
-			{ setting: settings.hasOnlyThisTags, filter: filters.onlyThisTags },
-			{ setting: settings.noteFilter, filter: filters.note },
+		const bindedSettingsToState: ReadonlyArray<SettingSetter> = [
+			// filters
+			{ setting: settings.limit, state: filters.limit },
+			{ setting: settings.statusFilter, state: filters.status },
+			{ setting: settings.isRecurTasks, state: filters.recur },
+			{ setting: settings.tagFilter, state: filters.tags },
+			{ setting: settings.hasOnlyThisTags, state: filters.onlyThisTags },
+			{ setting: settings.noteFilter, state: filters.note },
 			{
 				setting: settings.isFromCurrentNote,
-				filter: filters.shouldShowCurrentNoteTasks,
+				state: filters.shouldShowCurrentNoteTasks,
+			},
+
+			// sorting
+			{ setting: settings.sortByOrder, state: sorting.sortByOrder },
+			{ setting: settings.sortByType, state: sorting.sortByType },
+			{
+				setting: settings.shouldSortAfterLimit,
+				state: sorting.shouldSortAfterLimit,
 			},
 		];
 
-		settingSetters.forEach(
-			(obj) => obj.setting && obj.filter.setValue(obj.setting),
+		bindedSettingsToState.forEach(
+			(binded) => binded.setting && binded.state.setValue(binded.setting),
 		);
 	};
 
@@ -207,7 +247,7 @@ export default function useWatchTasks(): UseTasksResult {
 	return {
 		tasks,
 		isTasksParsed,
-		watchFilters,
+		watchFilters: watchFilterSort,
 		watchTasks,
 	};
 }

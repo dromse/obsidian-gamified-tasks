@@ -1,6 +1,6 @@
 import { useApp, useHistory, useSettings } from "@hooks";
-import { StatusKeys, StatusMarkdown } from "@hooks/useWatchTasks/consts";
-import { Status, Task } from "@hooks/useWatchTasks/types";
+import { StatusKeys, StatusMarkdown } from "@core/consts";
+import { Status, Task } from "@core/types";
 import { revealLine } from "@utils/editor";
 import { extractTitlesFromLinks } from "@utils/string";
 import {

@@ -1,4 +1,4 @@
-import { Middleware, Task } from "../../hooks/useWatchTasks/types";
+import { Middleware, Task } from "../types";
 
 const parse = (task: Task): Task =>
 	task.body ? task : { ...task, body: task.lineContent };

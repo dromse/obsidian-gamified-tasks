@@ -1,6 +1,6 @@
 import { GamifiedTasksSettings } from "@types";
 import { cleanBody, findByRegex } from "@utils/middleware";
-import { Middleware, Task } from "../../hooks/useWatchTasks/types";
+import { Middleware, Task } from "../types";
 
 const parse = (task: Task, settings: GamifiedTasksSettings): Task => {
 	const difficultyListForRegex = settings.difficulties.reduce<Array<string>>(

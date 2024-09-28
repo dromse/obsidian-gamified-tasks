@@ -1,5 +1,5 @@
 import { cleanBody, findByRegex } from "@utils/middleware";
-import { Middleware, Task } from "../../hooks/useWatchTasks/types";
+import { Middleware, Task } from "../types";
 
 const parse = (task: Task): Task => {
 	const regex = /#bind\/(\w+)/;

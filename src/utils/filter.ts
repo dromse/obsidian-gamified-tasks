@@ -1,5 +1,5 @@
 import { HistoryRow } from "@hooks/useHistory";
-import { Task } from "@hooks/useWatchTasks/types";
+import { Task } from "@core/types";
 import { GamifiedTasksSettings } from "@types";
 import { Workspace } from "obsidian";
 import { generatePastDaysArray, getAmountOfPastDays } from "./date";

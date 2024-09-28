@@ -1,4 +1,4 @@
-import { TaskFilters } from "@hooks/useWatchTasks/types";
+import { TaskFilters } from "@core/types";
 import { GamifiedTasksSettings } from "@types";
 import { App } from "obsidian";
 import { createContext } from "react";

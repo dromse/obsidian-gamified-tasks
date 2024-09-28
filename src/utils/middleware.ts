@@ -1,4 +1,4 @@
-import { Middleware, Task } from "@hooks/useWatchTasks/types";
+import { Middleware, Task } from "@core/types";
 import { GamifiedTasksSettings } from "@types";
 import { App } from "obsidian";
 

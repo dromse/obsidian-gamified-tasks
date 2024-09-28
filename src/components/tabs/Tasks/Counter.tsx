@@ -1,6 +1,6 @@
 import { useSettings } from "@hooks";
 import useEditTasks from "@hooks/useEditTasks";
-import { Task } from "@hooks/useWatchTasks/types";
+import { Task } from "@core/types";
 import { logger, loggerMsg } from "@utils/logger";
 import { updateCounter } from "@utils/task";
 import { Notice } from "obsidian";

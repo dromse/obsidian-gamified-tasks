@@ -1,6 +1,6 @@
-import { StatusKeys, StatusMarkdown } from "../../hooks/useWatchTasks/consts";
-import { Middleware, Status, Task } from "../../hooks/useWatchTasks/types";
+import { Middleware, Status, Task } from "../types";
 import { cleanBody, findByRegex } from "@utils/middleware";
+import { StatusKeys, StatusMarkdown } from "@core/consts";
 
 const parse = (task: Task): Task => {
 	const regex = /- \[(.)\]/;

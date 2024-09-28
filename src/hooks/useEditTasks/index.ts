@@ -1,6 +1,6 @@
 import { useApp, useSettings } from "@hooks";
-import { middlewares } from "@hooks/useWatchTasks/consts";
-import { Task } from "@hooks/useWatchTasks/types";
+import { middlewares } from "@core/consts";
+import { Task } from "@core/types";
 import { stringifyMiddlewares } from "@utils/middleware";
 import { operateYAMLBinding } from "@utils/task";
 

@@ -5,7 +5,7 @@ import { AppContext, FiltersContext, SettingsContext } from "../context";
 import { default as useHistory } from "./useHistory";
 import { default as useRewards } from "./useRewards";
 import { default as useTasks } from "./useWatchTasks";
-import { TaskFilters } from "./useWatchTasks/types";
+import { TaskFilters } from "../core/types";
 
 /** Access `app` from different components through `useContext` */
 export const useApp = (): App | undefined => {

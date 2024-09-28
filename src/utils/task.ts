@@ -1,7 +1,7 @@
 import { MenuOption } from "@components/tabs/Tasks/Menu";
 import { DAY_FORMAT } from "@consts";
 import { RawFile } from "@hooks/types";
-import { Status, Task } from "@hooks/useWatchTasks/types";
+import { Status, Task } from "@core/types";
 import { GamifiedTasksSettings } from "@types";
 import { App, moment, Notice, Vault } from "obsidian";
 import { isOutOfScope } from "./check";

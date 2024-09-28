@@ -1,5 +1,5 @@
-import { StatusKeys } from "@hooks/useWatchTasks/consts";
-import { StatusFilterOption } from "@hooks/useWatchTasks/types";
+import { StatusKeys } from "@core/consts";
+import { StatusFilterOption } from "@core/types";
 import GamifiedTasksSettingTab from "@settings";
 import { Setting } from "obsidian";
 

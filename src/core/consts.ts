@@ -66,3 +66,7 @@ export const middlewares: Array<Middleware> = [
 	every, // Middleware for handling task recurrence
 	completedAt, // Middleware for handling task completion timestamps
 ];
+
+export const TaskFilterOptions = ["all", "condition", "recurring"] as const;
+export const SortTypeOptions = ["any", "alphabetical", "numerical"] as const;
+export const SortOrderOptions = ["any", "ascending", "descending"] as const;

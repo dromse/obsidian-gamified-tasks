@@ -11,8 +11,6 @@ const DefaultDifficulties = [
 	{ name: "hard", price: 5 },
 ];
 
-export const TaskFilterOptions = ["all", "condition", "recurring"] as const;
-
 export const DEFAULT_SETTINGS: GamifiedTasksSettings = {
 	limit: 10,
 	statusFilter: "all",
@@ -35,6 +33,9 @@ export const DEFAULT_SETTINGS: GamifiedTasksSettings = {
 	shouldShowByCondition: false,
 	pathToSaveNewTask: "tasks.md",
 	filterTasksOnOpen: "all",
+	sortByType: "any",
+	sortByOrder: "any",
+	shouldSortAfterLimit: false,
 };
 
 export const DAY_FORMAT = "YYYY-MM-DD" as const;

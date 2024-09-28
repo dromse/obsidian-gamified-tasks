@@ -1,4 +1,4 @@
-import { Task } from "@hooks/useWatchTasks/types";
+import { Task } from "@core/types";
 import React from "react";
 
 const BodyEditor = ({

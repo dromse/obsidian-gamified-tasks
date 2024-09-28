@@ -11,6 +11,9 @@ import pathToConditions from "./setting/pathToConditions";
 import pathToHistory from "./setting/pathToHistory";
 import pathToRewards from "./setting/pathToRewards";
 import pathToSaveNewTask from "./setting/pathToSaveNewTask";
+import setShouldSortAfterLimit from "./setting/setShouldSortAfterLimit";
+import setSortByOrder from "./setting/setSortByOrder";
+import setSortByType from "./setting/setSortByType";
 import showAllFilters from "./setting/showAllFilters";
 import showByStatus from "./setting/showByStatus";
 import showByTags from "./setting/showByTags";
@@ -49,6 +52,11 @@ export default class GamifiedTasksSettingTab extends PluginSettingTab {
 		showTasksFromNote(containerEl, this);
 		showFromCurrentNote(containerEl, this);
 		filterTasksOnOpenBy(containerEl, this);
+
+		new Setting(containerEl).setName("Sorting").setHeading();
+		setSortByType(containerEl, this);
+		setSortByOrder(containerEl, this);
+		setShouldSortAfterLimit(containerEl, this);
 
 		new Setting(containerEl)
 			.setName("Difficulty")

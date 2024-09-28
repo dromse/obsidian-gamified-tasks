@@ -47,9 +47,14 @@ export function extractTitlesFromLinks(text: string): string {
 	text = text.replace(/\[([^\]]+)\]\((.*?)\)/g, "$1");
 
 	// Remove Wiki links
-	text = text.replace(/\[\[(.*?)(?:\|(.*?))?\]\]/g, function (_, p1, p2) {
+	text = text.replace(/\[\[(.*?)(?:\|(.*?))?\]\]/g, function(_, p1, p2) {
 		return p2 ? p2 : p1;
 	});
 
 	return text;
 }
+
+export const getFirstChar = (str: string): string => {
+	const match = str.match(/[a-zA-Z]/);
+	return match ? match[0] : "";
+};

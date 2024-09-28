@@ -5,10 +5,13 @@ import {
 	StatusFilter,
 	TagFilter
 } from "@components/reusable/filters";
+import ShouldSortAfterLimit from "@components/reusable/sorting/ShouldSortAfterLimit";
+import SortByOrder from "@components/reusable/sorting/SortByOrder";
+import SortByType from "@components/reusable/sorting/SortByType";
+import { State, Task, TaskFilterOptionsType } from "@core/types";
 import { useApp, useFilters, useSettings } from "@hooks";
 import useEditTasks from "@hooks/useEditTasks";
-import { FilterState, Task } from "@hooks/useWatchTasks/types";
-import { TaskFilterOptionsType } from "@types";
+import { useSorting } from "@providers/SortingProvider";
 import { singularOrPlural } from "@utils/string";
 import React, { useEffect, useState } from "react";
 import styles from "./styles.module.css";
@@ -40,6 +43,7 @@ export default function TaskList(props: Props): React.JSX.Element {
 	const { addTask } = useEditTasks();
 	const { tasks } = props;
 	const [isTaskBuilderOpen, setIsTaskBuilderOpen] = useState(false);
+	const sortings = useSorting();
 	const [taskSaveLocation, setTaskSaveLocation] =
 		useState<TaskSaveLocation>("default-file");
 	const newTaskTemplate = generateNewTask();
@@ -98,17 +102,17 @@ export default function TaskList(props: Props): React.JSX.Element {
 	};
 
 	const radioFilter: Array<{
-		filter: FilterState<boolean>;
+		filter: State<boolean>;
 		label: string;
 		option: TaskFilterOptionsType;
 	}> = [
 			{
-				label: "Filter by recurring",
+				label: "Recurring mode",
 				filter: filters.recur,
 				option: "recurring",
 			},
 			{
-				label: "Filter by condition",
+				label: "Condition mode",
 				filter: filters.showByCondition,
 				option: "condition",
 			},
@@ -176,6 +180,12 @@ export default function TaskList(props: Props): React.JSX.Element {
 						/>
 					</>
 				)}
+
+				<hr />
+
+				<SortByType />
+				<SortByOrder />
+				<ShouldSortAfterLimit />
 
 				<hr />
 

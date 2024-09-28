@@ -1,7 +1,9 @@
-import { TaskFilterOptions } from "@consts";
-import { StatusFilterOption } from "@hooks/useWatchTasks/types";
-
-export type TaskFilterOptionsType = (typeof TaskFilterOptions)[number];
+import {
+	SortOrder,
+	SortType,
+	StatusFilterOption,
+	TaskFilterOptionsType
+} from "@core/types";
 
 export type GamifiedTasksSettings = {
 	limit: number | undefined;
@@ -25,6 +27,9 @@ export type GamifiedTasksSettings = {
 	pathToSaveNewTask: string;
 	shouldShowByCondition: boolean;
 	filterTasksOnOpen: TaskFilterOptionsType;
+	sortByType: SortType;
+	sortByOrder: SortOrder;
+	shouldSortAfterLimit: boolean;
 };
 
 export type DifficultySetting = { name: string; price: number };

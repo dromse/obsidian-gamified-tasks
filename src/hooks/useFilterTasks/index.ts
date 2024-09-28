@@ -1,4 +1,4 @@
-import { StatusFilterOption, TaskFilters } from "@hooks/useWatchTasks/types";
+import { StatusFilterOption, TaskFilters } from "@core/types";
 import React from "react";
 
 type UseFilterTasks = {
