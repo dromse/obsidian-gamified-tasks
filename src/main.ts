@@ -1,5 +1,5 @@
 import { DEFAULT_SETTINGS, GamifiedTasksConstants } from "@consts";
-import { PluginView, PLUGIN_VIEW_TYPE } from "@PluginView";
+import { PluginView, PLUGIN_VIEW_TYPE } from "@view";
 import { GamifiedTasksSettings } from "@types";
 import { logger } from "@utils/logger";
 import { Plugin, WorkspaceLeaf } from "obsidian";
