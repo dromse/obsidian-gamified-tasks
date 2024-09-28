@@ -1,4 +1,5 @@
-import { useHistory, useRewards } from "@hooks";
+import useHistory from "@hooks/useHistory";
+import useRewards from "@hooks/useRewards";
 import React from "react";
 import RewardList from "./RewardList";
 

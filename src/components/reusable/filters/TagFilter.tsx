@@ -1,14 +1,9 @@
 import Input from "@components/reusable/Input";
-import { State } from "@core/types";
+import { useFilters } from "@providers/FiltersProvider";
 import React from "react";
 
-type Props = {
-	tags: State<string | undefined>;
-	onlyThisTags: State<boolean>;
-};
-
-export default function TagFilter(props: Props): React.JSX.Element {
-	const { tags, onlyThisTags } = props;
+export default function TagFilter(): React.JSX.Element {
+	const { tags, onlyThisTags } = useFilters();
 
 	return (
 		<div className="flex-column">

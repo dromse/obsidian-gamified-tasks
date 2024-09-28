@@ -1,13 +1,9 @@
 import Input from "@components/reusable/Input";
-import { State } from "@core/types";
+import { useFilters } from "@providers/FiltersProvider";
 import React from "react";
 
-type Props = {
-	limit: State<number | undefined>;
-};
-
-export default function LimitFilter(props: Props): React.JSX.Element {
-	const { limit } = props;
+export default function LimitFilter(): React.JSX.Element {
+	const { limit } = useFilters();
 
 	return (
 		<div className="flex-items-center">

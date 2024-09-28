@@ -1,5 +1,5 @@
-import { useHistory } from "@/hooks";
 import Input from "@components/reusable/Input";
+import useHistory from "@hooks/useHistory";
 import React, { useState } from "react";
 import styles from "./styles.module.css";
 import { Table } from "./Table";

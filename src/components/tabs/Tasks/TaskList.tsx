@@ -9,9 +9,9 @@ import ShouldSortAfterLimit from "@components/reusable/sorting/ShouldSortAfterLi
 import SortByOrder from "@components/reusable/sorting/SortByOrder";
 import SortByType from "@components/reusable/sorting/SortByType";
 import { State, Task, TaskFilterOptionsType } from "@core/types";
-import { useApp, useFilters, useSettings } from "@hooks";
+import { useApp, useSettings } from "@hooks";
 import useEditTasks from "@hooks/useEditTasks";
-import { useSorting } from "@providers/SortingProvider";
+import { useFilters } from "@providers/FiltersProvider";
 import { singularOrPlural } from "@utils/string";
 import React, { useEffect, useState } from "react";
 import styles from "./styles.module.css";
@@ -43,7 +43,6 @@ export default function TaskList(props: Props): React.JSX.Element {
 	const { addTask } = useEditTasks();
 	const { tasks } = props;
 	const [isTaskBuilderOpen, setIsTaskBuilderOpen] = useState(false);
-	const sortings = useSorting();
 	const [taskSaveLocation, setTaskSaveLocation] =
 		useState<TaskSaveLocation>("default-file");
 	const newTaskTemplate = generateNewTask();
@@ -129,8 +128,8 @@ export default function TaskList(props: Props): React.JSX.Element {
 	return (
 		<div>
 			<div className={`${styles.filters} flex-column border`}>
-				<SearchFilter search={filters.search} />
-				<StatusFilter status={filters.status} />
+				<SearchFilter />
+				<StatusFilter />
 
 				{radioFilter.map((radio) => (
 					<div className="checkbox" key={radio.label}>
@@ -167,17 +166,9 @@ export default function TaskList(props: Props): React.JSX.Element {
 					<>
 						<hr />
 
-						<LimitFilter limit={filters.limit} />
-
-						<TagFilter
-							tags={filters.tags}
-							onlyThisTags={filters.onlyThisTags}
-						/>
-
-						<NoteFilter
-							note={filters.note}
-							shouldShowCurrentNoteTasks={filters.shouldShowCurrentNoteTasks}
-						/>
+						<LimitFilter />
+						<TagFilter />
+						<NoteFilter />
 					</>
 				)}
 

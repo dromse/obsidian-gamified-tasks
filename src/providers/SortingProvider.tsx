@@ -21,7 +21,7 @@ export default function SortingProvider({
 	const [sortOrder, setSortOrder] = React.useState<SortOrder>("any");
 	const [shouldSortAfterLimit, setShouldSortAfterLimit] = React.useState(false);
 
-	const context = {
+	const sorting = {
 		sortByType: { value: sortType, setValue: setSortType },
 		sortByOrder: { value: sortOrder, setValue: setSortOrder },
 		shouldSortAfterLimit: {
@@ -31,7 +31,7 @@ export default function SortingProvider({
 	};
 
 	return (
-		<SortingContext.Provider value={context}>
+		<SortingContext.Provider value={sorting}>
 			{children}
 		</SortingContext.Provider>
 	);

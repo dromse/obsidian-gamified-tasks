@@ -1,4 +1,4 @@
-import { useApp, useHistory, useSettings } from "@hooks";
+import { useApp,  useSettings } from "@hooks";
 import { StatusKeys, StatusMarkdown } from "@core/consts";
 import { Status, Task } from "@core/types";
 import { revealLine } from "@utils/editor";
@@ -16,6 +16,7 @@ import { TaskEditor } from "./TaskEditor";
 
 import useEditTasks from "@hooks/useEditTasks";
 import styles from "./styles.module.css";
+import useHistory from "@hooks/useHistory";
 
 type Props = {
 	task: Task;

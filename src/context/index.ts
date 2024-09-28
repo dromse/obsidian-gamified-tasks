@@ -7,6 +7,3 @@ export const AppContext = createContext<App | undefined>(undefined);
 export const SettingsContext = createContext<
 	GamifiedTasksSettings | undefined
 >(undefined);
-export const FiltersContext = createContext<TaskFilters | undefined>(
-	undefined,
-);

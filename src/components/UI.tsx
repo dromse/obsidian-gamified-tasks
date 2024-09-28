@@ -1,13 +1,10 @@
-import { FiltersContext } from "@context";
-import useFilterTasks from "@hooks/useFilterTasks";
+import FiltersProvider from "@providers/FiltersProvider";
 import SortingProvider from "@providers/SortingProvider";
 import React from "react";
 import Tabs from "./reusable/Tabs";
 import { History, Rewards, Tasks } from "./tabs";
 
 export const UI = (): React.JSX.Element => {
-	const { filters } = useFilterTasks();
-
 	const tabs = [
 		{ title: "Tasks", view: Tasks },
 		{ title: "Rewards", view: Rewards },
@@ -15,10 +12,10 @@ export const UI = (): React.JSX.Element => {
 	];
 
 	return (
-		<FiltersContext.Provider value={filters}>
+		<FiltersProvider>
 			<SortingProvider>
 				<Tabs tabs={tabs} />
 			</SortingProvider>
-		</FiltersContext.Provider>
+		</FiltersProvider>
 	);
 };

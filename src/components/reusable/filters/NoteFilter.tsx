@@ -1,16 +1,10 @@
 import Input from "@components/reusable/Input";
-import { State } from "@core/types";
+import { useFilters } from "@providers/FiltersProvider";
 import React, { useState } from "react";
 import styles from "../styles.module.css";
 
-type Props = {
-	note: State<string | undefined>;
-	shouldShowCurrentNoteTasks: State<boolean>;
-};
-
-export default function TagFilter(props: Props): React.JSX.Element {
-	const { note, shouldShowCurrentNoteTasks: shouldShowCurrentNoteTasks } =
-		props;
+export default function TagFilter(): React.JSX.Element {
+	const { note, shouldShowCurrentNoteTasks } = useFilters();
 
 	const [inputValue, setInputValue] = useState(note.value);
 

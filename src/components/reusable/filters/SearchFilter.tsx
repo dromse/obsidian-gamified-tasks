@@ -1,13 +1,9 @@
 import Input from "@components/reusable/Input";
-import { State } from "@core/types";
+import { useFilters } from "@providers/FiltersProvider";
 import React from "react";
 
-type Props = {
-	search: State<string>;
-};
-
-export default function SearchFilter(props: Props): React.JSX.Element {
-	const { search } = props;
+export default function SearchFilter(): React.JSX.Element {
+	const { search } = useFilters();
 
 	return (
 		<Input

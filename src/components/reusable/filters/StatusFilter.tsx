@@ -1,15 +1,12 @@
 import React from "react";
 
 import { StatusKeys } from "@core/consts";
-import { State, StatusFilterOption } from "@core/types";
+import { StatusFilterOption } from "@core/types";
+import { useFilters } from "@providers/FiltersProvider";
 import styles from "../styles.module.css";
 
-type Props = {
-	status: State<StatusFilterOption>;
-};
-
-export default function StatusFilter(props: Props): React.JSX.Element {
-	const { status } = props;
+export default function StatusFilter(): React.JSX.Element {
+	const { status } = useFilters();
 
 	return (
 		<div className="flex-items-center">

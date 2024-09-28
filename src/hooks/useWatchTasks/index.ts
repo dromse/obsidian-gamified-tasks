@@ -1,5 +1,8 @@
 import { GamifiedTasksConstants } from "@consts";
+import { middlewares } from "@core/consts";
 import useEditTasks from "@hooks/useEditTasks";
+import useHistory from "@hooks/useHistory";
+import { useFilters } from "@providers/FiltersProvider";
 import { useSorting } from "@providers/SortingProvider";
 import { getRawFiles } from "@utils/file";
 import {
@@ -10,22 +13,21 @@ import {
 	byStatus,
 	byTag,
 	byToday,
-	filterBySuccessCondition
+	filterBySuccessCondition,
 } from "@utils/filter";
 import { parseMiddlewares } from "@utils/middleware";
 import { sortBy } from "@utils/sort";
 import { parseTasks } from "@utils/task";
 import { TFile } from "obsidian";
 import React from "react";
-import { useApp, useFilters, useHistory, useSettings } from "..";
+import { useApp, useSettings } from "..";
 import { State, Task } from "../../core/types";
 import { ParseState } from "../types";
-import { middlewares } from "@core/consts";
 
 type UseTasksResult = {
 	tasks: Array<Task>;
 	isTasksParsed: ParseState;
-	watchFilters: () => void;
+	watchFiltersAndSorting: () => void;
 	watchTasks: () => void;
 };
 
@@ -42,19 +44,19 @@ export default function useWatchTasks(): UseTasksResult {
 
 	const app = useApp();
 	const settings = useSettings();
-	const filters = useFilters();
-	if (!app || !settings || !filters) {
+	if (!app || !settings) {
 		setIsTasksParsed("error");
 
 		return {
 			tasks,
 			isTasksParsed,
-			watchFilters: watchFilterSort,
+			watchFiltersAndSorting,
 			watchTasks,
 		};
 	}
 
 	const sorting = useSorting();
+	const filters = useFilters();
 
 	const { vault, workspace } = app;
 	const { resetRecurringTask } = useEditTasks();
@@ -136,7 +138,7 @@ export default function useWatchTasks(): UseTasksResult {
 
 		const filteredAndSortedTasks = shouldSortAfterLimit.value
 			? limitAndSort(filteredTasks)
-			: sortAndLimit(tasksCopy);
+			: sortAndLimit(filteredTasks);
 
 		return filteredAndSortedTasks;
 	};
@@ -144,7 +146,7 @@ export default function useWatchTasks(): UseTasksResult {
 	/**
 	 * Load tasks from sessionStorage and apply filters and sorting.
 	 */
-	function watchFilterSort(): void {
+	function watchFiltersAndSorting(): void {
 		React.useEffect(() => {
 			const tasksJSON = sessionStorage.getItem(
 				GamifiedTasksConstants.sessionTasks,
@@ -153,7 +155,7 @@ export default function useWatchTasks(): UseTasksResult {
 			if (tasksJSON) {
 				const tasksInVanilla: Array<Task> = JSON.parse(tasksJSON);
 
-				if (filters?.recur.value) {
+				if (filters.recur.value) {
 					const allRecurringTasks = tasksInVanilla.filter(byRecurrance);
 
 					const todayTasks = getTodayTasks(allRecurringTasks);
@@ -186,8 +188,8 @@ export default function useWatchTasks(): UseTasksResult {
 			workspace.on("active-leaf-change", handleActiveFile);
 			return () => workspace.off("active-leaf-change", handleActiveFile);
 		}, [
-			...Object.values(filters!).map(({ value }) => value),
-			...Object.values(sorting!).map(({ value }) => value),
+			...Object.values(filters).map(({ value }) => value),
+			...Object.values(sorting).map(({ value }) => value),
 			activeFile,
 			shouldUpdateUI,
 		]);
@@ -247,7 +249,7 @@ export default function useWatchTasks(): UseTasksResult {
 	return {
 		tasks,
 		isTasksParsed,
-		watchFilters: watchFilterSort,
+		watchFiltersAndSorting: watchFiltersAndSorting,
 		watchTasks,
 	};
 }

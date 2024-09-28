@@ -1,11 +1,23 @@
 import { StatusFilterOption, TaskFilters } from "@core/types";
 import React from "react";
 
-type UseFilterTasks = {
-	filters: TaskFilters;
-};
+export const FiltersContext = React.createContext<TaskFilters | undefined>(
+	undefined,
+);
 
-export default function useFilterTasks(): UseFilterTasks {
+export function useFilters(): TaskFilters {
+	const context = React.useContext(FiltersContext);
+
+	if (context === undefined) {
+		throw new Error("useSorting must be used inside of a SortingProvider!");
+	}
+
+	return context;
+}
+
+export default function FiltersProvider({
+	children,
+}: React.PropsWithChildren): React.JSX.Element {
 	const [limit, setLimit] = React.useState(0);
 	const [status, setStatus] = React.useState<StatusFilterOption>("all");
 	const [isRecur, setIsRecur] = React.useState(false);
@@ -35,5 +47,9 @@ export default function useFilterTasks(): UseFilterTasks {
 		},
 	};
 
-	return { filters };
+	return (
+		<FiltersContext.Provider value={filters}>
+			{children}
+		</FiltersContext.Provider>
+	);
 }
