@@ -18,8 +18,9 @@ import {
 import { sortBy } from "@utils/sort";
 import { TFile } from "obsidian";
 import React from "react";
-import { State, Task } from "../../core/types";
+import { Task } from "../../core/types";
 import { ParseState } from "../types";
+import useDefaultSettings from "./useDefaultSettings";
 import { useFetchTasks } from "./useFetchTasks";
 
 type UseTasksResult = {
@@ -168,44 +169,8 @@ export default function useWatchTasks(): UseTasksResult {
 		]);
 	}
 
-	const setupDefaultSettings = (): void => {
-		if (!settings) {
-			return;
-		}
-
-		type SettingSetter = {
-			setting: unknown;
-			state: State<unknown>;
-		};
-
-		const bindedSettingsToState: ReadonlyArray<SettingSetter> = [
-			// filters
-			{ setting: settings.limit, state: filters.limit },
-			{ setting: settings.statusFilter, state: filters.status },
-			{ setting: settings.isRecurTasks, state: filters.recur },
-			{ setting: settings.tagFilter, state: filters.tags },
-			{ setting: settings.hasOnlyThisTags, state: filters.onlyThisTags },
-			{ setting: settings.noteFilter, state: filters.note },
-			{
-				setting: settings.isFromCurrentNote,
-				state: filters.shouldShowCurrentNoteTasks,
-			},
-
-			// sorting
-			{ setting: settings.sortByOrder, state: sorting.sortByOrder },
-			{ setting: settings.sortByType, state: sorting.sortByType },
-			{
-				setting: settings.shouldSortAfterLimit,
-				state: sorting.shouldSortAfterLimit,
-			},
-		];
-
-		bindedSettingsToState.forEach(
-			(binded) => binded.setting && binded.state.setValue(binded.setting),
-		);
-	};
-
 	const fetchTasksInCache = useFetchTasks();
+	const setupDefaultSettings = useDefaultSettings();
 
 	/**
 	 * Apply default settings on mount.
