@@ -10,11 +10,11 @@ import {
 } from "@utils/task";
 import React from "react";
 import Counter from "./Counter";
-import { Menu, MenuOption } from "./Menu";
-import { TaskEditor } from "../../reusable/TaskEditor";
+import { Menu, MenuOption } from "../../../../reusable/Menu";
+import { TaskEditor } from "../TaskEditor";
 
 import useEditTasks from "@hooks/useEditTasks";
-import styles from "./styles.module.css";
+import styles from "../../styles.module.css";
 import useHistory from "@hooks/useHistory";
 import { useSettings } from "@hooks/useSettings";
 import { useApp } from "@hooks/useApp";

@@ -3,7 +3,7 @@ import React from "react";
 import { StatusKeys } from "@core/consts";
 import { StatusFilterOption } from "@core/types";
 import { useFilters } from "@providers/FiltersProvider";
-import styles from "../styles.module.css";
+import styles from "../../../../../reusable/styles.module.css";
 
 export default function StatusFilter(): React.JSX.Element {
 	const { status } = useFilters();

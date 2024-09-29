@@ -1,10 +1,8 @@
-import {
-	LimitFilter,
-	NoteFilter,
-	TagFilter
-} from "@components/reusable/filters";
 import { useSettings } from "@hooks/useSettings";
 import React from "react";
+import LimitFilter from "./LimitFilter";
+import NoteFilter from "./NoteFilter";
+import TagFilter from "./NoteFilter";
 
 export default function MoreFilters(): React.JSX.Element {
 	const settings = useSettings()!;
@@ -35,8 +33,6 @@ export default function MoreFilters(): React.JSX.Element {
 					<NoteFilter />
 				</>
 			)}
-
-			<hr />
 		</>
 	);
 }

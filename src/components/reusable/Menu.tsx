@@ -1,5 +1,5 @@
 import React from "react";
-import { Dialog, DialogProps } from "../../reusable/Dialog";
+import { Dialog, DialogProps } from "./Dialog";
 
 export type MenuOption = { title: string; handler: Function };
 type MenuProps = DialogProps & {

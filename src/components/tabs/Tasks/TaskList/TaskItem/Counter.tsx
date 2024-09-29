@@ -5,7 +5,7 @@ import { updateCounter } from "@utils/task";
 import { Notice } from "obsidian";
 import React from "react";
 
-import styles from "./styles.module.css";
+import styles from "../../styles.module.css";
 import { useSettings } from "@hooks/useSettings";
 
 type CounterProps = {

@@ -1,4 +1,4 @@
-import { MenuOption } from "@components/tabs/Tasks/Menu";
+import { MenuOption } from "@components/reusable/Menu";
 import { DAY_FORMAT } from "@consts";
 import { RawFile } from "@hooks/types";
 import { Status, Task } from "@core/types";

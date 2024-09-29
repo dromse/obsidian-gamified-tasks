@@ -1,9 +1,9 @@
 import Input from "@components/reusable/Input";
 import { useFilters } from "@providers/FiltersProvider";
 import React, { useState } from "react";
-import styles from "../styles.module.css";
+import styles from "../../../../../reusable/styles.module.css";
 
-export default function TagFilter(): React.JSX.Element {
+export default function NoteFilter(): React.JSX.Element {
 	const { note, shouldShowCurrentNoteTasks } = useFilters();
 
 	const [inputValue, setInputValue] = useState(note.value);
