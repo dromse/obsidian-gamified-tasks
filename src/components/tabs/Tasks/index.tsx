@@ -3,10 +3,9 @@ import React from "react";
 import TaskList from "./TaskList";
 
 export default function TasksTab(): React.JSX.Element {
-	const { tasks, isTasksParsed, watchFiltersAndSorting, watchTasks } = useWatchTasks();
+	const { tasks, isTasksParsed, watchTasks } = useWatchTasks();
 
 	watchTasks();
-	watchFiltersAndSorting();
 
 	if (isTasksParsed === "parsing") {
 		return <div>Parsing...</div>;
