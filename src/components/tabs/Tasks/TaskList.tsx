@@ -16,7 +16,7 @@ import { useFilters } from "@providers/FiltersProvider";
 import { singularOrPlural } from "@utils/string";
 import React, { useEffect, useState } from "react";
 import styles from "./styles.module.css";
-import { TaskEditor } from "./TaskEditor";
+import { TaskEditor } from "../../reusable/TaskEditor";
 import TaskItem from "./TaskItem";
 
 type Props = {

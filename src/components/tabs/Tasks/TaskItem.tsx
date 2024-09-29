@@ -11,7 +11,7 @@ import {
 import React from "react";
 import Counter from "./Counter";
 import { Menu, MenuOption } from "./Menu";
-import { TaskEditor } from "./TaskEditor";
+import { TaskEditor } from "../../reusable/TaskEditor";
 
 import useEditTasks from "@hooks/useEditTasks";
 import styles from "./styles.module.css";
