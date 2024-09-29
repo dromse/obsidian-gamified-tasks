@@ -1,22 +1,17 @@
-import {
-	LimitFilter,
-	NoteFilter,
-	SearchFilter,
-	StatusFilter,
-	TagFilter
-} from "@components/reusable/filters";
+import { SearchFilter, StatusFilter } from "@components/reusable/filters";
 import ShouldSortAfterLimit from "@components/reusable/sorting/ShouldSortAfterLimit";
 import SortByOrder from "@components/reusable/sorting/SortByOrder";
 import SortByType from "@components/reusable/sorting/SortByType";
-import { State, Task, TaskFilterOptionsType } from "@core/types";
+import { Task } from "@core/types";
 import { useApp } from "@hooks/useApp";
 import useEditTasks from "@hooks/useEditTasks";
 import { useSettings } from "@hooks/useSettings";
-import { useFilters } from "@providers/FiltersProvider";
 import { singularOrPlural } from "@utils/string";
-import React, { useEffect, useState } from "react";
-import styles from "./styles.module.css";
+import React, { useState } from "react";
 import { TaskEditor } from "../../reusable/TaskEditor";
+import Modes from "./Modes";
+import MoreFilters from "./MoreFilters";
+import styles from "./styles.module.css";
 import TaskItem from "./TaskItem";
 
 type Props = {
@@ -48,17 +43,10 @@ export default function TaskList(props: Props): React.JSX.Element {
 		useState<TaskSaveLocation>("default-file");
 	const newTaskTemplate = generateNewTask();
 
-	const filters = useFilters()!;
 	const settings = useSettings()!;
 	const app = useApp()!;
 
 	const { workspace } = app;
-
-	const [taskFilterChoice, setTaskFilterChoice] =
-		React.useState<TaskFilterOptionsType>(settings.filterTasksOnOpen);
-	const [isMoreFiltersOpen, setIsMoreFiltersOpen] = useState(
-		settings.shouldShowAllFilters,
-	);
 
 	const addNewTask = (task: Task, setTask?: Function): void => {
 		if (taskSaveLocation === "default-file") {
@@ -90,84 +78,18 @@ export default function TaskList(props: Props): React.JSX.Element {
 		setTaskSaveLocation(value as TaskSaveLocation);
 	};
 
-	const radioFilter: Array<{
-		filter: State<boolean>;
-		label: string;
-		option: TaskFilterOptionsType;
-	}> = [
-			{
-				label: "Recurring mode",
-				filter: filters.recur,
-				option: "recurring",
-			},
-			{
-				label: "Condition mode",
-				filter: filters.showByCondition,
-				option: "condition",
-			},
-		];
-
-	useEffect(() => {
-		radioFilter.map((radio) =>
-			radio.option === taskFilterChoice
-				? radio.filter.setValue(true)
-				: radio.filter.setValue(false),
-		);
-	}, [taskFilterChoice]);
-
 	return (
 		<div>
 			<div className={`${styles.filters} flex-column border`}>
 				<SearchFilter />
 				<StatusFilter />
+				<Modes />
 
-				{radioFilter.map((radio) => (
-					<div className="checkbox" key={radio.label}>
-						<input
-							type="checkbox"
-							name={radio.label}
-							id={radio.label}
-							checked={radio.option === taskFilterChoice}
-							onChange={() => {
-								setTaskFilterChoice(radio.option);
-
-								if (radio.filter.value) {
-									setTaskFilterChoice("all");
-								}
-							}}
-						/>
-
-						<label htmlFor={radio.label}>{radio.label}</label>
-					</div>
-				))}
-
-				<div className="checkbox">
-					<input
-						id="more-filters"
-						type="checkbox"
-						checked={isMoreFiltersOpen}
-						onChange={() => setIsMoreFiltersOpen((prev) => !prev)}
-					/>
-
-					<label htmlFor="more-filters">Show all filters</label>
-				</div>
-
-				{isMoreFiltersOpen && (
-					<>
-						<hr />
-
-						<LimitFilter />
-						<TagFilter />
-						<NoteFilter />
-					</>
-				)}
-
-				<hr />
+				<MoreFilters />
 
 				<SortByType />
 				<SortByOrder />
 				<ShouldSortAfterLimit />
-
 				<hr />
 
 				<div className="flex-between flex-items-center">
