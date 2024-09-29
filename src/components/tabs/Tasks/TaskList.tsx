@@ -48,27 +48,16 @@ export default function TaskList(props: Props): React.JSX.Element {
 		useState<TaskSaveLocation>("default-file");
 	const newTaskTemplate = generateNewTask();
 
-	const filters = useFilters();
-	if (!filters) {
-		return <div>Filters is not defined.</div>;
-	}
-
-	const settings = useSettings();
-	if (!settings) {
-		return <div>Settings is not defined.</div>;
-	}
-
-	const app = useApp();
-	if (!app) {
-		return <div>App is not defined.</div>;
-	}
+	const filters = useFilters()!;
+	const settings = useSettings()!;
+	const app = useApp()!;
 
 	const { workspace } = app;
 
 	const [taskFilterChoice, setTaskFilterChoice] =
 		React.useState<TaskFilterOptionsType>(settings.filterTasksOnOpen);
 	const [isMoreFiltersOpen, setIsMoreFiltersOpen] = useState(
-		settings?.shouldShowAllFilters,
+		settings.shouldShowAllFilters,
 	);
 
 	const addNewTask = (task: Task, setTask?: Function): void => {
