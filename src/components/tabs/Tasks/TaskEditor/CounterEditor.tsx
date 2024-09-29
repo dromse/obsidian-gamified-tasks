@@ -1,69 +1,69 @@
 import { Task } from "@core/types";
 import React from "react";
 
-const CounterEditor = ({
-	newTask,
-	setNewTask,
-}: {
+type CounterEditorProps = {
 	newTask: Task;
-	setNewTask: Function;
-}): React.JSX.Element => {
+	setNewTask: (task: Task) => void;
+};
+
+const CounterEditor = (props: CounterEditorProps): React.JSX.Element => {
+	const { newTask, setNewTask } = props;
+
+	const toggleCounter = (): void => {
+		setNewTask({
+			...newTask,
+			counter: newTask.counter ? undefined : { current: 0, goal: undefined },
+		});
+	};
+
+	const updateCounterField = (
+		field: "current" | "goal",
+		value: number,
+	): void => {
+		if (newTask.counter) {
+			setNewTask({
+				...newTask,
+				counter: {
+					...newTask.counter,
+					[field]: value,
+				},
+			});
+		}
+	};
+
 	return (
 		<>
 			<div className="todo">
 				<input
 					type="checkbox"
-					name="counter"
 					id="counter"
 					checked={Boolean(newTask.counter)}
-					onChange={() => {
-						setNewTask({
-							...newTask,
-							counter: !Boolean(newTask.counter)
-								? { current: 0, goal: undefined }
-								: undefined,
-						});
-					}}
+					onChange={toggleCounter}
 				/>
 
 				<label htmlFor="counter">counter</label>
 			</div>
-			{newTask.counter ? (
+
+			{newTask.counter && (
 				<>
 					<input
 						type="number"
 						placeholder="current"
-						value={newTask.counter?.current}
+						value={newTask.counter.current}
 						onChange={(e) =>
-							setNewTask({
-								...newTask,
-								counter: {
-									current: Number(e.currentTarget.value),
-								},
-							})
+							updateCounterField("current", Number(e.target.value))
 						}
 					/>
 
 					<input
 						type="number"
 						placeholder="goal"
-						value={newTask.counter?.goal}
+						value={newTask.counter.goal ?? ""}
 						onChange={(e) =>
-							setNewTask({
-								...newTask,
-								counter: {
-									current:
-										newTask.counter && newTask.counter.current
-											? newTask.counter.current
-											: 0,
-									goal: Number(e.currentTarget.value),
-								},
-							})
+							updateCounterField("goal", Number(e.target.value))
 						}
 					/>
 				</>
-			) : (
-				<></>
 			)}
 		</>
 	);
