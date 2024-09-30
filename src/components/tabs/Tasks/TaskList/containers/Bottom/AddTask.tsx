@@ -27,7 +27,8 @@ export default function AddTask(): React.JSX.Element {
 	const [isTaskBuilderOpen, setIsTaskBuilderOpen] = React.useState(false);
 	const [taskSaveLocation, setTaskSaveLocation] =
 		React.useState<TaskSaveLocation>("default-file");
-	const newTaskTemplate = generateNewTask();
+	const [newTaskTemplate, setNewTaskTemplate] = React.useState(generateNewTask())
+
 	const app = useApp()!;
 
 	const settings = useSettings()!;

@@ -18,6 +18,10 @@ export const TaskEditor = (props: TaskEditorProps): React.JSX.Element => {
 	const { isOpen, setIsOpen, task, saveTask, children } = props;
 	const [newTask, setNewTask] = React.useState(task);
 
+	React.useEffect(() => {
+		setNewTask(task);
+	}, [task]);
+
 	return (
 		<Dialog isOpen={isOpen} setIsOpen={setIsOpen}>
 			<BodyEditor newTask={newTask} setNewTask={setNewTask} />
