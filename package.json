@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-gamified-tasks",
-	"version": "1.5.1",
+	"version": "1.6.0",
 	"type": "module",
 	"description": "Task management with rewards system.",
 	"main": "main.js",
