@@ -6,18 +6,18 @@ import {
 	getStatusOptionsWithHandlers,
 	handleResetCounter,
 	handleUpdateCheckbox,
-	UpdateTaskPayloadProps
+	UpdateTaskPayloadProps,
 } from "@utils/task";
 import React from "react";
-import Counter from "./Counter";
 import { Menu, MenuOption } from "../../../../reusable/Menu";
 import { TaskEditor } from "../TaskEditor";
+import Counter from "./Counter";
 
+import { useApp } from "@hooks/useApp";
 import useEditTasks from "@hooks/useEditTasks";
-import styles from "../../styles.module.css";
 import useHistory from "@hooks/useHistory";
 import { useSettings } from "@hooks/useSettings";
-import { useApp } from "@hooks/useApp";
+import styles from "../../styles.module.css";
 
 type Props = {
 	task: Task;
@@ -86,7 +86,7 @@ export default function TaskItem(props: Props): React.JSX.Element {
 	}
 
 	const saveNewTask = (newTask: Task): void => {
-		updateTask(task, { ...newTask });
+		updateTask(task, { ...newTask }, { ignore: { bind: true } });
 		setIsTaskEditorOpen(false);
 	};
 
