@@ -38,6 +38,34 @@ export const sortBy =
 				} else if (order === "descending") {
 					return secondTaskFirstCompareValue - firstTaskCompareValue;
 				}
+			} else if (type === "recurring") {
+				const isFirstTaskHasEvery = !!firstTask.every;
+				const isSecondTaskHasEvery = !!secondTask.every;
+
+				if (order === "ascending") {
+					// Recurring tasks at the start
+					if (isFirstTaskHasEvery && !isSecondTaskHasEvery) return -1;
+					if (!isFirstTaskHasEvery && isSecondTaskHasEvery) return 1;
+				} else if (order === "descending") {
+					// Recurring tasks at the end
+					if (isFirstTaskHasEvery && !isSecondTaskHasEvery) return 1;
+					if (!isFirstTaskHasEvery && isSecondTaskHasEvery) return -1;
+				}
+				return 0;
+			} else if (type === "condition") {
+				const isFirstTaskHasEvery = !!firstTask.condition;
+				const isSecondTaskHasEvery = !!secondTask.condition;
+
+				if (order === "ascending") {
+					// Condition tasks at the start
+					if (isFirstTaskHasEvery && !isSecondTaskHasEvery) return -1;
+					if (!isFirstTaskHasEvery && isSecondTaskHasEvery) return 1;
+				} else if (order === "descending") {
+					// Condition tasks at the end
+					if (isFirstTaskHasEvery && !isSecondTaskHasEvery) return 1;
+					if (!isFirstTaskHasEvery && isSecondTaskHasEvery) return -1;
+				}
+				return 0;
 			}
 
 			return 0;

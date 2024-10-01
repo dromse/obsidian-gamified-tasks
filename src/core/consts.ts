@@ -68,5 +68,5 @@ export const middlewares: Array<Middleware> = [
 ];
 
 export const TaskFilterOptions = ["all", "condition", "recurring"] as const;
-export const SortTypeOptions = ["any", "alphabetical", "numerical"] as const;
+export const SortTypeOptions = ["any", "alphabetical", "numerical", "recurring", "condition"] as const;
 export const SortOrderOptions = ["any", "ascending", "descending"] as const;
