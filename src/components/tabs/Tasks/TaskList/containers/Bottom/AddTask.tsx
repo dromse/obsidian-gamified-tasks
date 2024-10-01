@@ -3,6 +3,8 @@ import { Task } from "@core/types";
 import { useApp } from "@hooks/useApp";
 import useEditTasks from "@hooks/useEditTasks";
 import { useSettings } from "@hooks/useSettings";
+import { getDailyNotePath } from "@utils/file";
+import { Notice } from "obsidian";
 import React from "react";
 
 const generateNewTask = (): Task => ({
@@ -14,20 +16,26 @@ const generateNewTask = (): Task => ({
 	status: "todo",
 });
 
-const TaskSaveLocationOptions = ["default-file", "current-file"] as const;
+const TaskSaveLocationOptions = [
+	"default-note",
+	"current-note",
+	"daily-note",
+] as const;
 type TaskSaveLocation = (typeof TaskSaveLocationOptions)[number];
 
 const saveToFileRadios: Array<{ option: TaskSaveLocation; label: string }> = [
-	{ option: "default-file", label: "save to default file" },
-	{ option: "current-file", label: "save to current file" },
+	{ option: "default-note", label: "save to default note" },
+	{ option: "current-note", label: "save to current note" },
+	{ option: "daily-note", label: "save to daily note" },
 ];
 
 export default function AddTask(): React.JSX.Element {
 	const { addTask } = useEditTasks();
 	const [isTaskBuilderOpen, setIsTaskBuilderOpen] = React.useState(false);
 	const [taskSaveLocation, setTaskSaveLocation] =
-		React.useState<TaskSaveLocation>("default-file");
-	const [newTaskTemplate, setNewTaskTemplate] = React.useState(generateNewTask())
+		React.useState<TaskSaveLocation>("default-note");
+	const [newTaskTemplate, setNewTaskTemplate] =
+		React.useState(generateNewTask());
 
 	const app = useApp()!;
 
@@ -36,11 +44,24 @@ export default function AddTask(): React.JSX.Element {
 	const { workspace } = app;
 
 	const addNewTask = (task: Task, setTask?: Function): void => {
-		if (taskSaveLocation === "default-file") {
+		if (taskSaveLocation === "default-note") {
 			if (settings) {
 				task.path = settings.pathToSaveNewTask;
 			}
-		} else if (taskSaveLocation === "current-file") {
+		} else if (taskSaveLocation === "daily-note") {
+			const dailyNotePath = getDailyNotePath(settings);
+
+			const todayTFile = app.vault.getFileByPath(dailyNotePath);
+			if (todayTFile) {
+				task.path = dailyNotePath;
+				new Notice(`Task successfully added to the note!`);
+			} else {
+				new Notice(
+					`'${dailyNotePath}' was not found. \nPlease create a daily note before save a task!`,
+					5000,
+				);
+			}
+		} else if (taskSaveLocation === "current-note") {
 			const activeFile = workspace.getActiveFile();
 
 			if (activeFile) {

@@ -1,10 +1,10 @@
 import { MenuOption } from "@components/reusable/Menu";
-import { DAY_FORMAT } from "@consts";
-import { RawFile } from "@hooks/types";
 import { Status, Task } from "@core/types";
+import { RawFile } from "@hooks/types";
 import { GamifiedTasksSettings } from "@types";
-import { App, moment, Notice, Vault } from "obsidian";
+import { App, Notice, Vault } from "obsidian";
 import { isOutOfScope } from "./check";
+import { getDailyNotePath } from "./file";
 import { logger } from "./logger";
 import { coins } from "./string";
 
@@ -217,15 +217,11 @@ export async function operateYAMLBinding(
 	props: OperateYAMLBindingProps,
 ): Promise<void> {
 	const { task, app, vault, settings, previousTaskState } = props;
-
-	const dailyNotePath = moment().format(
-		`[${settings?.pathToDaily}/]${DAY_FORMAT}[.md]`,
-	);
-	const todayTFile = vault.getFileByPath(dailyNotePath);
-
 	let yamlProperty = `${task.bind}: `;
 	let yamlPropertyValue: unknown = "";
 
+	const dailyNotePath = getDailyNotePath(settings);
+	const todayTFile = vault.getFileByPath(dailyNotePath);
 	if (todayTFile) {
 		const cache = app.metadataCache.getFileCache(todayTFile);
 

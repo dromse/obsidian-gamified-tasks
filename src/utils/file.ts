@@ -1,5 +1,7 @@
+import { DAY_FORMAT } from "@consts";
 import { RawFile } from "@hooks/types";
-import { Vault } from "obsidian";
+import { GamifiedTasksSettings } from "@types";
+import { moment, Vault } from "obsidian";
 
 /** Get array of file lines */
 export function getFileLines(fileContent: string): Array<string> {
@@ -37,3 +39,6 @@ export const appendStartAndIgnoreFrontmatter = (
 
 	return newContent;
 };
+
+export const getDailyNotePath = (settings: GamifiedTasksSettings): string =>
+	moment().format(`[${settings?.pathToDaily}/]${DAY_FORMAT}[.md]`);
