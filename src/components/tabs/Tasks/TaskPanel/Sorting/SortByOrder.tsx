@@ -3,7 +3,7 @@ import React from "react";
 import { SortOrderOptions } from "@core/consts";
 import { SortOrder } from "@core/types";
 import { useSorting } from "@providers/SortingProvider";
-import styles from "../../../../../reusable/styles.module.css";
+import styles from "../../../../reusable/styles.module.css";
 
 export default function SortByOrder(): React.JSX.Element {
 	const { sortByOrder } = useSorting();

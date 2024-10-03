@@ -1,8 +1,8 @@
 import useWatchTasks from "@hooks/useWatchTasks";
 import React from "react";
-import TaskList from "./TaskList";
+import TaskTab from "./TaskTab";
 
-export default function TasksTab(): React.JSX.Element {
+export default function Tasks(): React.JSX.Element {
 	const { tasks, isTasksParsed, watchTasks } = useWatchTasks();
 
 	watchTasks();
@@ -12,7 +12,7 @@ export default function TasksTab(): React.JSX.Element {
 	}
 
 	if (isTasksParsed === "parsed") {
-		return <TaskList tasks={tasks} />;
+		return <TaskTab tasks={tasks} />;
 	}
 
 	if (isTasksParsed === "error") {

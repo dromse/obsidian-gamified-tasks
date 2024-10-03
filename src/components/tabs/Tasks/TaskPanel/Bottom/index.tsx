@@ -3,14 +3,14 @@ import React from "react";
 import AddTask from "./AddTask";
 
 export default function Bottom({
-	amountOfTasks,
+	tasksLength,
 }: {
-	amountOfTasks: number;
+	tasksLength: number;
 }): React.JSX.Element {
 	return (
 		<div className="flex-between flex-items-center">
 			{singularOrPlural({
-				amount: amountOfTasks,
+				amount: tasksLength,
 				singular: "task",
 			})}
 

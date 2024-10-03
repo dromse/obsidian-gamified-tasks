@@ -1,7 +1,7 @@
 import Input from "@components/reusable/Input";
 import { useFilters } from "@providers/FiltersProvider";
 import React, { useState } from "react";
-import styles from "../../../../../reusable/styles.module.css";
+import styles from "../../../../reusable/styles.module.css";
 
 export default function NoteFilter(): React.JSX.Element {
 	const { note, shouldShowCurrentNoteTasks } = useFilters();
