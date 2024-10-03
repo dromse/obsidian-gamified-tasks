@@ -20,6 +20,7 @@ import showByTags from "./setting/showByTags";
 import showDoneDate from "./setting/showCompletedAtDate";
 import showFromCurrentNote from "./setting/showFromCurrentNote";
 import showTasksFromNote from "./setting/showTasksFromNote";
+import toggleCreditMode from "./setting/toggleCreditMode";
 
 /** Class for Setting Tab where user can set default filtering settings for `Grind Manager` */
 export default class GamifiedTasksSettingTab extends PluginSettingTab {
@@ -63,5 +64,8 @@ export default class GamifiedTasksSettingTab extends PluginSettingTab {
 			.setHeading()
 			.setDesc("Change or add new difficulty");
 		changeDifficulty(containerEl, this);
+
+		new Setting(containerEl).setName('Rewards').setHeading()
+		toggleCreditMode(containerEl, this)
 	}
 }

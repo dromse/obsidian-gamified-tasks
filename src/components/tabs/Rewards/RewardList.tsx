@@ -2,15 +2,15 @@ import React, { useState } from "react";
 
 import styles from "./styles.module.css";
 
-import { UseHistoryReturn } from "@hooks/useHistory";
+import { useApp } from "@hooks/useApp";
+import useHistory, { UseHistoryReturn } from "@hooks/useHistory";
 import { Reward } from "@hooks/useRewards";
+import { useSettings } from "@hooks/useSettings";
 import { revealLine } from "@utils/editor";
 import { coins } from "@utils/string";
 import { PiggyBank } from "lucide-react";
 import { Notice } from "obsidian";
 import Depository from "./Depository";
-import { useApp } from "@hooks/useApp";
-import { useSettings } from "@hooks/useSettings";
 
 type RewardListProps = {
 	rewards: ReadonlyArray<Reward>;
@@ -29,7 +29,10 @@ export default function RewardList(props: RewardListProps): React.JSX.Element {
 	return (
 		<div>
 			<div className={`border ${styles.header}`}>
-				<h3>Balance: {coins(balance)}</h3>
+				<h3>
+					Balance: {coins(balance)}
+					<span>{settings?.creditMode ? " [Credit Mode]" : ""}</span>
+				</h3>
 
 				{app && (
 					<button onClick={() => setIsDepositoryOpen((prev) => !prev)}>
@@ -48,43 +51,60 @@ export default function RewardList(props: RewardListProps): React.JSX.Element {
 			<ul className={`list ${styles.list}`}>
 				{rewards.map((reward) => (
 					<li className={`${styles.reward} border`} key={reward.title}>
-						<div>
-							<h3
-								className={styles.title}
-								onClick={() =>
-									revealLine({
-										location: {
-											path: settings!.pathToRewards,
-											lineNumber: reward.lineNumber,
-										},
-										workspace,
-										vault,
-									})
-								}
-							>
-								{reward.title}
-							</h3>
-							<p className={styles.desc}>{reward.desc}</p>
-						</div>
-
-						<button
-							onClick={() => {
-								addHistoryRow({
-									title: reward.title,
-									change: -reward.price,
-								});
-								new Notice(
-									`You purchase '${reward.title}': -${reward.price} ${reward.price > 1 ? "coins" : "coin"
-									}`,
-								);
-							}}
-							disabled={reward.price > balance}
-						>
-							{coins(reward.price)}
-						</button>
+						<RewardInfo reward={reward} />
+						<BuyReward reward={reward} />
 					</li>
 				))}
 			</ul>
+		</div>
+	);
+}
+
+function BuyReward({ reward }: { reward: Reward }): React.JSX.Element {
+	const { addHistoryRow, balance } = useHistory();
+	const settings = useSettings()!;
+
+	return (
+		<button
+			onClick={() => {
+				addHistoryRow({
+					title: reward.title,
+					change: -reward.price,
+				});
+				new Notice(
+					`You purchase '${reward.title}': -${reward.price} ${reward.price > 1 ? "coins" : "coin"
+					}`,
+				);
+			}}
+			disabled={reward.price > balance && !settings.creditMode}
+		>
+			{coins(reward.price)}
+		</button>
+	);
+}
+
+function RewardInfo({ reward }: { reward: Reward }): React.JSX.Element {
+	const settings = useSettings()!;
+	const { workspace, vault } = useApp()!;
+
+	return (
+		<div>
+			<h3
+				className={styles.title}
+				onClick={() =>
+					revealLine({
+						location: {
+							path: settings!.pathToRewards,
+							lineNumber: reward.lineNumber,
+						},
+						workspace,
+						vault,
+					})
+				}
+			>
+				{reward.title}
+			</h3>
+			<p className={styles.desc}>{reward.desc}</p>
 		</div>
 	);
 }
