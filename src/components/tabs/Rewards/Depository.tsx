@@ -4,21 +4,20 @@ import {
 	DEPOSITORY_TRANSACTION_STATE,
 	useDepository
 } from "@hooks/useDepository";
-import { UseHistoryReturn } from "@hooks/useHistory";
+import useHistory from "@hooks/useHistory";
 import { isDigitString } from "@utils/check";
 import { coins } from "@utils/string";
 import { Notice } from "obsidian";
 import React, { useState } from "react";
 import styles from "./styles.module.css";
 
-type DepositoryProps = {
-	history: UseHistoryReturn;
-} & React.ComponentPropsWithoutRef<"div">;
+type DepositoryProps = React.ComponentPropsWithoutRef<"div">;
 
 export default function Depository(props: DepositoryProps): React.JSX.Element {
-	const { history, ...dialogAttributes } = props;
+	const { ...dialogAttributes } = props;
 	const [inputValue, setInputValue] = useState("");
 	const [amount, setAmount] = useState(0);
+	const history = useHistory();
 
 	const { balance, store, restore } = useDepository(history);
 

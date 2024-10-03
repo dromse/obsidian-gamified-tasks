@@ -1,7 +1,7 @@
 import useHistory from "@hooks/useHistory";
 import useRewards from "@hooks/useRewards";
 import React from "react";
-import RewardList from "./RewardList";
+import { RewardTab } from "./RewardTab";
 
 export default function RewardsTab(): React.JSX.Element {
 	const { rewards, isRewardsParsed } = useRewards();
@@ -12,7 +12,7 @@ export default function RewardsTab(): React.JSX.Element {
 	}
 
 	if (isRewardsParsed === "parsed") {
-		return <RewardList rewards={rewards} history={history} />;
+		return <RewardTab rewards={rewards} />;
 	}
 
 	if (isRewardsParsed === "error" || history.isHistoryParsed === "error") {
