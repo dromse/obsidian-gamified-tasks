@@ -2,7 +2,7 @@ import { cleanBody, findByRegex } from "@utils/middleware";
 import { Middleware, Task } from "../types";
 
 const parse = (task: Task): Task => {
-	const regex = /#count\/(\d+)\/?(\d+)?/;
+	const regex = /#count\/(-?\d+)\/?(-?\d+)?/;
 
 	const match = findByRegex(regex, task);
 
@@ -16,7 +16,7 @@ const parse = (task: Task): Task => {
 		...task,
 		counter: {
 			current: Number(match[1]),
-			goal: Number(match[2]),
+			goal: match[2] ? Number(match[2]) : undefined,
 		},
 		body: newBody,
 	};

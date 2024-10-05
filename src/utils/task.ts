@@ -67,7 +67,7 @@ export const updateCounter = async (
 
 	const newCurrent = current + change;
 
-	if (isOutOfScope(newCurrent, goal)) {
+	if (isOutOfScope(newCurrent, goal, settings.negativeCounter)) {
 		return;
 	}
 

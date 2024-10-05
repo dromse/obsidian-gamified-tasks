@@ -37,6 +37,7 @@ export const DEFAULT_SETTINGS: GamifiedTasksSettings = {
 	sortByOrder: "any",
 	shouldSortAfterLimit: false,
 	creditMode: false,
+	negativeCounter: false,
 };
 
 export const DAY_FORMAT = "YYYY-MM-DD" as const;

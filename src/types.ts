@@ -31,6 +31,7 @@ export type GamifiedTasksSettings = {
 	sortByOrder: SortOrder;
 	shouldSortAfterLimit: boolean;
 	creditMode: boolean;
+	negativeCounter: boolean;
 };
 
 export type DifficultySetting = { name: string; price: number };
