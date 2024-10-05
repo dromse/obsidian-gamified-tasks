@@ -2,15 +2,15 @@ import { HistoryRow } from "@hooks/useHistory";
 import React from "react";
 import styles from "./styles.module.css";
 
-type TableProps = {
+type HistoryListProps = {
 	historyRows: Array<HistoryRow>;
 	page: number;
 };
 
-export const Table = ({
+export const HistoryList = ({
 	historyRows,
 	page,
-}: TableProps): React.JSX.Element => (
+}: HistoryListProps): React.JSX.Element => (
 	<table className={styles.table}>
 		<thead>
 			<tr>

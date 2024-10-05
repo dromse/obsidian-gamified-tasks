@@ -3,7 +3,7 @@ import useRewards from "@hooks/useRewards";
 import React from "react";
 import { RewardTab } from "./RewardTab";
 
-export default function RewardsTab(): React.JSX.Element {
+export default function Rewards(): React.JSX.Element {
 	const { rewards, isRewardsParsed } = useRewards();
 	const history = useHistory();
 
