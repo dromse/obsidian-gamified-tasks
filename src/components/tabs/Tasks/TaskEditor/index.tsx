@@ -1,7 +1,7 @@
 import { Task } from "@core/types";
 import { Notice } from "obsidian";
 import React from "react";
-import { Dialog, DialogProps } from "../../../../reusable/Dialog";
+import { Dialog, DialogProps } from "../../../reusable/Dialog";
 import BindEditor from "./BindEditor";
 import BodyEditor from "./BodyEditor";
 import ConditionEditor from "./ConditionEditor";

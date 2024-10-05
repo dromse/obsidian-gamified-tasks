@@ -1,4 +1,4 @@
-import { TaskEditor } from "@components/tabs/Tasks/TaskList/TaskEditor";
+import { TaskEditor } from "@components/tabs/Tasks/TaskEditor";
 import { Task } from "@core/types";
 import { useApp } from "@hooks/useApp";
 import useEditTasks from "@hooks/useEditTasks";
