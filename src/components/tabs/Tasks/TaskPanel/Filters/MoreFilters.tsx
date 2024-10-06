@@ -2,7 +2,7 @@ import { useSettings } from "@hooks/useSettings";
 import React from "react";
 import LimitFilter from "./LimitFilter";
 import NoteFilter from "./NoteFilter";
-import TagFilter from "./NoteFilter";
+import TagFilter from "./TagFilter";
 
 export default function MoreFilters(): React.JSX.Element {
 	const settings = useSettings()!;
