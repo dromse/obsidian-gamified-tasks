@@ -21,6 +21,7 @@ import showDoneDate from "./setting/showCompletedAtDate";
 import showFromCurrentNote from "./setting/showFromCurrentNote";
 import showTasksFromNote from "./setting/showTasksFromNote";
 import toggleCreditMode from "./setting/toggleCreditMode";
+import toggleGroupCollapsed from "./setting/toggleGroupCollapsed";
 import toggleNegativeCounter from "./setting/toggleNegativeCounter";
 
 /** Class for Setting Tab where user can set default filtering settings for `Grind Manager` */
@@ -71,5 +72,6 @@ export default class GamifiedTasksSettingTab extends PluginSettingTab {
 
 		new Setting(containerEl).setName("Tasks").setHeading();
 		toggleNegativeCounter(containerEl, this);
+        toggleGroupCollapsed(containerEl, this)
 	}
 }
