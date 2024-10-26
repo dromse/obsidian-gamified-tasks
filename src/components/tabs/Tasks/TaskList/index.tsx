@@ -12,19 +12,17 @@ export default function TaskList(props: Props): React.JSX.Element {
     const { tasks } = props;
 
     const groupedTasks = tasks.reduce(grouppingFn, []);
-    const ungroupedTasks = tasks.filter((task) => !task.group)
+    const ungroupedTasks = tasks.filter((task) => !task.group);
 
     return (
-        <ul className="list flex-column contains-task-list">
-            {groupedTasks.map(group => <TaskGroup key={group.title} group={group} />)}
+        <ul className='list flex-column contains-task-list'>
+            {groupedTasks.map((group) => (
+                <TaskGroup key={group.title} group={group} />
+            ))}
 
-            {ungroupedTasks.length > 0 ? (
-                ungroupedTasks.map((task) => (
-                    <TaskItem key={`${task.lineNumber}${task.path}`} task={task} />
-                ))
-            ) : (
-                <p>Empty list.</p>
-            )}
+            {ungroupedTasks.map((task) => (
+                <TaskItem key={`${task.lineNumber}${task.path}`} task={task} />
+            ))}
         </ul>
     );
 }

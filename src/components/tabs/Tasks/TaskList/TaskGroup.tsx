@@ -1,15 +1,32 @@
 import { Group } from "@core/types";
+import { Folder, FolderOpen } from "lucide-react";
 import React, { useState } from "react";
 import TaskItem from "./TaskItem";
 
 const TaskGroup = ({ group }: { group: Group }): React.JSX.Element => {
     const [isGroupCollapsed, setIsGroupCollapsed] = useState(false);
 
+    function FolderIcon(): React.JSX.Element {
+        return (
+            <>
+                {isGroupCollapsed ? (
+                    <Folder className='text-accent p-1' />
+                ) : (
+                    <FolderOpen className='text-accent p-1' />
+                )}
+            </>
+        );
+    }
+
     return (
-        <li className='border'>
-            <p onClick={() => setIsGroupCollapsed((prev) => !prev)}>
-                {group.title}
-            </p>
+        <li className='border border-accent p-0'>
+            <div
+                className='flex items-center px-2'
+                onClick={() => setIsGroupCollapsed((prev) => !prev)}
+            >
+                <FolderIcon />
+                <p className='text-accent pl-0.5'>{group.title}</p>
+            </div>
 
             <ul
                 className='list flex-column contains-task-list'
