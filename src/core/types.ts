@@ -162,6 +162,11 @@ export type Task = {
 	counter?: CounterT;
 
 	/**
+	 * Group task tag.
+	 */
+	group?: string
+
+	/**
 	 * Information about conditions
 	 */
 	condition?: {
