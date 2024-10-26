@@ -6,10 +6,10 @@ const TaskGroup = ({ group }: { group: Group }): React.JSX.Element => {
     const [isGroupCollapsed, setIsGroupCollapsed] = useState(false);
 
     return (
-        <div className='border'>
-            <h4 onClick={() => setIsGroupCollapsed((prev) => !prev)}>
+        <li className='border'>
+            <p onClick={() => setIsGroupCollapsed((prev) => !prev)}>
                 {group.title}
-            </h4>
+            </p>
 
             <ul
                 className='list flex-column contains-task-list'
@@ -22,7 +22,7 @@ const TaskGroup = ({ group }: { group: Group }): React.JSX.Element => {
                     />
                 ))}
             </ul>
-        </div>
+        </li>
     );
 };
 
