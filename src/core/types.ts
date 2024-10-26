@@ -10,6 +10,11 @@ export type TaskFilterOptionsType = (typeof TaskFilterOptions)[number];
 export type SortOrder = (typeof SortOrderOptions)[number];
 export type SortType = (typeof SortTypeOptions)[number];
 
+export type Group = {
+    title: string
+    tasks: Array<Task>
+}
+
 /**
  * Represents the status options for filtering tasks.
  */
