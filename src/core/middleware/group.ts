@@ -12,7 +12,7 @@ const parse = (task: Task): Task => {
 
 	const newBody = cleanBody(regex, task);
 
-	return { ...task, every: match[1], body: newBody };
+	return { ...task, group: match[1], body: newBody };
 };
 
 const stringify = (task: Task): string =>
