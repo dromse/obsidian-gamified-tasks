@@ -48,6 +48,8 @@
 		display: flex;
 		justify-content: space-between;
 	}
+
+	@tailwind utilities;
 }
 
 .gamified-tasks__difficulty-setting {

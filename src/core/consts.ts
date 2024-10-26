@@ -7,6 +7,7 @@ import {
 	indention,
 	status
 } from "@core/middleware";
+import group from "./middleware/group";
 import { Middleware, Status } from "./types";
 
 /**
@@ -61,6 +62,7 @@ export const middlewares: Array<Middleware> = [
 	body, // Middleware for handling task body content
 	counter, // Middleware for handling task counters
 	difficulty, // Middleware for handling task difficulty
+	group, // Middleware for handling grouping
 	bind, // Middleware for handling binding to YAML properties in daily notes
 	condition, // Middleware for handling conditions
 	every, // Middleware for handling task recurrence

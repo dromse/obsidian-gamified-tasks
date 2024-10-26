@@ -18,9 +18,9 @@ export default function Tabs(props: Props): React.JSX.Element {
 		<div>
 			<ul className={styles.tabs}>
 				{tabs.map((tab) => (
-					<li className="list-item" key={tab.title}>
+					<li className='list-item' key={tab.title}>
 						<button
-							className={`${tab.title === activeTab.title ? styles.active : ""}`}
+							id={`${tab.title === activeTab.title ? styles.active : ""}`}
 							onClick={() => setActiveTab(tab)}
 						>
 							{tab.title}
