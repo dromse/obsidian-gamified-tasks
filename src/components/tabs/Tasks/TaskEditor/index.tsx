@@ -8,6 +8,7 @@ import ConditionEditor from "./ConditionEditor";
 import CounterEditor from "./CounterEditor";
 import DifficultyEditor from "./DifficultyEditor";
 import EveryEditor from "./EveryEditor";
+import GroupEditor from "./GroupEditor";
 
 type TaskEditorProps = DialogProps & {
 	task: Task;
@@ -27,9 +28,10 @@ export const TaskEditor = (props: TaskEditorProps): React.JSX.Element => {
 			<BodyEditor newTask={newTask} setNewTask={setNewTask} />
 			<DifficultyEditor newTask={newTask} setNewTask={setNewTask} />
 			<CounterEditor newTask={newTask} setNewTask={setNewTask} />
+			<ConditionEditor newTask={newTask} setNewTask={setNewTask} />
 			<BindEditor newTask={newTask} setNewTask={setNewTask} />
 			<EveryEditor newTask={newTask} setNewTask={setNewTask} />
-			<ConditionEditor newTask={newTask} setNewTask={setNewTask} />
+            <GroupEditor newTask={newTask} setNewTask={setNewTask} />
 
 			<>{children}</>
 

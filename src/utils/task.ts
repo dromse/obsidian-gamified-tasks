@@ -88,7 +88,7 @@ export const updateCounter = async (
 
 	const getEarningString = (): string =>
 		task.difficulty
-			? `You ${change > 0 ? "earned" : "returned"}: ${coins(price)}`
+			? `You ${change > 0 ? "earned" : "returned"}: ${coins(price * change)}`
 			: "";
 
 	new Notice(getEarningString());

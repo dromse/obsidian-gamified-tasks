@@ -9,58 +9,71 @@ import styles from "../../styles.module.css";
 import { useSettings } from "@hooks/useSettings";
 
 type CounterProps = {
-	task: Task;
-	addHistoryRow: Function;
+    task: Task;
+    addHistoryRow: Function;
+    changeValue?: number;
 };
 
 export default function Counter(props: CounterProps): React.JSX.Element {
-	const { task, addHistoryRow } = props;
-	const { updateTask } = useEditTasks();
-	const settings = useSettings();
+    const { task, addHistoryRow } = props;
+    let { changeValue } = props;
+    const { updateTask } = useEditTasks();
+    const settings = useSettings();
 
-	if (!settings) {
-		return <div>Settings is not defined!</div>;
-	}
+    if (!changeValue) {
+        changeValue = 1;
+    }
 
-	if (!task.counter) {
-		return <div>Counter is not defined!</div>;
-	}
+    if (!settings) {
+        return <div>Settings is not defined!</div>;
+    }
 
-	const [isButtonBlocked, setIsButtonBlocked] = React.useState(false);
+    if (!task.counter) {
+        return <div>Counter is not defined!</div>;
+    }
 
-	const handleUpdateCounter = (change: number) => async (): Promise<void> => {
-		try {
-			setIsButtonBlocked(true);
+    const [isButtonBlocked, setIsButtonBlocked] = React.useState(false);
 
-			await updateCounter({
-				task,
-				payload: { change },
-				updateTask,
-				addHistoryRow,
-				settings,
-			});
-		} catch (err) {
-			logger(err);
-			new Notice(loggerMsg(err));
-		} finally {
-			setIsButtonBlocked(false);
-		}
-	};
+    const handleUpdateCounter =
+        (change: number) => async (): Promise<void> => {
+            try {
+                setIsButtonBlocked(true);
 
-	return (
-		<div className={`flex-items-center ${styles.counter}`}>
-			<p>
-				{task.counter.current}
-				{task.counter.goal ? " / " + task.counter.goal : ""}
-			</p>
+                await updateCounter({
+                    task,
+                    payload: { change },
+                    updateTask,
+                    addHistoryRow,
+                    settings,
+                });
+            } catch (err) {
+                logger(err);
+                new Notice(loggerMsg(err));
+            } finally {
+                setIsButtonBlocked(false);
+            }
+        };
 
-			<button onClick={handleUpdateCounter(1)} disabled={isButtonBlocked}>
-				+
-			</button>
+    return (
+        <div className={`flex-items-center ${styles.counter}`}>
+            <p>
+                {task.counter.current}
+                {task.counter.goal ? " / " + task.counter.goal : ""}
+            </p>
 
-			<button onClick={handleUpdateCounter(-1)} disabled={isButtonBlocked}>
-				-
-			</button>
-		</div>
-	);
+            <button
+                onClick={handleUpdateCounter(changeValue)}
+                disabled={isButtonBlocked}
+            >
+                +
+            </button>
+
+            <button
+                onClick={handleUpdateCounter(-changeValue)}
+                disabled={isButtonBlocked}
+            >
+                -
+            </button>
+        </div>
+    );
 }
