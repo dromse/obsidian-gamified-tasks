@@ -45,7 +45,7 @@
 	gap: 10px;
 }
 
-@container (max-width: 400px) {
+@container (max-width: 340px) {
 	.reward {
 		text-align: center;
 		flex-direction: column;

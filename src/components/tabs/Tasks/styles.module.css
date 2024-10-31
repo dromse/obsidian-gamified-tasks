@@ -1,5 +1,5 @@
 /* Adjust grid manager `Tasks` layout when the right sidebar width is 500px or less */
-@container (max-width: 400px) {
+@container (max-width: 340px) {
 	.task {
 		flex-direction: column;
 		gap: 5px;

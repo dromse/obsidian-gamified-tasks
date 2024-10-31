@@ -148,7 +148,7 @@ export default function TaskItem(props: Props): React.JSX.Element {
             >
                 <input
                     type='number'
-                    placeholder='optional counter'
+                    placeholder='optional value'
                     value={optionalCounter}
                     onChange={(e) =>
                         setOptionalCounter(e.currentTarget.value)
