@@ -6,16 +6,16 @@ import { revealLine } from "@utils/editor";
 import React from "react";
 import { BuyReward } from "./BuyReward";
 import { RewardInfo } from "./RewardInfo";
-import styles from './styles.module.css'
-import { Dialog } from '@components/reusable/Dialog'
+import styles from "./styles.module.css";
+import { Dialog } from "@components/reusable/Dialog";
 
 const RewardItem = ({ reward }: { reward: Reward }): React.JSX.Element => {
-    const settings = useSettings()!
-    const { vault, workspace } = useApp()!
+    const settings = useSettings()!;
+    const { vault, workspace } = useApp()!;
 
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     const [isBuyMultipleOpen, setIsBuyMultipleOpen] = React.useState(false);
-    const [rewardQuantity, setRewardQuantity] = React.useState("")
+    const [rewardQuantity, setRewardQuantity] = React.useState("");
 
     const options: Array<MenuOption> = [
         {
@@ -28,13 +28,13 @@ const RewardItem = ({ reward }: { reward: Reward }): React.JSX.Element => {
                     },
                     workspace,
                     vault,
-                })
+                }),
         },
         {
             title: "Buy Multiple",
-            handler: () => setIsBuyMultipleOpen(true)
+            handler: () => setIsBuyMultipleOpen(true),
         },
-    ]
+    ];
 
     const getQuantity = (): number => {
         if (isNaN(Number(rewardQuantity)) || Number(rewardQuantity) === 0) {
@@ -42,33 +42,44 @@ const RewardItem = ({ reward }: { reward: Reward }): React.JSX.Element => {
         }
 
         return Number(rewardQuantity);
-    }
+    };
 
     return (
-        <li
-            className={`${styles.reward} border`}
-            onClick={() => setIsMenuOpen(prev => !prev)}
-        >
-            <RewardInfo reward={reward} />
+        <li className={`${styles.reward} border`}>
+            <div onClick={() => setIsMenuOpen((prev) => !prev)} className='w-full'>
+                <RewardInfo reward={reward} />
+            </div>
+
             <BuyReward reward={reward} />
 
-            <Menu isOpen={isMenuOpen} setIsOpen={setIsMenuOpen} options={options} />
+            <Menu
+                isOpen={isMenuOpen}
+                setIsOpen={setIsMenuOpen}
+                options={options}
+            />
 
-            <Dialog isOpen={isBuyMultipleOpen} setIsOpen={setIsBuyMultipleOpen} onClose={() => setRewardQuantity('')}>
+            <Dialog
+                isOpen={isBuyMultipleOpen}
+                setIsOpen={setIsBuyMultipleOpen}
+                onClose={() => setRewardQuantity("")}
+            >
                 <input
-                    type="number"
-                    placeholder="reward quantity"
+                    type='number'
+                    placeholder='reward quantity'
                     value={rewardQuantity}
                     onChange={(e) => setRewardQuantity(e.currentTarget.value)}
                 />
 
-                <BuyReward 
-					onClick={() => { setIsBuyMultipleOpen(false); setIsMenuOpen(false) }} 
-					reward={{ ...reward, price: reward.price * getQuantity() }} 
-				/>
+                <BuyReward
+                    onClick={() => {
+                        setIsBuyMultipleOpen(false);
+                        setIsMenuOpen(false);
+                    }}
+                    reward={{ ...reward, price: reward.price * getQuantity() }}
+                />
             </Dialog>
         </li>
-    )
-}
+    );
+};
 
-export default RewardItem
+export default RewardItem;
