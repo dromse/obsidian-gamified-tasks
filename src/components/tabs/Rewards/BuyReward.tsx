@@ -5,26 +5,40 @@ import { coins } from "@utils/string";
 import { Notice } from "obsidian";
 import React from "react";
 
-export function BuyReward({ reward, onClick }: { reward: Reward, onClick?: Function }): React.JSX.Element {
+export function BuyReward({
+    reward,
+    onClick,
+}: {
+    reward: Reward;
+    onClick?: Function;
+}): React.JSX.Element {
     const { addHistoryRow, balance } = useHistory();
     const settings = useSettings()!;
 
+    const buy = (): void => {
+        addHistoryRow({
+            title: reward.title,
+            change: -reward.price,
+        });
+
+        new Notice(
+            `You purchase '${reward.title}': -${reward.price} ${
+                reward.price > 1 ? "coins" : "coin"
+            }`,
+        );
+
+        onClick && onClick();
+    };
+
+
     return (
-        <button
-            onClick={() => {
-                addHistoryRow({
-                    title: reward.title,
-                    change: -reward.price,
-                });
-                new Notice(
-                    `You purchase '${reward.title}': -${reward.price} ${reward.price > 1 ? "coins" : "coin"
-                    }`,
-                );
-				onClick && onClick()
-            }}
-            disabled={reward.price > balance && !settings.creditMode}
-        >
-            {coins(reward.price)}
-        </button>
+        <>
+            <button
+                onClick={buy}
+                disabled={reward.price > balance && !settings.creditMode}
+            >
+                {coins(reward.price)}
+            </button>
+        </>
     );
 }

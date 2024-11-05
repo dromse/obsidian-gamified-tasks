@@ -3,11 +3,12 @@ import { useApp } from "@hooks/useApp";
 import { Reward } from "@hooks/useRewards";
 import { useSettings } from "@hooks/useSettings";
 import { revealLine } from "@utils/editor";
-import React from "react";
+import React, { useState } from "react";
 import { BuyReward } from "./BuyReward";
 import { RewardInfo } from "./RewardInfo";
 import styles from "./styles.module.css";
 import { Dialog } from "@components/reusable/Dialog";
+import ConfettiExplosion from "react-confetti-explosion";
 
 const RewardItem = ({ reward }: { reward: Reward }): React.JSX.Element => {
     const settings = useSettings()!;
@@ -16,6 +17,9 @@ const RewardItem = ({ reward }: { reward: Reward }): React.JSX.Element => {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     const [isBuyMultipleOpen, setIsBuyMultipleOpen] = React.useState(false);
     const [rewardQuantity, setRewardQuantity] = React.useState("");
+
+    const [centerConfetti, setCenterConfetti] = useState<Array<number>>([]);
+    const [rigthConfetti, setRightConfetti] = useState<Array<number>>([]);
 
     const options: Array<MenuOption> = [
         {
@@ -44,13 +48,54 @@ const RewardItem = ({ reward }: { reward: Reward }): React.JSX.Element => {
         return Number(rewardQuantity);
     };
 
+    const spawnCenterConfetti = (): void => {
+        const id = Date.now();
+        setCenterConfetti((p) => [...p, id]);
+
+        setTimeout(() => {
+            setCenterConfetti((p) => [...p.filter((el) => el !== id)]);
+        }, 2200);
+    };
+
+    const spawnRightConfetti = (): void => {
+        const id = Date.now();
+        setRightConfetti((p) => [...p, id]);
+
+        setTimeout(() => {
+            setRightConfetti((p) => [...p.filter((el) => el !== id)]);
+        }, 2200);
+    };
+
     return (
-        <li className={`${styles.reward} border`}>
-            <div onClick={() => setIsMenuOpen((prev) => !prev)} className='w-full'>
+        <li className={`${styles.reward} border relative`}>
+            <div
+                onClick={() => setIsMenuOpen((prev) => !prev)}
+                className='w-full'
+            >
                 <RewardInfo reward={reward} />
             </div>
 
-            <BuyReward reward={reward} />
+            <BuyReward onClick={spawnRightConfetti} reward={reward} />
+
+            {centerConfetti.map((id) => (
+                <ConfettiExplosion
+                    key={id}
+                    className='absolute w-20 inset-0 m-auto'
+                    force={0.4}
+                    particleCount={15}
+                    width={400}
+                />
+            ))}
+
+            {rigthConfetti.map((id) => (
+                <ConfettiExplosion
+                    key={id}
+                    className='absolute w-20 right-[-40px]'
+                    force={0.4}
+                    particleCount={15}
+                    width={400}
+                />
+            ))}
 
             <Menu
                 isOpen={isMenuOpen}
@@ -74,6 +119,8 @@ const RewardItem = ({ reward }: { reward: Reward }): React.JSX.Element => {
                     onClick={() => {
                         setIsBuyMultipleOpen(false);
                         setIsMenuOpen(false);
+
+                        spawnCenterConfetti();
                     }}
                     reward={{ ...reward, price: reward.price * getQuantity() }}
                 />
