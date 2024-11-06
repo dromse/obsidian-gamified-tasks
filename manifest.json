@@ -6,5 +6,6 @@
 	"description": "Gamify your task management with rewards system, craft your tasks by tags.",
 	"author": "dromse",
 	"authorUrl": "https://github.com/dromse",
-	"isDesktopOnly": false
+	"isDesktopOnly": false,
+    "fundingUrl": "https://ko-fi.com/dromse"
 }
