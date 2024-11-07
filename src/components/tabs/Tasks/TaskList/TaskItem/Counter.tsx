@@ -7,6 +7,7 @@ import React from "react";
 
 import styles from "../../styles.module.css";
 import { useSettings } from "@hooks/useSettings";
+import { Minus, Plus } from "lucide-react";
 
 type CounterProps = {
     task: Task;
@@ -65,14 +66,14 @@ export default function Counter(props: CounterProps): React.JSX.Element {
                 onClick={handleUpdateCounter(changeValue)}
                 disabled={isButtonBlocked}
             >
-                +
+                <Plus className='p-1.5' />
             </button>
 
             <button
                 onClick={handleUpdateCounter(-changeValue)}
                 disabled={isButtonBlocked}
             >
-                -
+                <Minus className='p-1.5' />
             </button>
         </div>
     );
