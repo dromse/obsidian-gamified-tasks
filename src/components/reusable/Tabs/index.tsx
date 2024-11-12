@@ -20,9 +20,8 @@ export default function Tabs(props: Props): React.JSX.Element {
                 {tabs.map((tab) => (
                     <li className='list-item' key={String(tab.title)}>
                         <button
-                            id={`${tab.title === activeTab.title ? styles.active : ""}`}
                             onClick={() => setActiveTab(tab)}
-                            className='pl-1 pr-2'
+                            className={`pl-1 pr-2 ${tab.title === activeTab.title ? "text-accent" : ""}`}
                         >
                             {tab.title}
                         </button>
