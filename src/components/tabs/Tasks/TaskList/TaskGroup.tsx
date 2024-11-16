@@ -1,6 +1,6 @@
 import { Group } from "@core/types";
 import { useSettings } from "@hooks/useSettings";
-import { singularOrPlural } from "@utils/string";
+import { formatTasks, singularOrPlural } from "@utils/string";
 import { Folder, FolderOpen } from "lucide-react";
 import React, { useState } from "react";
 import TaskItem from "./TaskItem";
@@ -23,11 +23,6 @@ const TaskGroup = ({ group }: { group: Group }): React.JSX.Element => {
         );
     }
 
-    const tasksFormattedAmount = singularOrPlural({
-        amount: group.tasks.length,
-        singular: "task",
-    });
-
     const GroupAccordion = (): React.JSX.Element => (
         <div
             className='flex justify-between items-center'
@@ -39,7 +34,7 @@ const TaskGroup = ({ group }: { group: Group }): React.JSX.Element => {
             </div>
 
             <p className='pr-2 text-accent text-[0.65rem]'>
-                {tasksFormattedAmount}
+                {formatTasks(group.tasks.length)}
             </p>
         </div>
     );

@@ -6,7 +6,7 @@ import { App, Notice, Vault } from "obsidian";
 import { isOutOfScope } from "./check";
 import { getDailyNotePath } from "./file";
 import { logger } from "./logger";
-import { coins } from "./string";
+import { formatTasks } from "./string";
 
 /** Parse all occurance of task line in `file` content and then returns task list */
 export function parseTasksFromFile(file: RawFile): Array<Task> {
@@ -88,7 +88,7 @@ export const updateCounter = async (
 
 	const getEarningString = (): string =>
 		task.difficulty
-			? `You ${change > 0 ? "earned" : "returned"}: ${coins(price * change)}`
+			? `You ${change > 0 ? "earned" : "returned"}: ${formatTasks(price * change)}`
 			: "";
 
 	new Notice(getEarningString());
@@ -188,7 +188,7 @@ export async function updateStatus(
 			change: price,
 		});
 
-		new Notice(`You earned: ${coins(price)}`);
+		new Notice(`You earned: ${formatTasks(price)}`);
 		new Notice(`You completed task: '${task.body}'`);
 	}
 
@@ -201,7 +201,7 @@ export async function updateStatus(
 			change: -price,
 		});
 
-		new Notice(`You returned: ${coins(price)}`);
+		new Notice(`You returned: ${formatTasks(price)}`);
 	}
 }
 

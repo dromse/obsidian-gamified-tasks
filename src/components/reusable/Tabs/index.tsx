@@ -17,8 +17,8 @@ export default function Tabs(props: Props): React.JSX.Element {
     return (
         <div>
             <ul className={styles.tabs}>
-                {tabs.map((tab) => (
-                    <li className='list-item' key={String(tab.title)}>
+                {tabs.map((tab, index) => (
+                    <li className='list-item' key={index}>
                         <button
                             onClick={() => setActiveTab(tab)}
                             className={`pl-1 pr-2 ${tab.title === activeTab.title ? "text-accent" : ""}`}

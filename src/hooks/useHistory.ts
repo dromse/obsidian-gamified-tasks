@@ -1,7 +1,7 @@
 import { useApp } from "@hooks/useApp";
 import { useSettings } from "@hooks/useSettings";
 import { isDigitString } from "@utils/check";
-import { currentDate } from "@utils/date";
+import { getCurrentDateWithTime } from "@utils/date";
 import { appendStartAndIgnoreFrontmatter, getFileLines } from "@utils/file";
 import { TFile } from "obsidian";
 import { useEffect, useState } from "react";
@@ -50,7 +50,7 @@ export default function useHistory(): UseHistoryReturn {
 		change,
 		title,
 	}: AddHistoryRowType): Promise<void> {
-		const rowStr = `${change} | ${title} | ${currentDate()}\n`;
+		const rowStr = `${change} | ${title} | ${getCurrentDateWithTime()}\n`;
 
 		if (historyFile) {
 			await vault.process(historyFile, (data) =>

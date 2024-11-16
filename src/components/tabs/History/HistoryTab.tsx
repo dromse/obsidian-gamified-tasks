@@ -23,6 +23,7 @@ export default function HistoryTab({
 					setPage={setPage}
 					search={search}
 					setSearch={setSearch}
+                    historyRows={historyRows}
 				/>
 
 				<HistoryList
