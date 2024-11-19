@@ -39,6 +39,7 @@ export const DEFAULT_SETTINGS: GamifiedTasksSettings = {
     creditMode: false,
     negativeCounter: false,
     isGroupCollapsed: false,
+    customGroups: [],
 };
 
 export const DAY_FORMAT = "YYYY-MM-DD" as const;

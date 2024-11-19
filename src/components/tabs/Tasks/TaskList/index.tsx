@@ -1,5 +1,6 @@
 import { Task } from "@core/types";
-import { grouppingFn } from "@utils/group";
+import { useSettings } from "@hooks/useSettings";
+import { groupTasks } from "@utils/group";
 import React from "react";
 import TaskGroup from "./TaskGroup";
 import TaskItem from "./TaskItem";
@@ -11,14 +12,17 @@ type Props = {
 export default function TaskList(props: Props): React.JSX.Element {
     const { tasks } = props;
 
-    const groupedTasks = tasks.reduce(grouppingFn, []);
+    const settings = useSettings()!;
+    const groupedTasks = tasks.reduce(groupTasks(settings.customGroups), []);
     const ungroupedTasks = tasks.filter((task) => !task.group);
 
     return (
         <ul className='list flex-column contains-task-list'>
-            {groupedTasks.map((group) => (
-                <TaskGroup key={group.title} group={group} />
-            ))}
+            {groupedTasks
+                .sort((a, b) => b.metadata.priority - a.metadata.priority)
+                .map((group) => (
+                    <TaskGroup key={group.metadata.id} group={group} />
+                ))}
 
             {ungroupedTasks.map((task) => (
                 <TaskItem key={`${task.lineNumber}${task.path}`} task={task} />
