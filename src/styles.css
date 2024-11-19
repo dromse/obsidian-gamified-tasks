@@ -1,69 +1,91 @@
 [data-type="gamified-tasks-view"] {
-	.view-content {
-		padding: 5px;
+    .view-content {
+        padding: 5px;
 
-		/* Based on right sidebar width it will adapt layouts to various screens */
-		container-type: size;
-	}
+        /* Based on right sidebar width it will adapt layouts to various screens */
+        container-type: size;
+    }
 
-	.checkbox {
-		display: flex;
-		align-items: center;
-		gap: 10px;
-	}
+    .checkbox {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
 
-	.list-item {
-		list-style-type: none;
-	}
+    .list-item {
+        list-style-type: none;
+    }
 
-	.todo {
-		display: flex;
-		align-items: center;
-	}
+    .todo {
+        display: flex;
+        align-items: center;
+    }
 
-	.list {
-		padding: 0;
-		padding-inline-start: none;
-	}
+    .list {
+        padding: 0;
+        padding-inline-start: none;
+    }
 
-	.border {
-		border: 1px solid var(--divider-color);
-		border-radius: 5px;
-		padding: 10px;
-	}
+    .border {
+        border: 1px solid var(--divider-color);
+        border-radius: 5px;
+        padding: 10px;
+    }
 
-	.flex-items-center {
-		display: flex;
-		align-items: center;
-		gap: 10px;
-	}
+    .flex-items-center {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
 
-	.flex-column {
-		display: flex;
-		flex-direction: column;
-		gap: 10px;
-	}
+    .flex-column {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
 
-	.flex-between {
-		display: flex;
-		justify-content: space-between;
-	}
+    .flex-between {
+        display: flex;
+        justify-content: space-between;
+    }
 
-	@tailwind utilities;
+    @tailwind utilities;
 }
 
 .gamified-tasks__difficulty-setting {
-	display: flex;
-	flex-direction: column;
-	gap: 25px;
+    padding-left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
 }
 
 .gamified-tasks__difficulty-entry {
-	display: flex;
-	gap: 15px;
-	align-items: center;
+    display: flex;
+    gap: 15px;
+    align-items: center;
 
-	& > input {
-		width: 100%;
-	}
+    &>input {
+        width: 100%;
+    }
+}
+
+.gamified-tasks__group-setting {
+    padding-left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+
+    .gamified-tasks__group-entry {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+
+        &>input {
+            width: 100%;
+        }
+    }
+
+    & .setting-item-control {
+        display: grid;
+    }
 }

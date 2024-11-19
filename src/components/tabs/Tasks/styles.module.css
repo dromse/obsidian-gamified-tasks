@@ -31,10 +31,10 @@
 }
 
 .difficulty {
-	font-size: 0.75rem;
+	font-size: 0.65rem;
 	position: absolute;
 	color: var(--tag-color);
-	top: 0.125rem;
+	top: 0.225rem;
 	right: 0.55rem;
 }
 

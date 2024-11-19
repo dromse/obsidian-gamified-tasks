@@ -1,23 +1,30 @@
 import { Group } from "@core/types";
 import { useSettings } from "@hooks/useSettings";
-import { formatTasks, singularOrPlural } from "@utils/string";
+import { formatTasks } from "@utils/string";
 import { Folder, FolderOpen } from "lucide-react";
 import React, { useState } from "react";
 import TaskItem from "./TaskItem";
 
 const TaskGroup = ({ group }: { group: Group }): React.JSX.Element => {
     const settings = useSettings()!;
+
     const [isGroupCollapsed, setIsGroupCollapsed] = useState(
         settings.isGroupCollapsed,
     );
+
+    const groupColor = group.metadata.color ? group.metadata.color : "var(--tag-color)";
+    const groupTitle = group.metadata.title ? group.metadata.title : group.metadata.id;
 
     function FolderIcon(): React.JSX.Element {
         return (
             <>
                 {isGroupCollapsed ? (
-                    <Folder className='text-accent p-1' />
+                    <Folder className='p-1' style={{ color: groupColor }} />
                 ) : (
-                    <FolderOpen className='text-accent p-1' />
+                    <FolderOpen
+                        className='p-1'
+                        style={{ color: groupColor }}
+                    />
                 )}
             </>
         );
@@ -30,10 +37,11 @@ const TaskGroup = ({ group }: { group: Group }): React.JSX.Element => {
         >
             <div className='flex items-center px-2'>
                 <FolderIcon />
-                <p className='text-accent pl-0.5'>{group.title}</p>
+
+                <p style={{ color: groupColor }}>{groupTitle}</p>
             </div>
 
-            <p className='pr-2 text-accent text-[0.65rem]'>
+            <p className='pr-2 text-[0.65rem]' style={{color: groupColor}}>
                 {formatTasks(group.tasks.length)}
             </p>
         </div>
@@ -51,7 +59,7 @@ const TaskGroup = ({ group }: { group: Group }): React.JSX.Element => {
     );
 
     return (
-        <li className='border border-accent p-0'>
+        <li className='border p-0' style={{ borderColor: groupColor }}>
             <GroupAccordion />
             <GroupTasks />
         </li>

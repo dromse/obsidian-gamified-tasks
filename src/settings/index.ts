@@ -2,6 +2,7 @@ import GamifiedTasksPlugin from "@main";
 import { App, PluginSettingTab, Setting } from "obsidian";
 import changeCompletedAtFormat from "./setting/changeCompletedAtFormat";
 import changeDifficulty from "./setting/changeDifficulty";
+import customizeGroups from "./setting/customizeGroups";
 
 import excludeFilesFromParsing from "./setting/excludeFilesFromParsing";
 import filterTasksOnOpenBy from "./setting/filterTasksOnOpenBy";
@@ -72,6 +73,10 @@ export default class GamifiedTasksSettingTab extends PluginSettingTab {
 
 		new Setting(containerEl).setName("Tasks").setHeading();
 		toggleNegativeCounter(containerEl, this);
+
+		new Setting(containerEl).setName("Groups").setHeading();
         toggleGroupCollapsed(containerEl, this)
+		new Setting(containerEl).setName("Custom Groups");
+        customizeGroups(containerEl, this)
 	}
 }
