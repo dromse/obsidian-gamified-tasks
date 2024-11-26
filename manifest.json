@@ -1,7 +1,7 @@
 {
 	"id": "grind-manager",
 	"name": "Gamified Tasks",
-	"version": "1.8.1",
+	"version": "1.9.0",
 	"minAppVersion": "1.5.12",
 	"description": "Gamify your task management with rewards system, craft your tasks by tags.",
 	"author": "dromse",
