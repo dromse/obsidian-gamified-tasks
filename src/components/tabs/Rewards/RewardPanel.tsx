@@ -1,6 +1,6 @@
 import useHistory from "@hooks/useHistory";
 import { useSettings } from "@hooks/useSettings";
-import { formatTasks } from "@utils/string";
+import { formatCoins } from "@utils/string";
 import { PiggyBank } from "lucide-react";
 import React from "react";
 import Depository from "./Depository";
@@ -15,7 +15,7 @@ export function RewardPanel(): React.JSX.Element {
 		<div>
 			<div className={`border ${styles.header}`}>
 				<h3>
-					Balance: {formatTasks(balance)}
+					Balance: {formatCoins(balance)}
 					<span>{settings?.creditMode ? " [Credit Mode]" : ""}</span>
 				</h3>
 
