@@ -1,7 +1,7 @@
 import useHistory from "@hooks/useHistory";
 import { Reward } from "@hooks/useRewards";
 import { useSettings } from "@hooks/useSettings";
-import { formatTasks } from "@utils/string";
+import { formatCoins } from "@utils/string";
 import { Notice } from "obsidian";
 import React from "react";
 
@@ -22,14 +22,11 @@ export function BuyReward({
         });
 
         new Notice(
-            `You purchase '${reward.title}': -${reward.price} ${
-                reward.price > 1 ? "coins" : "coin"
-            }`,
+            `You purchase '${reward.title}': -${formatCoins(reward.price)}`,
         );
 
         onClick && onClick();
     };
-
 
     return (
         <>
@@ -37,7 +34,7 @@ export function BuyReward({
                 onClick={buy}
                 disabled={reward.price > balance && !settings.creditMode}
             >
-                {formatTasks(reward.price)}
+                {formatCoins(reward.price)}
             </button>
         </>
     );

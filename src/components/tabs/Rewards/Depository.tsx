@@ -1,12 +1,12 @@
 import Input from "@components/reusable/Input";
 import {
-	DepositoryTransactionState,
-	DEPOSITORY_TRANSACTION_STATE,
-	useDepository
+    DepositoryTransactionState,
+    DEPOSITORY_TRANSACTION_STATE,
+    useDepository
 } from "@hooks/useDepository";
 import useHistory from "@hooks/useHistory";
 import { isDigitString } from "@utils/check";
-import { formatTasks } from "@utils/string";
+import { formatCoins } from "@utils/string";
 import { Notice } from "obsidian";
 import React, { useState } from "react";
 import styles from "./styles.module.css";
@@ -78,7 +78,7 @@ export default function Depository(props: DepositoryProps): React.JSX.Element {
 
 	return (
 		<div {...dialogAttributes}>
-			<div>Depository: {formatTasks(balance)}</div>
+			<div>Depository: {formatCoins(balance)}</div>
 
 			<Input
 				type="number"
