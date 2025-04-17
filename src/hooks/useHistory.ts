@@ -83,7 +83,7 @@ export default function useHistory(): UseHistoryReturn {
 		fetchHistory();
 
 		vault.on("modify", fetchHistory);
-		return () => vault.off("modify", fetchHistory);
+		return (): void => vault.off("modify", fetchHistory);
 	}, []);
 
 	return { historyRows, balance, isHistoryParsed, addHistoryRow };

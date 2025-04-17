@@ -21,7 +21,7 @@ export const Dialog = (props: DialogProps): React.JSX.Element => {
     React.useEffect(() => {
         window.addEventListener('keydown', handleKeyDown);
 
-        return () => {
+        return (): void => {
             window.removeEventListener('keydown', handleKeyDown);
         };
     }, []);
@@ -38,10 +38,10 @@ export const Dialog = (props: DialogProps): React.JSX.Element => {
         }
 
         if (!isOpen && onClose) {
-            onClose()
+            onClose();
         }
 
-        return () => {
+        return (): void => {
             document.removeEventListener("click", onClick);
         };
     }, [isOpen]);

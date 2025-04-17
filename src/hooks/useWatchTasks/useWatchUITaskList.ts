@@ -137,7 +137,7 @@ export default function useWatchUITaskList(): Result {
 			};
 
 			workspace.on("active-leaf-change", handleActiveFile);
-			return () => workspace.off("active-leaf-change", handleActiveFile);
+			return (): void => workspace.off("active-leaf-change", handleActiveFile);
 		}, [
 			...Object.values(filters).map(({ value }) => value),
 			...Object.values(sorting).map(({ value }) => value),

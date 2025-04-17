@@ -57,7 +57,7 @@ export default function useRewards(): UseRewardsReturn {
 		fetchRewards();
 
 		vault.on("modify", fetchRewards);
-		return () => vault.off("modify", fetchRewards);
+		return (): void => vault.off("modify", fetchRewards);
 	}, []);
 
 	return { rewards, isRewardsParsed };

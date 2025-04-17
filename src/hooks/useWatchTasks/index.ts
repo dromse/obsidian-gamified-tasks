@@ -46,7 +46,7 @@ export default function useWatchTasks(): UseTasksResult {
 			syncTasksForUI();
 
 			vault.on("modify", syncTasksForUI);
-			return () => vault.off("modify", syncTasksForUI);
+			return (): void => vault.off("modify", syncTasksForUI);
 		}, []);
 
 		watchUITaskList();
