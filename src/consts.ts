@@ -13,7 +13,7 @@ const DefaultDifficulties = [
 
 export const DEFAULT_SETTINGS: GamifiedTasksSettings = {
     limit: 10,
-    statusFilter: "all",
+    statusFilter: [],
     isRecurTasks: false,
     pathToRewards: "rewards.md",
     pathToHistory: "history.md",

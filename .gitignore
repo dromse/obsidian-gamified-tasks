@@ -22,6 +22,6 @@ data.json
 .DS_Store
 pnpm-lock.yaml
 
-build
+build*
 dist
 coverage
