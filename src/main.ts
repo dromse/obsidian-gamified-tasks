@@ -4,6 +4,7 @@ import { GamifiedTasksSettings } from "@types";
 import { logger } from "@utils/logger";
 import { Plugin, WorkspaceLeaf } from "obsidian";
 import GamifiedTasksSettingTab from "./settings";
+import { Status } from "@core/types";
 
 export default class GamifiedTasksPlugin extends Plugin {
 	settings: GamifiedTasksSettings;
@@ -70,10 +71,21 @@ export default class GamifiedTasksPlugin extends Plugin {
 		logger(`v${this.manifest.version} is unloaded.`);
 	}
 
-	async loadSettings(): Promise<void> {
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
-	}
-
+    async loadSettings(): Promise<void> {
+        const loaded = await this.loadData();
+        this.settings = Object.assign({}, DEFAULT_SETTINGS, loaded);
+    
+        // Backward compatibility: convert string to array for statusFilter
+        if (typeof this.settings.statusFilter === "string") {
+            // Adjust this split logic if your old string format is different
+            this.settings.statusFilter = this.settings.statusFilter
+                .split(",")
+                .map(s => s.trim())
+                .filter(Boolean) as Array<Status>;
+            // Optionally, save the updated settings to persist the migration
+            await this.saveSettings();
+        }
+    }
 	async saveSettings(): Promise<void> {
 		await this.saveData(this.settings);
 	}

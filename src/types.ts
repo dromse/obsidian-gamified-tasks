@@ -14,7 +14,7 @@ export type GamifiedTasksSettings = {
     pathToSaveNewTask: string;
 
     limit: number | undefined;
-    statusFilter: Array<Status>;
+    statusFilter: Array<Status> | string;
     isRecurTasks: boolean;
     tagFilter: string;
     hasOnlyThisTags: boolean;
