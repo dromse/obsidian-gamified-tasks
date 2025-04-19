@@ -14,8 +14,6 @@ export default function StatusFilter(): React.JSX.Element {
 
 	return (
 		<div className="flex-items-center">
-
-
 			<label htmlFor="status">Filter by status</label>
 			{/* Exclude Statuses Checkbox */}
 			<div className={styles.statusCheckboxRow}>
