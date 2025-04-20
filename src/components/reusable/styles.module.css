@@ -17,15 +17,3 @@
 	text-align: center;
 	padding: 0 0.2rem;
 }
-
-.statusCheckboxRow {
-	display: flex;
-	flex-direction: row;
-	gap: 1rem;
-}
-
-.statusCheckboxItem {
-	display: flex;
-	align-items: center;
-	gap: 0.3rem;
-}

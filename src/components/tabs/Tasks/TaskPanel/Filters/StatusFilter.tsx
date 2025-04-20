@@ -15,27 +15,26 @@ export default function StatusFilter(): React.JSX.Element {
 	return (
 		<div className="flex-items-center">
 			<label htmlFor="status">Filter by status</label>
-			{/* Exclude Statuses Checkbox */}
-			<div className={styles.statusCheckboxRow}>
-				{statusOptions.map((s) => (
-					<div key={s} className={styles.statusCheckboxItem}>
-						<input
-							type="checkbox"
-							id={s}
-							name={s}
-							checked={statusValue.includes(s)}
-							onChange={(e) => {
-								const newStatuses = e.target.checked
-									? [...statusValue, s]
-									: statusValue.filter((v) => v !== s);
-								setStatus(newStatuses);
-							}}
-							value={s}
-						/>
-						<label htmlFor={s}>{s}</label>
-					</div>
-				))}
-			</div>
+            <div className="
+                flex gap-2 flex-wrap
+            ">
+              {statusOptions.map((s) => (
+                <label key={s} className="flex items-center gap-1 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={statusValue.includes(s)}
+                    onChange={() => {
+                      const newStatuses = statusValue.includes(s)
+                        ? statusValue.filter((v) => v !== s)
+                        : [...statusValue, s];
+                      setStatus(newStatuses);
+                    }}
+                    className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  />
+                  <span className="text-gray-700">{s}</span>
+                </label>
+              ))}
+            </div>
 		</div>
 	);
 }
