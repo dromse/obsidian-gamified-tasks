@@ -75,7 +75,10 @@ export default class GamifiedTasksPlugin extends Plugin {
         const loaded = await this.loadData();
         this.settings = Object.assign({}, DEFAULT_SETTINGS, loaded);
     
-        // Backward compatibility: convert string to array for statusFilter
+        await this.migrateStatusFilter();
+    }
+
+    private async migrateStatusFilter(): Promise<void> {
         if (typeof this.settings.statusFilter === "string") {
             // Adjust this split logic if your old string format is different
             this.settings.statusFilter = this.settings.statusFilter
@@ -86,6 +89,7 @@ export default class GamifiedTasksPlugin extends Plugin {
             await this.saveSettings();
         }
     }
+
 	async saveSettings(): Promise<void> {
 		await this.saveData(this.settings);
 	}
