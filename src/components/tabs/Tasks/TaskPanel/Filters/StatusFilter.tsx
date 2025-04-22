@@ -50,7 +50,7 @@ export default function StatusFilter(): React.JSX.Element {
   const statusValue = status.value
   const setStatus = status.setValue
 
-  const toggleCollapse = () => {
+  const toggleCollapse = (): void => {
     setIsCollapsed(!isCollapsed)
   }
 
