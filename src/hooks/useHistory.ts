@@ -105,32 +105,20 @@ function calcBalance(history: Array<HistoryRow>): number {
  * - Line in file: +1 | do a push up | 2024-01-01 12:00 -> { title: 'do a push up', change: 1, date: "2024-01-01 12:00" }
  */
 export function parseHistory(content: string): Array<HistoryRow> {
-	const lines = getFileLines(content);
-
-	const splitedLines = lines.reduce<Array<Array<string>>>((acc, line) => {
-		const newLine = line
-			.split(" | ")
-			.map((item) => item.trim())
-			.slice(0, 3);
-
-		if (newLine.length > 0 && newLine[0] !== "") {
-			acc.push(newLine);
-		}
-
-		return acc;
-	}, []);
-
-	const history = splitedLines.reduce<Array<HistoryRow>>((acc, line) => {
-		if (line.length === 3 && isDigitString(line[0])) {
-			acc.push({
-				change: Number(line[0]),
-				title: line[1],
-				date: line[2],
-			});
-		}
-
-		return acc;
-	}, []);
-
-	return history;
+    // Example line: +1 | do a push up | 2024-01-01 12:00
+    // Regex: ^([+-]?\d+(?:\.\d+)?)\s*\|\s*(.*?)\s*\|\s*(\d{4}-\d{2}-\d{2} \d{2}:\d{2})$
+    const regex = /^([+-]?\d+(?:\.\d+)?)\s*\|\s*(.*?)\s*\|\s*(\d{4}-\d{2}-\d{2} \d{2}:\d{2})$/;
+    const lines = getFileLines(content);
+    const history: Array<HistoryRow> = [];
+    for (const line of lines) {
+        const match = line.match(regex);
+        if (match) {
+            history.push({
+                change: Number(match[1]),
+                title: match[2],
+                date: match[3],
+            });
+        }
+    }
+    return history;
 }
