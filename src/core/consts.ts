@@ -39,12 +39,14 @@ export const StatusMarkdown: Record<Status, string> = {
 	 * Represents a task that has been delayed.
 	 */
 	delay: "?",
+
 };
 
 /**
  * Array of status keys.
  */
 export const StatusKeys = Object.keys(StatusMarkdown) as Array<Status>;
+
 
 /**
  * Gamified Tasks uses middlewares for parsing tasks metadata (tags) and stringifying back to markdown line.

@@ -1,5 +1,5 @@
 import { HistoryRow } from "@hooks/useHistory";
-import { Task } from "@core/types";
+import { Status, Task } from "@core/types";
 import { GamifiedTasksSettings } from "@types";
 import { Workspace } from "obsidian";
 import { generatePastDaysArray, getAmountOfPastDays } from "./date";
@@ -68,21 +68,17 @@ export const byNote =
  * Use currying to set status filter and return callback to call in filter
  */
 export const byStatus =
-	(statusFilter: string) =>
+	(statusFilter: Array<Status>) =>
 		(task: Task): boolean => {
-			if (statusFilter === "all") {
-				return true;
-			}
-
 			if (!task.status) {
 				return false;
 			}
 
-			if (statusFilter === task.status) {
+			if (statusFilter.length === 0) {
 				return true;
 			}
 
-			return false;
+			return statusFilter.includes(task.status);
 		};
 
 /**

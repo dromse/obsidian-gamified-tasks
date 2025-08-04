@@ -19,7 +19,7 @@ export default (
             groupList.appendChild(groupItem);
 
             const generateMetadataInput =
-                (metadataField: keyof GroupMetadata) => (t: TextComponent) =>
+                (metadataField: keyof GroupMetadata) => (t: TextComponent): TextComponent =>
                     t
                         .setPlaceholder(metadataField)
                         .setValue(String(metadata[metadataField]))

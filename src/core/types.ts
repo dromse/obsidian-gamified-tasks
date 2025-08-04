@@ -61,7 +61,7 @@ export type TaskFilters = {
     /**
      * The status filter option for tasks.
      */
-    status: State<StatusFilterOption>;
+    status: State<Array<Status>>;
 
     /**
      * Indicates whether tasks are recurring.

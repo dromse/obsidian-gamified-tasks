@@ -37,15 +37,22 @@ export default (
 						.setPlaceholder("price")
 						.setValue(String(diff.price))
 						.onChange(async (newPrice) => {
-							const index = context.plugin.settings.difficulties.findIndex(
-								(settingDiff) => settingDiff.name === diff.name,
-							);
-
-							context.plugin.settings.difficulties[index].price =
-								Number(newPrice);
-
-							await context.plugin.saveSettings();
-						}),
+                            const index = context.plugin.settings.difficulties.findIndex(
+                                (settingDiff) => settingDiff.name === diff.name,
+                            );
+                        
+                            context.plugin.settings.difficulties[index].price = Number(newPrice);
+                        
+                            await context.plugin.saveSettings();
+                        })
+                        .inputEl.addEventListener("blur", async () => {
+                            // Sort and re-render when input lose focus
+                            context.plugin.settings.difficulties.sort((a, b) => a.price - b.price);
+                            difficultyList.empty();
+                            refreshDifficulty();
+                            await context.plugin.saveSettings();
+                             
+                        })
 				)
 				.addButton((b) =>
 					b.setButtonText("x").onClick(async () => {

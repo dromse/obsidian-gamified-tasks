@@ -1,4 +1,4 @@
-import { StatusFilterOption, TaskFilters } from "@core/types";
+import { Status, StatusFilterOption, TaskFilters } from "@core/types";
 import React from "react";
 
 export const FiltersContext = React.createContext<TaskFilters | undefined>(
@@ -19,10 +19,9 @@ export default function FiltersProvider({
 	children,
 }: React.PropsWithChildren): React.JSX.Element {
 	const [limit, setLimit] = React.useState(0);
-	const [status, setStatus] = React.useState<StatusFilterOption>("all");
+	const [status, setStatus] = React.useState<Array<Status>>([]);
 	const [isRecur, setIsRecur] = React.useState(false);
-	const [shouldShowByCondition, setShouldShowByCondition] =
-		React.useState(false);
+	const [shouldShowByCondition, setShouldShowByCondition] = React.useState(false);
 	const [search, setSearch] = React.useState("");
 	const [tagsFilter, setTagsFilter] = React.useState("");
 	const [hasOnlyThisTags, setHasOnlyThisTags] = React.useState(false);

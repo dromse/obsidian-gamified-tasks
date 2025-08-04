@@ -2,7 +2,7 @@ import {
     GroupMetadata,
     SortOrder,
     SortType,
-    StatusFilterOption,
+    Status,
     TaskFilterOptionsType
 } from "@core/types";
 
@@ -14,7 +14,7 @@ export type GamifiedTasksSettings = {
     pathToSaveNewTask: string;
 
     limit: number | undefined;
-    statusFilter: StatusFilterOption;
+    statusFilter: Array<Status> | string;
     isRecurTasks: boolean;
     tagFilter: string;
     hasOnlyThisTags: boolean;
