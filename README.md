@@ -33,6 +33,10 @@ Explore how to get started with Gamified Tasks by checking out our [Getting Star
 - [obsidian-pomodoro-timer](https://github.com/eatgrass/obsidian-pomodoro-timer)
 - [Habitica](https://habitica.com/)
 
+## Philosophy 
+
+The main idea is to use a plugin as an average to‑do list, but powered with earning coins, keeping it as simple as possible and automating actions around it.
+
 ## Can I contribute?
 
 Yes, of course!
