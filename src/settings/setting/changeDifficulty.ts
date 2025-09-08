@@ -85,4 +85,22 @@ export default (
 			await context.plugin.saveSettings();
 		}),
 	);
+
+	// add a selection for a default difficulty
+	new Setting(containerEl)
+		.setName("Default difficulty")
+		.setDesc("The default difficulty for new tasks")
+		.addDropdown((d) => {
+			// add all difficulties and "none"
+			context.plugin.settings.difficulties.forEach((diff) => {
+				d.addOption(diff.name, `${diff.name} (${diff.price} coins)`);
+			});
+			d.addOption("none", "none");
+			d.setValue(context.plugin.settings.defaultDifficulty);
+
+			d.onChange(async (newDiff) => {
+				context.plugin.settings.defaultDifficulty = newDiff;
+				await context.plugin.saveSettings();
+			});
+		});
 };

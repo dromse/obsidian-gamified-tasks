@@ -7,15 +7,6 @@ import { getDailyNotePath } from "@utils/file";
 import { Notice } from "obsidian";
 import React from "react";
 
-const generateNewTask = (): Task => ({
-	path: "",
-	lineContent: "",
-	body: "",
-	lineNumber: 0,
-	// the only necessary thing below
-	status: "todo",
-});
-
 const TaskSaveLocationOptions = [
 	"default-note",
 	"current-note",
@@ -30,18 +21,29 @@ const saveToFileRadios: Array<{ option: TaskSaveLocation; label: string }> = [
 ];
 
 export default function AddTask(): React.JSX.Element {
-	const { addTask } = useEditTasks();
-	const [isTaskBuilderOpen, setIsTaskBuilderOpen] = React.useState(false);
-	const [taskSaveLocation, setTaskSaveLocation] =
-		React.useState<TaskSaveLocation>("default-note");
-	const [newTaskTemplate, setNewTaskTemplate] =
-		React.useState(generateNewTask());
+		const { addTask } = useEditTasks();
+		const [isTaskBuilderOpen, setIsTaskBuilderOpen] = React.useState(false);
+		const [taskSaveLocation, setTaskSaveLocation] =
+			React.useState<TaskSaveLocation>("default-note");
 
-	const app = useApp()!;
+		const app = useApp()!;
 
-	const settings = useSettings()!;
+		const settings = useSettings()!;
 
-	const { workspace } = app;
+		const { workspace } = app;
+
+		// Helper to create a new task template based on current settings
+		const generateNewTask = (): Task => ({
+			path: "",
+			lineContent: "",
+			body: "",
+			lineNumber: 0,
+			status: "todo",
+			difficulty: settings.defaultDifficulty || "none",
+		});
+
+		const [newTaskTemplate, setNewTaskTemplate] =
+			React.useState<Task>(() => generateNewTask());
 
 	const addNewTask = (task: Task, setTask?: Function): void => {
 		if (taskSaveLocation === "default-note") {
