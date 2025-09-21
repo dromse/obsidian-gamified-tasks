@@ -23,7 +23,7 @@ const RewardItem = ({ reward }: { reward: Reward }): React.JSX.Element => {
 
     const options: Array<MenuOption> = [
         {
-            title: "Reveal Task",
+            title: "Reveal Reward",
             handler: () =>
                 revealLine({
                     location: {
