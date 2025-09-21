@@ -33,6 +33,8 @@ export type GamifiedTasksSettings = {
     isCompletedAtEnabled: boolean;
     completedAtFormat: string;
     difficulties: Array<DifficultySetting>;
+    defaultDifficulty: string;
+
     filterTasksOnOpen: TaskFilterOptionsType;
 
     creditMode: boolean;
