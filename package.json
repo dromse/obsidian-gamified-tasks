@@ -6,7 +6,7 @@
 	"main": "main.js",
 	"scripts": {
 		"dev:build": "shx rm -rf build && tsc -noEmit -skipLibCheck && node esbuild.config.mjs && shx cp manifest.json build && tailwindcss -i src/styles.css -o build/styles.css && shx cat build/main.css >> build/styles.css && shx rm build/main.css && shx touch build/.hotreload",
-		"build": "shx rm -rf build && node esbuild.config.mjs production && shx cp manifest.json build && npx tailwindcss -i src/styles.css -o build/styles.css && shx cat build/main.css >> build/styles.css && shx rm build/main.css",
+		"build": "shx rm -rf build && node esbuild.config.mjs production && shx cp manifest.json build && npx @tailwindcss/cli -i src/styles.css -o build/styles.css && shx cat build/main.css >> build/styles.css && shx rm build/main.css",
 		"watch": "nodemon --ignore build/ -e ts,tsx,css --exec \"pnpm build\" ",
 		"docs": "typedoc",
 		"lint": "eslint .",
