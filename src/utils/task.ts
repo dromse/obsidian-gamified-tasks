@@ -11,7 +11,7 @@ import { formatCoins } from "./string";
 /** Parse all occurance of task line in `file` content and then returns task list */
 export function parseTasksFromFile(file: RawFile): Array<Task> {
 	const tasks = file.content.reduce<Array<Task>>((acc, lineContent, index) => {
-		const regex = /^- \[.\] .+/;
+		const regex = /- \[.\] .+/;
 
 		if (lineContent.match(regex)) {
 			acc.push({
