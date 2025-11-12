@@ -76,10 +76,6 @@ export default function TaskItem(props: Props): React.JSX.Element {
             title: "Edit Task",
             handler: () => setIsTaskEditorOpen(true),
         },
-        {
-            title: "Deactivate",
-            handler: () => deactivateTask(task),
-        },
     ];
 
     const statusOptions = getStatusOptionsWithHandlers(
@@ -97,6 +93,11 @@ export default function TaskItem(props: Props): React.JSX.Element {
             handler: () => handleResetCounter(task, updateTask),
         });
     }
+
+    options.push({
+        title: "Deactivate",
+        handler: () => deactivateTask(task)
+    })
 
     const saveNewTask = (newTask: Task): void => {
         updateTask(task, { ...newTask }, { ignore: { bind: true } });
