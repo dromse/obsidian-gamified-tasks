@@ -97,7 +97,7 @@ export type TaskFilters = {
 /**
  * Represents the possible statuses of a task.
  */
-export type Status = "todo" | "doing" | "done" | "denied" | "delay";
+export type Status = "todo" | "doing" | "done" | "denied" | "delay" | "archive";
 
 /**
  * Type defenition for a counter object.

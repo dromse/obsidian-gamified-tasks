@@ -40,6 +40,10 @@ export const StatusMarkdown: Record<Status, string> = {
 	 */
 	delay: "?",
 
+	/**
+	 * Represents a task that has been archived and excluded from searching.
+	 */
+	archive: "#gt-archive"
 };
 
 /**

@@ -26,7 +26,7 @@ type Props = {
 
 export default function TaskItem(props: Props): React.JSX.Element {
     const { task } = props;
-    const { updateTask } = useEditTasks();
+    const { updateTask, deactivateTask } = useEditTasks();
     const { addHistoryRow } = useHistory();
     const settings = useSettings();
     const app = useApp();
@@ -75,6 +75,10 @@ export default function TaskItem(props: Props): React.JSX.Element {
         {
             title: "Edit Task",
             handler: () => setIsTaskEditorOpen(true),
+        },
+        {
+            title: "Deactivate",
+            handler: () => deactivateTask(task),
         },
     ];
 

@@ -20,7 +20,16 @@ const parse = (task: Task): Task => {
 	return { ...task, status, body: newBody } as Task;
 };
 
-const stringify = (task: Task): string =>
-	task.status ? `- [${StatusMarkdown[task.status]}]` : "";
+const stringify = (task: Task): string => {
+	if (task.status === 'archive') {
+		return `- ${StatusMarkdown[task.status]}`
+	}
+
+	if (task.status) {
+		return `- [${StatusMarkdown[task.status]}]`
+	}
+
+	return ""
+}
 
 export default { parse, stringify } as Middleware;

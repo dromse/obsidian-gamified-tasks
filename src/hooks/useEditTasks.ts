@@ -1,5 +1,5 @@
 import { middlewares } from "@core/consts";
-import { Task } from "@core/types";
+import { Status, Task } from "@core/types";
 import { useApp } from "@hooks/useApp";
 import { useSettings } from "@hooks/useSettings";
 import { stringifyMiddlewares } from "@utils/middleware";
@@ -21,6 +21,7 @@ type UseEditTasksProps = {
 	updateTask: UpdateTaskFunctionType;
 	addTask: (task: Task) => void;
 	resetRecurringTask: (task: Task) => void;
+	deactivateTask: (task: Task) => Promise<string | undefined>
 };
 
 export default function useEditTasks(): UseEditTasksProps {
@@ -28,7 +29,7 @@ export default function useEditTasks(): UseEditTasksProps {
 	const app = useApp();
 
 	if (!app) {
-		return { updateTask, addTask, resetRecurringTask };
+		return { updateTask, addTask, resetRecurringTask, deactivateTask };
 	}
 	const { vault } = app;
 
@@ -87,6 +88,26 @@ export default function useEditTasks(): UseEditTasksProps {
 			data.replace(task.lineContent, newLineContent),
 		);
 	}
+	
+	async function deactivateTask(task: Task): Promise<string | undefined> {
+		const tFile = vault.getFileByPath(task.path);
+		const newTask = {...task, status: 'archive' as Status }
+
+		const newLineContent = stringifyMiddlewares(
+			newTask,
+			middlewares,
+			settings,
+		);
+
+		
+		if (!tFile) {
+			return;
+		}
+
+		return await vault.process(tFile, (data) =>
+			data.replace(task.lineContent, newLineContent),
+		);
+	}
 
 	function resetRecurringTask(task: Task): void {
 		const newTask = { ...task };
@@ -113,5 +134,5 @@ export default function useEditTasks(): UseEditTasksProps {
 		updateTask(task, newTask, { ignore: { bind: true } });
 	}
 
-	return { addTask, updateTask, resetRecurringTask };
+	return { addTask, updateTask, resetRecurringTask, deactivateTask };
 }
