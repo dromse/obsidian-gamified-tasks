@@ -12,6 +12,7 @@ import pathToConditions from "./setting/pathToConditions";
 import pathToHistory from "./setting/pathToHistory";
 import pathToRewards from "./setting/pathToRewards";
 import pathToSaveNewTask from "./setting/pathToSaveNewTask";
+import soundEffects from "./setting/soundEffects";
 import setShouldSortAfterLimit from "./setting/setShouldSortAfterLimit";
 import setSortByOrder from "./setting/setSortByOrder";
 import setSortByType from "./setting/setSortByType";
@@ -78,5 +79,8 @@ export default class GamifiedTasksSettingTab extends PluginSettingTab {
         toggleGroupCollapsed(containerEl, this)
 		new Setting(containerEl).setName("Custom Groups");
         customizeGroups(containerEl, this)
+
+		new Setting(containerEl).setName("Sound Effects").setHeading();
+        soundEffects(containerEl, this)
 	}
 }

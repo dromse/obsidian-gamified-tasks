@@ -9,6 +9,7 @@ import { RewardInfo } from "./RewardInfo";
 import styles from "./styles.module.css";
 import { Dialog } from "@components/reusable/Dialog";
 import ConfettiExplosion from "react-confetti-explosion";
+import { playSound } from "@utils/audio";
 
 const RewardItem = ({ reward }: { reward: Reward }): React.JSX.Element => {
     const settings = useSettings()!;
@@ -49,6 +50,12 @@ const RewardItem = ({ reward }: { reward: Reward }): React.JSX.Element => {
     };
 
     const spawnCenterConfetti = (): void => {
+        playSound(
+            vault,
+            settings.pathToRewardSound,
+            settings.enableSoundEffects,
+        );
+
         const id = Date.now();
         setCenterConfetti((p) => [...p, id]);
 
@@ -58,6 +65,12 @@ const RewardItem = ({ reward }: { reward: Reward }): React.JSX.Element => {
     };
 
     const spawnRightConfetti = (): void => {
+        playSound(
+            vault,
+            settings.pathToRewardSound,
+            settings.enableSoundEffects,
+        );
+
         const id = Date.now();
         setRightConfetti((p) => [...p, id]);
 
@@ -70,7 +83,7 @@ const RewardItem = ({ reward }: { reward: Reward }): React.JSX.Element => {
         <li className={`${styles.reward} border relative`}>
             <div
                 onClick={() => setIsMenuOpen((prev) => !prev)}
-                className='w-full'
+                className="w-full"
             >
                 <RewardInfo reward={reward} />
             </div>
@@ -80,7 +93,7 @@ const RewardItem = ({ reward }: { reward: Reward }): React.JSX.Element => {
             {centerConfetti.map((id) => (
                 <ConfettiExplosion
                     key={id}
-                    className='absolute w-20 inset-0 m-auto'
+                    className="absolute w-20 inset-0 m-auto"
                     force={0.4}
                     particleCount={15}
                     width={400}
@@ -90,7 +103,7 @@ const RewardItem = ({ reward }: { reward: Reward }): React.JSX.Element => {
             {rigthConfetti.map((id) => (
                 <ConfettiExplosion
                     key={id}
-                    className='absolute w-20 right-[-40px]'
+                    className="absolute w-20 right-[-40px]"
                     force={0.4}
                     particleCount={15}
                     width={400}
@@ -109,8 +122,8 @@ const RewardItem = ({ reward }: { reward: Reward }): React.JSX.Element => {
                 onClose={() => setRewardQuantity("")}
             >
                 <input
-                    type='number'
-                    placeholder='reward quantity'
+                    type="number"
+                    placeholder="reward quantity"
                     value={rewardQuantity}
                     onChange={(e) => setRewardQuantity(e.currentTarget.value)}
                 />

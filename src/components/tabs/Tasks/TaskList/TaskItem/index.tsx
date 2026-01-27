@@ -19,6 +19,7 @@ import useHistory from "@hooks/useHistory";
 import { useSettings } from "@hooks/useSettings";
 import styles from "../../styles.module.css";
 import { Dialog } from "@components/reusable/Dialog";
+import { playSound } from "@utils/audio";
 
 type Props = {
     task: Task;
@@ -46,7 +47,7 @@ export default function TaskItem(props: Props): React.JSX.Element {
     const [isTaskEditorOpen, setIsTaskEditorOpen] = React.useState(false);
     const [isOptionalCounterOpen, setIsOptionalCounterOpen] =
         React.useState(false);
-    const [optionalCounter, setOptionalCounter] = React.useState('');
+    const [optionalCounter, setOptionalCounter] = React.useState("");
 
     const buildUpdateStatusProps = (
         status: Status,
@@ -96,8 +97,8 @@ export default function TaskItem(props: Props): React.JSX.Element {
 
     options.push({
         title: "Deactivate",
-        handler: () => deactivateTask(task)
-    })
+        handler: () => deactivateTask(task),
+    });
 
     const saveNewTask = (newTask: Task): void => {
         updateTask(task, { ...newTask }, { ignore: { bind: true } });
@@ -110,10 +111,17 @@ export default function TaskItem(props: Props): React.JSX.Element {
             data-task={StatusMarkdown[task.status ? task.status : "todo"]}
         >
             <input
-                type='checkbox'
-                onChange={() =>
-                    handleUpdateCheckbox(task, buildUpdateStatusProps)
-                }
+                type="checkbox"
+                onChange={() => {
+                    if (task.status !== "done")
+                        playSound(
+                            vault,
+                            settings.pathToTaskCompletionSound,
+                            settings.enableSoundEffects,
+                        );
+
+                    handleUpdateCheckbox(task, buildUpdateStatusProps);
+                }}
                 checked={task.status !== "todo"}
             />
 
@@ -149,15 +157,13 @@ export default function TaskItem(props: Props): React.JSX.Element {
             <Dialog
                 isOpen={isOptionalCounterOpen}
                 setIsOpen={setIsOptionalCounterOpen}
-                onClose={() => setOptionalCounter('')}
+                onClose={() => setOptionalCounter("")}
             >
                 <input
-                    type='number'
-                    placeholder='optional value'
+                    type="number"
+                    placeholder="optional value"
                     value={optionalCounter}
-                    onChange={(e) =>
-                        setOptionalCounter(e.currentTarget.value)
-                    }
+                    onChange={(e) => setOptionalCounter(e.currentTarget.value)}
                 />
 
                 <Counter

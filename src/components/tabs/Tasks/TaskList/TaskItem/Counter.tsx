@@ -8,6 +8,8 @@ import React from "react";
 import styles from "../../styles.module.css";
 import { useSettings } from "@hooks/useSettings";
 import { Minus, Plus } from "lucide-react";
+import { useApp } from "@hooks/useApp";
+import { playSound } from "@utils/audio";
 
 type CounterProps = {
     task: Task;
@@ -20,6 +22,7 @@ export default function Counter(props: CounterProps): React.JSX.Element {
     let { changeValue } = props;
     const { updateTask } = useEditTasks();
     const settings = useSettings();
+    const { vault } = useApp()!;
 
     if (!changeValue) {
         changeValue = 1;
@@ -35,25 +38,42 @@ export default function Counter(props: CounterProps): React.JSX.Element {
 
     const [isButtonBlocked, setIsButtonBlocked] = React.useState(false);
 
-    const handleUpdateCounter =
-        (change: number) => async (): Promise<void> => {
-            try {
-                setIsButtonBlocked(true);
+    const handleUpdateCounter = (change: number) => async (): Promise<void> => {
+        try {
+            setIsButtonBlocked(true);
 
-                await updateCounter({
-                    task,
-                    payload: { change },
-                    updateTask,
-                    addHistoryRow,
-                    settings,
-                });
-            } catch (err) {
-                logger(err);
-                new Notice(loggerMsg(err));
-            } finally {
-                setIsButtonBlocked(false);
-            }
-        };
+            await updateCounter({
+                task,
+                payload: { change },
+                updateTask,
+                addHistoryRow,
+                settings,
+            });
+        } catch (err) {
+            logger(err);
+            new Notice(loggerMsg(err));
+        } finally {
+            setIsButtonBlocked(false);
+        }
+    };
+
+    const handlePlusCounter = (): void => {
+        handleUpdateCounter(changeValue!)();
+        playSound(
+            vault,
+            settings.pathToCounterPlusSound,
+            settings.enableSoundEffects,
+        );
+    };
+
+    const handleMinusCounter = (): void => {
+        handleUpdateCounter(-changeValue!)();
+        playSound(
+            vault,
+            settings.pathToCounterMinusSound,
+            settings.enableSoundEffects,
+        );
+    };
 
     return (
         <div className={`flex-items-center ${styles.counter}`}>
@@ -62,18 +82,12 @@ export default function Counter(props: CounterProps): React.JSX.Element {
                 {task.counter.goal ? " / " + task.counter.goal : ""}
             </p>
 
-            <button
-                onClick={handleUpdateCounter(changeValue)}
-                disabled={isButtonBlocked}
-            >
-                <Plus className='p-1.5' />
+            <button onClick={handlePlusCounter} disabled={isButtonBlocked}>
+                <Plus className="p-1.5" />
             </button>
 
-            <button
-                onClick={handleUpdateCounter(-changeValue)}
-                disabled={isButtonBlocked}
-            >
-                <Minus className='p-1.5' />
+            <button onClick={handleMinusCounter} disabled={isButtonBlocked}>
+                <Minus className="p-1.5" />
             </button>
         </div>
     );

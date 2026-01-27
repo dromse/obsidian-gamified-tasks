@@ -41,6 +41,11 @@ export const DEFAULT_SETTINGS: GamifiedTasksSettings = {
     negativeCounter: false,
     isGroupCollapsed: false,
     customGroups: [],
+    enableSoundEffects: false,
+    pathToRewardSound: "",
+    pathToCounterMinusSound: "",
+    pathToCounterPlusSound: "",
+    pathToTaskCompletionSound: "",
 };
 
 export const DAY_FORMAT = "YYYY-MM-DD" as const;

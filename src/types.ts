@@ -3,7 +3,7 @@ import {
     SortOrder,
     SortType,
     Status,
-    TaskFilterOptionsType
+    TaskFilterOptionsType,
 } from "@core/types";
 
 export type GamifiedTasksSettings = {
@@ -12,6 +12,12 @@ export type GamifiedTasksSettings = {
     pathToConditions: string;
     pathToDaily: string;
     pathToSaveNewTask: string;
+
+    enableSoundEffects: boolean;
+    pathToRewardSound: string;
+    pathToTaskCompletionSound: string;
+    pathToCounterPlusSound: string;
+    pathToCounterMinusSound: string;
 
     limit: number | undefined;
     statusFilter: Array<Status> | string;
