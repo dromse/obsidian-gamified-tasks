@@ -25,62 +25,65 @@ import showTasksFromNote from "./setting/showTasksFromNote";
 import toggleCreditMode from "./setting/toggleCreditMode";
 import toggleGroupCollapsed from "./setting/toggleGroupCollapsed";
 import toggleNegativeCounter from "./setting/toggleNegativeCounter";
+import openOnLayout from "./setting/openOnLayout";
 
 /** Class for Setting Tab where user can set default filtering settings for `Grind Manager` */
 export default class GamifiedTasksSettingTab extends PluginSettingTab {
-	plugin: GamifiedTasksPlugin;
+    plugin: GamifiedTasksPlugin;
 
-	constructor(app: App, plugin: GamifiedTasksPlugin) {
-		super(app, plugin);
-		this.plugin = plugin;
-	}
+    constructor(app: App, plugin: GamifiedTasksPlugin) {
+        super(app, plugin);
+        this.plugin = plugin;
+    }
 
-	display(): void {
-		const { containerEl } = this;
+    display(): void {
+        const { containerEl } = this;
 
-		containerEl.empty();
+        containerEl.empty();
 
-		pathToRewards(containerEl, this);
-		pathToHistory(containerEl, this);
-		pathToSaveNewTask(containerEl, this);
-		pathToConditions(containerEl, this);
-		excludeFilesFromParsing(containerEl, this);
-		showDoneDate(containerEl, this);
-		changeCompletedAtFormat(containerEl, this);
-		showAllFilters(containerEl, this);
+        openOnLayout(containerEl, this);
 
-		new Setting(containerEl).setName("Filters").setHeading();
-		limitTasks(containerEl, this);
-		showByStatus(containerEl, this);
-		showByTags(containerEl, this);
-		onlyThisTags(containerEl, this);
-		showTasksFromNote(containerEl, this);
-		showFromCurrentNote(containerEl, this);
-		filterTasksOnOpenBy(containerEl, this);
+        pathToRewards(containerEl, this);
+        pathToHistory(containerEl, this);
+        pathToSaveNewTask(containerEl, this);
+        pathToConditions(containerEl, this);
+        excludeFilesFromParsing(containerEl, this);
+        showDoneDate(containerEl, this);
+        changeCompletedAtFormat(containerEl, this);
+        showAllFilters(containerEl, this);
 
-		new Setting(containerEl).setName("Sorting").setHeading();
-		setSortByType(containerEl, this);
-		setSortByOrder(containerEl, this);
-		setShouldSortAfterLimit(containerEl, this);
+        new Setting(containerEl).setName("Filters").setHeading();
+        limitTasks(containerEl, this);
+        showByStatus(containerEl, this);
+        showByTags(containerEl, this);
+        onlyThisTags(containerEl, this);
+        showTasksFromNote(containerEl, this);
+        showFromCurrentNote(containerEl, this);
+        filterTasksOnOpenBy(containerEl, this);
 
-		new Setting(containerEl)
-			.setName("Difficulty")
-			.setHeading()
-			.setDesc("Change or add new difficulty");
-		changeDifficulty(containerEl, this);
+        new Setting(containerEl).setName("Sorting").setHeading();
+        setSortByType(containerEl, this);
+        setSortByOrder(containerEl, this);
+        setShouldSortAfterLimit(containerEl, this);
 
-		new Setting(containerEl).setName("Rewards").setHeading();
-		toggleCreditMode(containerEl, this);
+        new Setting(containerEl)
+            .setName("Difficulty")
+            .setHeading()
+            .setDesc("Change or add new difficulty");
+        changeDifficulty(containerEl, this);
 
-		new Setting(containerEl).setName("Tasks").setHeading();
-		toggleNegativeCounter(containerEl, this);
+        new Setting(containerEl).setName("Rewards").setHeading();
+        toggleCreditMode(containerEl, this);
 
-		new Setting(containerEl).setName("Groups").setHeading();
-        toggleGroupCollapsed(containerEl, this)
-		new Setting(containerEl).setName("Custom Groups");
-        customizeGroups(containerEl, this)
+        new Setting(containerEl).setName("Tasks").setHeading();
+        toggleNegativeCounter(containerEl, this);
 
-		new Setting(containerEl).setName("Sound Effects").setHeading();
-        soundEffects(containerEl, this)
-	}
+        new Setting(containerEl).setName("Groups").setHeading();
+        toggleGroupCollapsed(containerEl, this);
+        new Setting(containerEl).setName("Custom Groups");
+        customizeGroups(containerEl, this);
+
+        new Setting(containerEl).setName("Sound Effects").setHeading();
+        soundEffects(containerEl, this);
+    }
 }
