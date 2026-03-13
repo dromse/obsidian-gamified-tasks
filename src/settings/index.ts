@@ -26,6 +26,7 @@ import toggleCreditMode from "./setting/toggleCreditMode";
 import toggleGroupCollapsed from "./setting/toggleGroupCollapsed";
 import toggleNegativeCounter from "./setting/toggleNegativeCounter";
 import openOnLayout from "./setting/openOnLayout";
+import showAllTaskSearchOptions from "./setting/showAllTaskSearchOptions";
 
 /** Class for Setting Tab where user can set default filtering settings for `Grind Manager` */
 export default class GamifiedTasksSettingTab extends PluginSettingTab {
@@ -51,6 +52,8 @@ export default class GamifiedTasksSettingTab extends PluginSettingTab {
         showDoneDate(containerEl, this);
         changeCompletedAtFormat(containerEl, this);
         showAllFilters(containerEl, this);
+
+        showAllTaskSearchOptions(containerEl, this);
 
         new Setting(containerEl).setName("Filters").setHeading();
         limitTasks(containerEl, this);

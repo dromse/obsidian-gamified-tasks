@@ -6,7 +6,7 @@ import {
     TaskFilterOptionsType,
 } from "@core/types";
 
-export type SplitLayout = 'left' | 'right' | 'main';
+export type SplitLayout = "left" | "right" | "main";
 
 export type GamifiedTasksSettings = {
     pathToRewards: string;
@@ -52,6 +52,8 @@ export type GamifiedTasksSettings = {
     customGroups: Array<GroupMetadata>;
 
     openOnLayout: SplitLayout;
+
+    isShowAllTaskSearchOptions: boolean;
 };
 
 export type DifficultySetting = { name: string; price: number };

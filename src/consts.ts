@@ -47,6 +47,7 @@ export const DEFAULT_SETTINGS: GamifiedTasksSettings = {
     pathToCounterPlusSound: "",
     pathToTaskCompletionSound: "",
     openOnLayout: "right",
+    isShowAllTaskSearchOptions: true,
 };
 
 export const DAY_FORMAT = "YYYY-MM-DD" as const;
