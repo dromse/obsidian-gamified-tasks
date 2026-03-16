@@ -1,3 +1,35 @@
+
+<div align="right">
+  <details>
+    <summary >🌐 Language</summary>
+    <div>
+      <div align="center">
+        <a href="https://openaitx.github.io/view.html?user=dromse&project=obsidian-gamified-tasks&lang=en">English</a>
+        | <a href="https://openaitx.github.io/view.html?user=dromse&project=obsidian-gamified-tasks&lang=zh-CN">简体中文</a>
+        | <a href="https://openaitx.github.io/view.html?user=dromse&project=obsidian-gamified-tasks&lang=zh-TW">繁體中文</a>
+        | <a href="https://openaitx.github.io/view.html?user=dromse&project=obsidian-gamified-tasks&lang=ja">日本語</a>
+        | <a href="https://openaitx.github.io/view.html?user=dromse&project=obsidian-gamified-tasks&lang=ko">한국어</a>
+        | <a href="https://openaitx.github.io/view.html?user=dromse&project=obsidian-gamified-tasks&lang=hi">हिन्दी</a>
+        | <a href="https://openaitx.github.io/view.html?user=dromse&project=obsidian-gamified-tasks&lang=th">ไทย</a>
+        | <a href="https://openaitx.github.io/view.html?user=dromse&project=obsidian-gamified-tasks&lang=fr">Français</a>
+        | <a href="https://openaitx.github.io/view.html?user=dromse&project=obsidian-gamified-tasks&lang=de">Deutsch</a>
+        | <a href="https://openaitx.github.io/view.html?user=dromse&project=obsidian-gamified-tasks&lang=es">Español</a>
+        | <a href="https://openaitx.github.io/view.html?user=dromse&project=obsidian-gamified-tasks&lang=it">Italiano</a>
+        | <a href="https://openaitx.github.io/view.html?user=dromse&project=obsidian-gamified-tasks&lang=ru">Русский</a>
+        | <a href="https://openaitx.github.io/view.html?user=dromse&project=obsidian-gamified-tasks&lang=pt">Português</a>
+        | <a href="https://openaitx.github.io/view.html?user=dromse&project=obsidian-gamified-tasks&lang=nl">Nederlands</a>
+        | <a href="https://openaitx.github.io/view.html?user=dromse&project=obsidian-gamified-tasks&lang=pl">Polski</a>
+        | <a href="https://openaitx.github.io/view.html?user=dromse&project=obsidian-gamified-tasks&lang=ar">العربية</a>
+        | <a href="https://openaitx.github.io/view.html?user=dromse&project=obsidian-gamified-tasks&lang=fa">فارسی</a>
+        | <a href="https://openaitx.github.io/view.html?user=dromse&project=obsidian-gamified-tasks&lang=tr">Türkçe</a>
+        | <a href="https://openaitx.github.io/view.html?user=dromse&project=obsidian-gamified-tasks&lang=vi">Tiếng Việt</a>
+        | <a href="https://openaitx.github.io/view.html?user=dromse&project=obsidian-gamified-tasks&lang=id">Bahasa Indonesia</a>
+        | <a href="https://openaitx.github.io/view.html?user=dromse&project=obsidian-gamified-tasks&lang=as">অসমীয়া</
+      </div>
+    </div>
+  </details>
+</div>
+
 # Gamified Tasks
 
 <a href="https://github.com/dromse/obsidian-grind-manager/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/dromse/obsidian-grind-manager?style=for-the-badge&logo=starship&logoColor=D9E0EE&labelColor=302D41&&color=d9b3ff&include_prerelease&sort=semver" /></a>
